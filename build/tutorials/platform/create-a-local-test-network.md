@@ -1,3 +1,7 @@
+---
+description: 创造一个本地测试网络
+---
+
 # Create a Local Test Network
 
 ## Introduction
@@ -6,7 +10,7 @@ In the [Get Started tutorial](https://avalanche.gitbook.io/avalanche/build/getti
 
 We’ll show you how to launch a 5 node local test network. For both, we’ll show how to launch the network using [Avash](https://avalanche.gitbook.io/avalanche/build/tools/avash) and manually.
 
-The 5 nodes will have HTTP ports \(where API calls should be sent\) `9650`, `9652`, `9654`, `9656` , and `9658`.
+The 5 nodes will have HTTP ports (where API calls should be sent) `9650`, `9652`, `9654`, `9656` , and `9658`.
 
 ## Create a Local Test Network
 
@@ -70,7 +74,7 @@ runscript scripts/five_node_staking.lua
 
 When you want to tear down the network, run `exit` to exit Avash.
 
-### Verifying Nodes are Connected <a id="verifying-nodes-are-connected"></a>
+### Verifying Nodes are Connected <a href="#verifying-nodes-are-connected" id="verifying-nodes-are-connected"></a>
 
 We can look at one of the node’s peers to ensure that the nodes are connected. To do so, call [`info.peers`](https://avalanche.gitbook.io/avalanche/build/apis/info-api#info-peers).
 
@@ -128,7 +132,7 @@ curl -X POST --data '{
 }
 ```
 
-### Getting AVAX <a id="getting-avax"></a>
+### Getting AVAX <a href="#getting-avax" id="getting-avax"></a>
 
 When running a network with `--network-id=local`, as we’ve done, there is a pre-funded X-Chain address that you can import in order to get AVAX. The private key for this address is `PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN`. After you create a keystore user on a node, you can import this key, and the funds it holds, with:
 
@@ -150,4 +154,3 @@ curl --location --request POST 'localhost:9650/ext/platform' \
 That’s it! Your local version of Avalanche is up and running. It has the default blockchains: the [X-Chain](https://avalanche.gitbook.io/avalanche/learn/platform-overview#exchange-chain-x-chain), [C-Chain](https://avalanche.gitbook.io/avalanche/learn/platform-overview#contract-chain-c-chain), and [P-Chain](https://avalanche.gitbook.io/avalanche/learn/platform-overview#platform-chain-p-chain). The only subnet that exists is the Primary Network.
 
 You can add more nodes to the network. Just remember to give unique values for `db-dir`, `http-port` , and `staking-port`.
-

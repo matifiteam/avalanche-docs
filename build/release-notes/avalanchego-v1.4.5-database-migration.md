@@ -1,30 +1,30 @@
-# AvalancheGo v1.4.5: Database Migration
+# AvalancheGo v1.4.5: Database Migration数据库移植
 
-This article is applicable when you're upgrading your node from AvalancheGo &lt; v1.4.5 to AvalancheGo &gt;= v1.4.5. Although this article is written for v1.4.5 and references that version below, for example, it still applies if you're upgrading from AvalancheGo v1.4.4 to AvalancheGo v1.4.6, v1.4.7, etc.. When reading this document, replace v1.4.5 with the version you are updating to \(except in reference to the database subdirectory v1.4.5, which will not change.\)
+This article is applicable when you're upgrading your node from AvalancheGo < v1.4.5 to AvalancheGo >= v1.4.5. Although this article is written for v1.4.5 and references that version below, for example, it still applies if you're upgrading from AvalancheGo v1.4.4 to AvalancheGo v1.4.6, v1.4.7, etc.. When reading this document, replace v1.4.5 with the version you are updating to (except in reference to the database subdirectory v1.4.5, which will not change.)
 
-## Summary
+## Summary总结
 
 * [AvalancheGo v1.4.5](https://github.com/ava-labs/avalanchego/releases/tag/v1.4.5) brings significant database optimizations.
 * It will temporarily double the amount of disk space used by AvalancheGo, and will temporarily increase usage of memory and CPU.
-* Please read this entire document to make sure that your node successfully migrates and remains healthy during the migration. If it doesn’t answer your question, go to our [Discord](https://chat.avalabs.org/) serve, read the pinned messages and search for your question. If you still need help, please post in the \#troubleshooting channel. 
+* Please read this entire document to make sure that your node successfully migrates and remains healthy during the migration. If it doesn’t answer your question, go to our [Discord](https://chat.avalabs.org) serve, read the pinned messages and search for your question. If you still need help, please post in the #troubleshooting channel.
 
-## Background
+## Background背景
 
 We are excited to announce the release of [v1.4.5 of AvalancheGo](https://github.com/ava-labs/avalanchego/releases/tag/v1.4.5), which brings significant database optimizations and stability improvements to AvalancheGo.
 
-In tests, we observed a ~90% reduction in read I/O on a Mainnet validator, as shown in the graph below:
+In tests, we observed a \~90% reduction in read I/O on a Mainnet validator, as shown in the graph below:
 
-![](../../.gitbook/assets/0%20%281%29%20%282%29%20%283%29.png)
+![](<../../.gitbook/assets/0 (1) (2) (3).png>)
 
 The improvements are due to extensive refactoring of state management in the P-Chain, as well as other other database optimizations.
 
-We anticipate that nodes upgraded to &gt;= v1.4.5 will consume less CPU and perform many fewer disk reads once the migration has been completed. These changes will also significantly improve P-Chain decision latency.
+We anticipate that nodes upgraded to >= v1.4.5 will consume less CPU and perform many fewer disk reads once the migration has been completed. These changes will also significantly improve P-Chain decision latency.
 
 This upgrade also significantly shortens the amount of time it takes to bootstrap.
 
-## The Upgrade Process
+## The Upgrade Process更新流程
 
-If you have an existing database on your computer, then when you run AvalancheGo v1.4.5, it will actually start 2 nodes. One will be running v1.4.4, which uses the "old" database version \(v1.0.0\). The other will be running v1.4.5, which uses the "new" database format \(v1.4.5 which will stay the same for any AvalancheGo &lt;=1.4.5\).
+If you have an existing database on your computer, then when you run AvalancheGo v1.4.5, it will actually start 2 nodes. One will be running v1.4.4, which uses the "old" database version (v1.0.0). The other will be running v1.4.5, which uses the "new" database format (v1.4.5 which will stay the same for any AvalancheGo <=1.4.5).
 
 The v1.4.4 node will run as normal, and you will see its logs as before. The node will connect to the network using the same node ID as before and, if it is a validator, participate in consensus as before. In short, things should look the same as when running v1.4.4.
 
@@ -34,39 +34,39 @@ When the v1.4.5 node is done bootstrapping, the v1.4.4 node will stop and the v1
 
 You should not provide the flag`--plugin-dir`. If you used the installer script to install AvalancheGo, you need to remove this flag from your AvalancheGo service file. See this [note](avalanchego-v1.4.5-database-migration.md#note-for-the-nodes-installed-with-installer-script).
 
-## Resource Usage
+## Resource Usage资源使用情况
 
 During the migration, when both nodes are running, AvalancheGo will consume more system resources than usual.
 
-When the migration completes, there will be 2 bootstrapped databases on your computer. Make sure that the amount of free disk space on your computer exceeds the size of a fully bootstrapped database \(~38 GB\). We recommend that you dedicate at least 200 GB of disk space on your computer to AvalancheGo. While AvalancheGo currently uses only a fraction of that amount, we anticipate disk usage will rise before we implement a pruning solution.
+When the migration completes, there will be 2 bootstrapped databases on your computer. Make sure that the amount of free disk space on your computer exceeds the size of a fully bootstrapped database (\~38 GB). We recommend that you dedicate at least 200 GB of disk space on your computer to AvalancheGo. While AvalancheGo currently uses only a fraction of that amount, we anticipate disk usage will rise before we implement a pruning solution.
 
-Memory and CPU usage will also be elevated while both nodes are running. We anticipate that any computer with CPU &gt;= 2GHz and &gt;= 6 GB of RAM available for AvalancheGo will not have any issues. That said, you should monitor your node especially closely for the first few days to ensure that it is healthy.
+Memory and CPU usage will also be elevated while both nodes are running. We anticipate that any computer with CPU >= 2GHz and >= 6 GB of RAM available for AvalancheGo will not have any issues. That said, you should monitor your node especially closely for the first few days to ensure that it is healthy.
 
 See [FAQ](https://app.gitbook.com/@avalanche/s/avalanche/build/release-notes/avalanchego-v1.4.5-database-migration#faq) for how to check that your computer has adequate disk space, and what to do if your computer has specs lower than the recommended ones.
 
-## Step-by-Step Upgrade Instructions
+## Step-by-Step Upgrade Instructions每一步更新指令
 
 * **Your node will not have downtime by following these instructions.**
 * **The database, plus keystore data and validator's uptimes, are migrated automatically.**
 
-### Verify Requirements
+### Verify Requirements验证条件
 
 Verify that your computer meets the following requirements:
 
-* CPU &gt;= 2GHz 
-* RAM &gt;= 6 GB
+* CPU >= 2GHz
+* RAM >= 6 GB
 * Hard drive: you should have at least 1.3 times of the disk space currently occupied by _`$HOME/.avalanchego/db/mainnet/v1.0.0`_, which is around 38GB. This means that you should have about 50 GB free space. Otherwise, the program will not be able to proceed to upgrade the database. We recommend that you dedicate at least 200 GB of disk space on your computer to AvalancheGo. To check how much space you have, see [How much disk space is available right now](https://docs.avax.network/build/release-notes/avalanchego-v1.4.5-database-migration#how-much-disk-space-is-available-right-now)
 * To remedy, see following
   * [What should I do if my computer doesn’t have enough disk space?](https://docs.avax.network/build/release-notes/avalanchego-v1.4.5-database-migration#what-should-i-do-if-my-computer-doesnt-have-enough-disk-space)
   * [What if my computer can’t run 2 nodes at once?](https://docs.avax.network/build/release-notes/avalanchego-v1.4.5-database-migration#what-if-my-computer-cant-run-2-nodes-at-once)
 
-### Backup Data
+### Backup Data备份数据
 
 Backup your node’s data by following [this](https://docs.avax.network/build/tutorials/nodes-and-staking/node-backup-and-restore).
 
 Your staking key/certificate are not in the database, and **should not be affected at all** by the database migration. Even so, it is good practice to [have a backup](https://docs.avax.network/build/tutorials/nodes-and-staking/node-backup-and-restore) of your staking key/certificate.
 
-### Download the New Version
+### Download the New Version下载最新版本
 
 New version can be downloaded with **one** of the following approaches depending on your practices:
 
@@ -74,43 +74,41 @@ New version can be downloaded with **one** of the following approaches depending
 * With binary download, see [here](https://docs.avax.network/build/tutorials/nodes-and-staking/run-avalanche-node#binary)
 * With building from source code, see [here](https://docs.avax.network/build/tutorials/nodes-and-staking/run-avalanche-node#source-code)
 
-### Run the New Version
+### Run the New Version运行最新版本
 
 To start the new version
 
-* If you run AvalancheGo as a service, which we highly recommend, verify that the _`--plugin-dir`_ flag is not present in the _`avalanchego.service`_ file. If it is not present, you can skip the following paragraph. If it is present, follow the instructions below to remove it.
+*   If you run AvalancheGo as a service, which we highly recommend, verify that the _`--plugin-dir`_ flag is not present in the _`avalanchego.service`_ file. If it is not present, you can skip the following paragraph. If it is present, follow the instructions below to remove it.
 
-  In the console, enter the command: _`sudo nano /etc/systemd/system/avalanchego.service`_  
-  In the editor, locate the line that begins with _`ExecStart=`_ and on it delete the following part: _`--plugin-dir=/home/ubuntu/avalanche-node/plugins`_ Then save the changes by pressing ctrl-x and y.
+    In the console, enter the command: _`sudo nano /etc/systemd/system/avalanchego.service`_\
+    In the editor, locate the line that begins with _`ExecStart=`_ and on it delete the following part: _`--plugin-dir=/home/ubuntu/avalanche-node/plugins`_ Then save the changes by pressing ctrl-x and y.
 
-  To apply the changes, run the command:  
-  _`sudo systemctl daemon-reload`_  
-  Finally, restart the node with:  
-  _`sudo systemctl restart avalanchego`_
-
+    To apply the changes, run the command:\
+    _`sudo systemctl daemon-reload`_\
+    Finally, restart the node with:\
+    _`sudo systemctl restart avalanchego`_
 * With binary download or building from source code, see [here](https://docs.avax.network/build/tutorials/nodes-and-staking/run-avalanche-node#start-a-node-and-connect-to-avalanche).
 
-### Monitor Progress
+### Monitor Progress监测进展
 
 Monitor and make sure that migration completes successfully:
 
 You can check progress by doing the following:
 
-* Check your disk space usage using command
+*   Check your disk space usage using command
 
-  _`du -h $HOME/.avalanchego/db/mainnet`_
+    _`du -h $HOME/.avalanchego/db/mainnet`_
 
-  which should produce results showing the size of both databases under v1.0.0 and v1.4.5, respectively.
-
+    which should produce results showing the size of both databases under v1.0.0 and v1.4.5, respectively.
 * Logs for the node populating the new database can be found under _`$HOME/.avalanchego/logs/fetch-only`_
 * These messages indicate the completion of the database migration:
   * When _`"starting latest node version in normal execution mode"`_ is printed, then the new **database** has been bootstrapped, and the node has restarted.
   * When _`"finished migrating keystore from database version v1.0.0 to v1.4.5"`_ is printed, then the **keystore** data is finished migrating.
   * When _`"finished migrating platform vm from database version v1.0.0 to v1.4.5"`_ is printed, then validator **uptimes** are finished migrating.
 
-Depending on your computer, the upgrade process could take a significant amount of time. Some validators have reported 30+ hours with less powerful computers. It mainly depends on the type of storage on the computer. If the storage is SSD-based it should complete in 12 hours or less. On HDD-based systems it can take a couple of days \(migration is almost exclusively random reads/writes and HDDs are pretty slow on those types of workloads\). However, your node will continue to work during the migration without downtime.
+Depending on your computer, the upgrade process could take a significant amount of time. Some validators have reported 30+ hours with less powerful computers. It mainly depends on the type of storage on the computer. If the storage is SSD-based it should complete in 12 hours or less. On HDD-based systems it can take a couple of days (migration is almost exclusively random reads/writes and HDDs are pretty slow on those types of workloads). However, your node will continue to work during the migration without downtime.
 
-You can verify your node’s version by issuing `info.getNodeVersion` API \(see tutorial on [Postman](https://docs.avax.network/build/tools/postman-avalanche-collection)\) and you should get the response as follows, where the version number should be &gt;=1.4.7 depending which version you are updating to, after the completion of migration.
+You can verify your node’s version by issuing `info.getNodeVersion` API (see tutorial on [Postman](https://docs.avax.network/build/tools/postman-avalanche-collection)) and you should get the response as follows, where the version number should be >=1.4.7 depending which version you are updating to, after the completion of migration.
 
 ```javascript
 {
@@ -126,32 +124,32 @@ More information on updating a node can be found [here](https://docs.avax.networ
 
 ## FAQ
 
-### Why does \[explorer\] say my node is still on v1.4.4?
+### Why does \[explorer] say my node is still on v1.4.4?
 
 During the migration, a v1.4.4 node will be running on your computer, as explained above. Other nodes on the network will see yours as running v1.4.4 until the migration is complete.
 
 ### Is the database migration mandatory?
 
-Yes. Nodes running AvalancheGo &lt; v1.4.5 no longer work.
+Yes. Nodes running AvalancheGo < v1.4.5 no longer work.
 
 ### Can I upgrade to AvalancheGo 1.4.5 from a version other than v1.4.4?
 
-Yes, it should work from any version &lt; 1.4.5.
+Yes, it should work from any version < 1.4.5.
 
 ### What if my computer can’t run 2 nodes at once?
 
-If your computer \(computer 1\) has less than 6 GB of RAM, it may not be able to run the migration because it doesn’t have enough memory to run 2 nodes at once. As a reminder, we advise that your node has at least 6 GB of RAM.
+If your computer (computer 1) has less than 6 GB of RAM, it may not be able to run the migration because it doesn’t have enough memory to run 2 nodes at once. As a reminder, we advise that your node has at least 6 GB of RAM.
 
 If you are unable to run the migration and you want to minimize the amount of time your node is offline, you can do the following:
 
-* On another computer \(computer 2\), run AvalancheGo v1.4.5, wait until it bootstraps, then stop AvalancheGo .
-* On computer 1, stop AvalancheGo. Move the database directory _`$HOME/.avalanchego/db/`_ from computer 2 \(which has just bootstrapped database version v1.4.5\) to the same location on computer 1. Then upgrade to AvalancheGo v1.4.5 and run it.
+* On another computer (computer 2), run AvalancheGo v1.4.5, wait until it bootstraps, then stop AvalancheGo .
+* On computer 1, stop AvalancheGo. Move the database directory _`$HOME/.avalanchego/db/`_ from computer 2 (which has just bootstrapped database version v1.4.5) to the same location on computer 1. Then upgrade to AvalancheGo v1.4.5 and run it.
 
 Note that **this is not the advised approach,** and you should only do it if your node has less than 6 GB of RAM or insufficient disk space. Again, we advise that your node has at least 6 GB of RAM and at least 200 GB of disk space. Note that this approach does not migrate keystore or validator uptime data.
 
 ### How much disk space do I need?
 
-We recommend that you dedicate at least 200 GB of disk space on your computer to AvalancheGo. While AvalancheGo currently uses only a fraction of that amount \(~38 GB\), we anticipate disk usage will rise before we implement a pruning solution.
+We recommend that you dedicate at least 200 GB of disk space on your computer to AvalancheGo. While AvalancheGo currently uses only a fraction of that amount (\~38 GB), we anticipate disk usage will rise before we implement a pruning solution.
 
 ### How much disk space is available right now?
 
@@ -183,11 +181,11 @@ Once the new database version is bootstrapped, the v1.4.5 node restarts and comp
 
 _`$HOME/.avalanchego/db/mainnet/v1.0.0`_
 
-It is not necessary for you to delete the old database \(v1.0.0\).
+It is not necessary for you to delete the old database (v1.0.0).
 
 ### Will this migration change anything in the old database?
 
-No**.** The old database \(v1.0.0\) will be unchanged.
+No\*\*.\*\* The old database (v1.0.0) will be unchanged.
 
 **However, you should never modify the database while the node is running.**
 
@@ -195,7 +193,7 @@ To be clear, if you want to delete the old database after the new database boots
 
 * Run v1.4.5 until the new database bootstraps and the node restarts
 * Stop the node
-* Delete the v1.0.0 subdirectory of the database \(and only that subdirectory!\)
+* Delete the v1.0.0 subdirectory of the database (and only that subdirectory!)
 * Start the node
 
 **You should also verify that your keystore data has been successfully migrated before deleting the old database.**
@@ -216,7 +214,7 @@ If your node runs on the cloud, get instructions for increasing the amount of av
 
 ### If something goes wrong, how can I go back to the previous version?
 
-See [here](https://docs.avax.network/build/tutorials/nodes-and-staking/set-up-node-with-installer#using-a-previous-version). This migration does not modify any data in the existing database. The new database is created alongside it. If you encounter an issue and downgrade from AvalancheGo v1.4.5 to v1.4.4, you should have no issues downgrading since the existing database is unchanged. \(This assumes you have not deleted the existing database\).
+See [here](https://docs.avax.network/build/tutorials/nodes-and-staking/set-up-node-with-installer#using-a-previous-version). This migration does not modify any data in the existing database. The new database is created alongside it. If you encounter an issue and downgrade from AvalancheGo v1.4.5 to v1.4.4, you should have no issues downgrading since the existing database is unchanged. (This assumes you have not deleted the existing database).
 
 ### Will updating decrease my validator’s uptime?
 
@@ -224,7 +222,7 @@ If you follow the instructions in this document, no. Your node will continue to 
 
 ### Should I just re-bootstrap from scratch?
 
-Probably not. If your node is a validator, this will cause its uptime to decrease. \(See the above answer\). If your node is not a validator, but it has already bootstrapped, it will be faster to migrate your database than to re-bootstrap from an empty database. In either case, you are better off running the migration as explained above rather than just deleting your existing v1.0.0 database.
+Probably not. If your node is a validator, this will cause its uptime to decrease. (See the above answer). If your node is not a validator, but it has already bootstrapped, it will be faster to migrate your database than to re-bootstrap from an empty database. In either case, you are better off running the migration as explained above rather than just deleting your existing v1.0.0 database.
 
 ### **My node shut off during the migration / bootstrapping. What do I do?**
 
@@ -232,7 +230,7 @@ Just restart your node. The migration will pick up where it left off. We highly 
 
 ### I think something is wrong. What do I do?
 
-First, **make sure that you’ve read this document thoroughly**. It might answer your question somewhere. If you don’t see the answer, go to our [Discord](https://chat.avalabs.org/) server and search for your question. If it has not already been asked, post in the \#troubleshooting channel.
+First, **make sure that you’ve read this document thoroughly**. It might answer your question somewhere. If you don’t see the answer, go to our [Discord](https://chat.avalabs.org) server and search for your question. If it has not already been asked, post in the #troubleshooting channel.
 
 ### I use Ortelius, how do I upgrade it?
 
@@ -249,11 +247,10 @@ One change in this Ortelius release is that Ortelius will now use the node’s b
 
 ### Note for the nodes installed with installer script
 
-If your node was installed with the [installer script](https://docs.avax.network/build/tutorials/nodes-and-staking/set-up-node-with-installer), you need to fix the service definition file after upgrading to 1.4.5. In the console, enter the command:_`sudo nano /etc/systemd/system/avalanchego.service`_  
+If your node was installed with the [installer script](https://docs.avax.network/build/tutorials/nodes-and-staking/set-up-node-with-installer), you need to fix the service definition file after upgrading to 1.4.5. In the console, enter the command:_`sudo nano /etc/systemd/system/avalanchego.service`_\
 In the editor, locate the line that begins with _`ExecStart=`_ and on it delete the following part: _`--plugin-dir=/home/ubuntu/avalanche-node/plugins`_ Then save the changes by pressing ctrl-x and y.
 
-To apply the changes run the command:  
-_`sudo systemctl daemon-reload`_  
-Finally, restart the node with:  
+To apply the changes run the command:\
+_`sudo systemctl daemon-reload`_\
+Finally, restart the node with:\
 _`sudo systemctl restart avalanchego`_
-

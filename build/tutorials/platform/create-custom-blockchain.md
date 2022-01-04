@@ -1,36 +1,42 @@
-# Create a Custom Blockchain
+# Create a Custom Blockchain创造一个定制化的区块链
 
-## Introduction
+## Introduction介绍
 
-Avalanche supports creating blockchains with virtual machines in subnets. In this tutorial, we’ll create a custom blockchain using a custom Virtual Machine \(Timestamp VM\).
+Avalanche supports creating blockchains with virtual machines in subnets. In this tutorial, we’ll create a custom blockchain using a custom Virtual Machine (Timestamp VM).
 
-If you want a blockchain that has capabilities of X-Chain \(AVM\), see [Create AVM Blockchain](../nodes-and-staking/run-avalanche-node.md).
+If you want a blockchain that has capabilities of X-Chain (AVM), see [Create AVM Blockchain](../nodes-and-staking/run-avalanche-node.md).
 
-### Prerequisites
+### Prerequisites先决条件
 
 You will need a running node, a user on the node, and some AVAX in the address controlled by the user. All of that is covered in the [Run an Avalanche Node](../nodes-and-staking/run-avalanche-node.md) tutorial.
 
 Next, you need to have your node be a validator on the [Primary Network](http://support.avalabs.org/en/articles/4135650-what-is-the-primary-network). You can find out how to do that in the [Add a Validator](../nodes-and-staking/add-a-validator.md) tutorial. It is recommended you do that [with API calls](../nodes-and-staking/add-a-validator.md#add-a-validator-with-api-calls), since that is the way you will be interacting with your node in the rest of this tutorial.
 
-## Create the Virtual Machine
+## Create the Virtual Machine创造虚拟引擎
 
-Every blockchain is an instance of a virtual machine. For example X-Chain is an instance of AVM and C-Chain is EVM's instance. Avalanche supports creating new blockchains \(instances\) from Virtual Machines. In this case we will use Timestamp VM, which is an external VM plugin. Timestamp VM will communicate with our AvalancheGo node through RPC.
+Every blockchain is an instance of a virtual machine. For example X-Chain is an instance of AVM and C-Chain is EVM's instance. Avalanche supports creating new blockchains (instances) from Virtual Machines. In this case we will use Timestamp VM, which is an external VM plugin. Timestamp VM will communicate with our AvalancheGo node through RPC.
 
-{% page-ref page="create-a-virtual-machine-vm.md" %}
+{% content-ref url="create-a-virtual-machine-vm.md" %}
+[create-a-virtual-machine-vm.md](create-a-virtual-machine-vm.md)
+{% endcontent-ref %}
 
 ## Create the Subnet
 
 Every blockchain is validated by a [subnet](../../../learn/platform-overview/#subnets). Before you can create a blockchain, you’ll need a subnet to validate it. You can also use a subnet that already exists if you have a sufficient number of its control keys.
 
-{% page-ref page="create-a-subnet.md" %}
+{% content-ref url="create-a-subnet.md" %}
+[create-a-subnet.md](create-a-subnet.md)
+{% endcontent-ref %}
 
 ### Add Validators to the Subnet
 
 The subnet needs validators in it to, well, validate blockchains.
 
-{% page-ref page="../nodes-and-staking/add-a-validator.md" %}
+{% content-ref url="../nodes-and-staking/add-a-validator.md" %}
+[add-a-validator.md](../nodes-and-staking/add-a-validator.md)
+{% endcontent-ref %}
 
-### Create the Genesis Data <a id="create-the-genesis-data"></a>
+### Create the Genesis Data <a href="#create-the-genesis-data" id="create-the-genesis-data"></a>
 
 Each blockchain has some genesis state when it’s created. Each VM defines the format and semantics of its genesis data. TimestampVM uses CB58 encoded data as genesis data. There is `encode` and `decode` static API methods that can be used to encode/decode string data. See [TimestampVM API](create-a-virtual-machine-vm.md#api).
 
@@ -64,7 +70,7 @@ Our genesis data will be `fP1vxkpyLWnH9dD6BQA`.
 
 Now let’s create the new blockchain. To do so, we call [`platform.createBlockchain`](../../avalanchego-apis/platform-chain-p-chain-api.md#platform-createblockchain). Your call should look like the one below. You have to change `subnetID` to the subnet that will validate your blockchain, and supply a `username` that controls a sufficient number of the subnet’s control keys. As a reminder, you can find out what a subnet’s threshold and control keys are by calling [`platform.getSubnets`](../../avalanchego-apis/platform-chain-p-chain-api.md#platform-getsubnets).
 
-Recall that we used `tGas3T58KzdjLHhBDMnH2TvrddhqTji5iZAMZ3RXs2NLpSnhH` as our VM ID in [Create A Virtual Machine\(VM\)](create-a-virtual-machine-vm.md#vm-aliases).
+Recall that we used `tGas3T58KzdjLHhBDMnH2TvrddhqTji5iZAMZ3RXs2NLpSnhH` as our VM ID in [Create A Virtual Machine(VM)](create-a-virtual-machine-vm.md#vm-aliases).
 
 ```cpp
 curl -X POST --data '{
@@ -95,9 +101,9 @@ The response contains the transaction ID:
 }
 ```
 
-### Verify Success <a id="verify-success"></a>
+### Verify Success <a href="#verify-success" id="verify-success"></a>
 
-After a few seconds, the transaction to create our blockchain should have been accepted and the blockchain should exist \(assuming the request was well-formed, etc.\)
+After a few seconds, the transaction to create our blockchain should have been accepted and the blockchain should exist (assuming the request was well-formed, etc.)
 
 To check, call [`platform.getBlockchains`](../../avalanchego-apis/platform-chain-p-chain-api.md#platform-getblockchains). This returns a list of all blockchains that exist.
 
@@ -147,7 +153,7 @@ The response confirms that the blockchain was created:
 }
 ```
 
-### Validating the Blockchain <a id="validating-blockchain"></a>
+### Validating the Blockchain <a href="#validating-blockchain" id="validating-blockchain"></a>
 
 Every blockchain needs a set of validators to validate and process transactions on it. You can check if a node is validating a given blockchain by calling [`platform.getBlockchainStatus`](../../avalanchego-apis/platform-chain-p-chain-api.md#platform-getblockchainstatus) on that node:
 
@@ -172,11 +178,11 @@ curl -X POST --data '{
 }
 ```
 
-If it responds `"Validating"`, the node is validating the given chain. If it responds `"Syncing"`, then the chain tracked by this node but it is not validating. If it responde `"Created"` then the chain exists but it is not being synced. Note that in order to validate or watch a subnet, you need to start your node with argument `--whitelisted-subnets=[subnet ID goes here]` \(e.g. `--whitelisted-subnets=KL1e8io1Zi2kr8cTXxvi321pAzfQuUa8tmBfadqpf9K2dc2TT`\) as well as add the node to the subnet's validator set.
+If it responds `"Validating"`, the node is validating the given chain. If it responds `"Syncing"`, then the chain tracked by this node but it is not validating. If it responde `"Created"` then the chain exists but it is not being synced. Note that in order to validate or watch a subnet, you need to start your node with argument `--whitelisted-subnets=[subnet ID goes here]` (e.g. `--whitelisted-subnets=KL1e8io1Zi2kr8cTXxvi321pAzfQuUa8tmBfadqpf9K2dc2TT`) as well as add the node to the subnet's validator set.
 
 More information can be found in the [Adding a Subnet Validator](../nodes-and-staking/add-a-validator.md#adding-a-subnet-validator) tutorial.
 
-## Interacting with the New Blockchain <a id="interact-with-the-new-blockchain"></a>
+## Interacting with the New Blockchain <a href="#interact-with-the-new-blockchain" id="interact-with-the-new-blockchain"></a>
 
 You can interact with this new instance of the VM. The API endpoint of your blockchain is `127.0.0.1:9650/ext/bc/sw813hGSWH8pdU9uzaYy9fCtYFfY7AjDd2c9rm64SbApnvjmk`.
 
@@ -210,7 +216,7 @@ curl -X POST --data '{
 }
 ```
 
-As you can see our first block has `timestamp: 0`. Also the parent ID \(`11111111111111111111111111111111LpoYY`\) is the P-chain's ID. Let's decode the genesis data with VM's static API method. Recall that our TimestampVM ID is aliased with `timestampvm`:
+As you can see our first block has `timestamp: 0`. Also the parent ID (`11111111111111111111111111111111LpoYY`) is the P-chain's ID. Let's decode the genesis data with VM's static API method. Recall that our TimestampVM ID is aliased with `timestampvm`:
 
 ```cpp
 curl -X POST --data '{
@@ -321,4 +327,3 @@ Result:
 ```
 
 Result contains `data` field has `qDNkrS9xuyGmaAgdHAjbmANSvCKnK5BHvyCybJaFCAqx46Z8y`. This is the same data as our proposed data in the previous step.
-

@@ -1,18 +1,18 @@
-# Deploy a Smart Contract on Avalanche Using Remix and MetaMask
+# Deploy a Smart Contract on Avalanche Using Remix and MetaMask在AVAX上用Remix and MetaMask部署智能合约
 
-## Introduction
+## Introduction简介
 
-![Primary Network](../../../.gitbook/assets/image%20%2821%29.png)
+![Primary Network](<../../../.gitbook/assets/image (21).png>)
 
 Avalanche's Primary Network is a subnet that has three chains: P-Chain, X-Chain, and C-Chain. The C-Chain is an instance of the Ethereum Virtual Machine powered by Avalanche’s Snowman consensus protocol. The [C-Chain RPC](../../avalanchego-apis/contract-chain-c-chain-api.md) can do anything a typical Ethereum client can by using the Ethereum-standard RPC calls. The immediate benefits of using the C-Chain rather than Ethereum are all of the benefits of using Avalanche. These properties that could considerably improve the performance of DApps and the user experience.
 
 Today, we will deploy and test a smart contract on Avalanche using Remix and MetaMask.
 
-## Step 1: Setting up MetaMask
+## Step 1: Setting up MetaMask设置Metamask
 
-Log in to MetaMask -&gt; Click the Network drop-down -&gt; Select Custom RPC
+Log in to MetaMask -> Click the Network drop-down -> Select Custom RPC
 
-![metamask network dropdown](../../../.gitbook/assets/image%20%2860%29.png)
+![metamask network dropdown](<../../../.gitbook/assets/image (60).png>)
 
 #### **Avalanche Mainnet Settings:**
 
@@ -20,7 +20,7 @@ Log in to MetaMask -&gt; Click the Network drop-down -&gt; Select Custom RPC
 * **New RPC URL**: [https://api.avax.network/ext/bc/C/rpc](https://api.avax.network/ext/bc/C/rpc)
 * **ChainID**: `43114`
 * **Symbol**: `AVAX`
-* **Explorer**: [https://cchain.explorer.avax.network/](https://cchain.explorer.avax.network/)
+* **Explorer**: [https://cchain.explorer.avax.network/](https://cchain.explorer.avax.network)
 
 #### **FUJI Testnet Settings:**
 
@@ -28,9 +28,9 @@ Log in to MetaMask -&gt; Click the Network drop-down -&gt; Select Custom RPC
 * **New RPC URL**: [https://api.avax-test.network/ext/bc/C/rpc](https://api.avax-test.network/ext/bc/C/rpc)
 * **ChainID**: `43113`
 * **Symbol**: `AVAX`
-* **Explorer**: [https://cchain.explorer.avax-test.network](https://cchain.explorer.avax-test.network/)
+* **Explorer**: [https://cchain.explorer.avax-test.network](https://cchain.explorer.avax-test.network)
 
-#### **Local Testnet \(AVASH\) Settings:** [(Avash Tutorial)](https://docs.avax.network/build/tools/avash)
+#### **Local Testnet (AVASH) Settings:** [(Avash Tutorial)](https://docs.avax.network/build/tools/avash)
 
 * **Network Name**: Avalanche Local
 * **New RPC URL**:[ ](http://localhost:9650/ext/bc/C/rpc)[http://localhost:9650/ext/bc/C/rpc](http://localhost:9650/ext/bc/C/rpc)
@@ -38,23 +38,23 @@ Log in to MetaMask -&gt; Click the Network drop-down -&gt; Select Custom RPC
 * **Symbol**: `AVAX`
 * **Explorer**: N/A
 
-## Step 2: Funding your C-Chain address
+## Step 2: Funding your C-Chain address设置你的C链地址
 
 ### **Using Avalanche Wallet**
 
-On the main net, you can use the [Avalanche Wallet](https://wallet.avax.network/) to transfer funds from the X-Chain to your C-Chain address. The process is simple, as explained in this [tutorial](../platform/transfer-avax-between-x-chain-and-c-chain.md). Wallet can be used on test and local networks, too.
+On the main net, you can use the [Avalanche Wallet](https://wallet.avax.network) to transfer funds from the X-Chain to your C-Chain address. The process is simple, as explained in this [tutorial](../platform/transfer-avax-between-x-chain-and-c-chain.md). Wallet can be used on test and local networks, too.
 
 ### **Using Test Network Faucet**
 
-For funding on the test network, you can also use the Test Network Faucet. Navigate to [https://faucet.avax-test.network/](https://faucet.avax-test.network/) and paste your C-AVAX address. All you need to do is add a "C-" prefix and the faucet will switch from AVAX to C-AVAX.
+For funding on the test network, you can also use the Test Network Faucet. Navigate to [https://faucet.avax-test.network/](https://faucet.avax-test.network) and paste your C-AVAX address. All you need to do is add a "C-" prefix and the faucet will switch from AVAX to C-AVAX.
 
 ### Funding on local testnet
 
 On a local network, you can easily fund your addresses by deploying your own faucet. [Tutorial](https://medium.com/avalabs/the-ava-platform-tools-pt-2-the-ava-faucet-48f28da57146)
 
-## Step 3: Connect MetaMask and deploy a smart contract using Remix
+## Step 3: Connect MetaMask and deploy a smart contract using Remix从Remix连接Metamask
 
-Open [Remix](https://remix.ethereum.org/) -&gt; Select Solidity
+Open [Remix](https://remix.ethereum.org) -> Select Solidity
 
 ![remix file explorer](../../../.gitbook/assets/remix-file-explorer.png)
 
@@ -64,11 +64,11 @@ For this example, we will deploy an ERC20 contract from [OpenZeppelin](https://o
 
 ![ERC20 Contract](../../../.gitbook/assets/erc20-contract.png)
 
-Navigate to Deploy Tab -&gt; Open the "ENVIRONMENT" drop-down and select Injected Web3 \(make sure MetaMask is loaded\)
+Navigate to Deploy Tab -> Open the "ENVIRONMENT" drop-down and select Injected Web3 (make sure MetaMask is loaded)
 
 ![Deploy and run transactions](../../../.gitbook/assets/deploy-and-run-transactions.png)
 
-Once we injected the web3-&gt; Go back to the compiler, and compile the selected contract -&gt; Navigate to Deploy Tab
+Once we injected the web3-> Go back to the compiler, and compile the selected contract -> Navigate to Deploy Tab
 
 ![Solidity compiler](../../../.gitbook/assets/solidity-compiler.png)
 
@@ -92,5 +92,4 @@ The contract ABI and Bytecode are available on the compiler tab.
 
 ![ABI bytecode](../../../.gitbook/assets/abi-bytecode.png)
 
-If you had any difficulties following this tutorial or simply want to discuss Avalanche with us, you can join our community at [Discord](https://chat.avalabs.org/)!
-
+If you had any difficulties following this tutorial or simply want to discuss Avalanche with us, you can join our community at [Discord](https://chat.avalabs.org)!

@@ -2,9 +2,9 @@
 description: 创造一个本地测试网络
 ---
 
-# Create a Local Test Network
+# Create a Local Test Network创造一个本地测试网络
 
-## Introduction
+## Introduction简介
 
 In the [Get Started tutorial](https://avalanche.gitbook.io/avalanche/build/getting-started), we connect a node to the test network. You might find it useful to create a local test network.
 
@@ -12,11 +12,11 @@ We’ll show you how to launch a 5 node local test network. For both, we’ll sh
 
 The 5 nodes will have HTTP ports (where API calls should be sent) `9650`, `9652`, `9654`, `9656` , and `9658`.
 
-## Create a Local Test Network
+## Create a Local Test Network创造一个本地测试网
 
 The below commands assume you have [AvalancheGo](https://avalanche.gitbook.io/avalanche/build/getting-started#download-avalanchego) installed at `$GOPATH/src/github.com/ava-labs/avalanchego`. Each of the five nodes created is a validator. The staking keys for these nodes are in `$GOPATH/src/github.com/ava-labs/avalanchego/staking/local/staker1.crt`, etc.
 
-### Manually
+### Manually手动
 
 To start the network:
 
@@ -48,7 +48,7 @@ cd $GOPATH/src/github.com/ava-labs/avalanchego
 ./build/avalanchego --public-ip=127.0.0.1 --snow-sample-size=2 --snow-quorum-size=2 --http-port=9658 --staking-port=9659 --db-dir=db/node5 --staking-enabled=true --network-id=local --bootstrap-ips=127.0.0.1:9651 --bootstrap-ids=NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg --staking-tls-cert-file=$(pwd)/staking/local/staker5.crt --staking-tls-key-file=$(pwd)/staking/local/staker5.key
 ```
 
-### With Avash
+### With Avash用Avash
 
 We assume you’ve installed [Avash](https://avalanche.gitbook.io/avalanche/build/tools/avash).
 
@@ -74,7 +74,7 @@ runscript scripts/five_node_staking.lua
 
 When you want to tear down the network, run `exit` to exit Avash.
 
-### Verifying Nodes are Connected <a href="#verifying-nodes-are-connected" id="verifying-nodes-are-connected"></a>
+### Verifying Nodes are Connected验证节点是否连接 <a href="#verifying-nodes-are-connected" id="verifying-nodes-are-connected"></a>
 
 We can look at one of the node’s peers to ensure that the nodes are connected. To do so, call [`info.peers`](https://avalanche.gitbook.io/avalanche/build/apis/info-api#info-peers).
 
@@ -132,7 +132,7 @@ curl -X POST --data '{
 }
 ```
 
-### Getting AVAX <a href="#getting-avax" id="getting-avax"></a>
+### Getting AVAX取得AVAX <a href="#getting-avax" id="getting-avax"></a>
 
 When running a network with `--network-id=local`, as we’ve done, there is a pre-funded X-Chain address that you can import in order to get AVAX. The private key for this address is `PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN`. After you create a keystore user on a node, you can import this key, and the funds it holds, with:
 

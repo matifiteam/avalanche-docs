@@ -1,10 +1,10 @@
-# Run an Avalanche Node
+# Run an Avalanche Node运行一个AVAX节点
 
 The quickest way to learn about Avalanche is to run a node and interact with the network.
 
-{% embed url="https://youtu.be/c\_SjtCiOFdg" caption="" %}
+{% embed url="https://youtu.be/c:SjtCiOFdg" %}
 
-In this tutorial \(est. time: 10 minutes\), we will:
+In this tutorial (est. time: 10 minutes), we will:
 
 * Install and run an Avalanche node
 * Connect to Avalanche
@@ -21,14 +21,14 @@ If you're interested in using a third-party service to host your node or run a v
 
 This tutorial is primarily geared toward developers and people interested in how the Avalanche Platform works. If you're just interested in setting up a node for staking, you may want to follow the [Set Up Avalanche Node With Installer](set-up-node-with-installer.md) tutorial instead. Installer automates the installation process and sets it up as a system service, which is recommended for unattended operation. You may also try things out by following this tutorial first, and then later set up the node using the installer as a permanent solution.
 
-## Requirements
+## Requirements需求
 
 Avalanche is an incredibly lightweight protocol, so the minimum computer requirements are quite modest. Note that as network usage increases, hardware requirements may change.
 
-* Hardware: CPU &gt; 2 GHz, RAM &gt; 4 GB, Storage &gt; 200 GB free space
-* OS: Ubuntu 18.04/20.04 or MacOS &gt;= Catalina
+* Hardware: CPU > 2 GHz, RAM > 4 GB, Storage > 200 GB free space
+* OS: Ubuntu 18.04/20.04 or MacOS >= Catalina
 
-## Run an Avalanche Node and Send Funds
+## Run an Avalanche Node and Send Funds运行雪崩节点并发送资金
 
 Let’s install AvalancheGo, the Go implementation of an Avalanche node, and connect to the Avalanche Public Testnet.
 
@@ -70,22 +70,22 @@ The binary, named `avalanchego`, is in `avalanchego/build`.
 
 #### **Binary**
 
-If you want to download a pre-built binary instead of building it yourself, go to our [releases page](https://github.com/ava-labs/avalanchego/releases), and select the release you want \(probably the latest one.\)
+If you want to download a pre-built binary instead of building it yourself, go to our [releases page](https://github.com/ava-labs/avalanchego/releases), and select the release you want (probably the latest one.)
 
 Under `Assets`, select the appropriate file.
 
-For MacOS: Download: `avalanchego-macos-<VERSION>.zip`  
+For MacOS: Download: `avalanchego-macos-<VERSION>.zip`\
 Unzip: `unzip avalanchego-macos-<VERSION>.zip` The resulting folder, `avalanchego-<VERSION>`, contains the binaries.
 
-For Linux on PCs or cloud providers: Download: `avalanchego-linux-amd64-<VERSION>.tar.gz`  
-Unzip: `tar -xvf avalanchego-linux-amd64-<VERSION>.tar.gz`  
+For Linux on PCs or cloud providers: Download: `avalanchego-linux-amd64-<VERSION>.tar.gz`\
+Unzip: `tar -xvf avalanchego-linux-amd64-<VERSION>.tar.gz`\
 The resulting folder, `avalanchego-<VERSION>-linux`, contains the binaries.
 
-For Linux on RaspberryPi4 or similar Arm64-based computers: Download: `avalanchego-linux-arm64-<VERSION>.tar.gz`  
-Unzip: `tar -xvf avalanchego-linux-arm64-<VERSION>.tar.gz`  
+For Linux on RaspberryPi4 or similar Arm64-based computers: Download: `avalanchego-linux-arm64-<VERSION>.tar.gz`\
+Unzip: `tar -xvf avalanchego-linux-arm64-<VERSION>.tar.gz`\
 The resulting folder, `avalanchego-<VERSION>-linux`, contains the binaries.
 
-### Start a Node, and Connect to Avalanche
+### Start a Node, and Connect to Avalanche开始节点，并连接到AVAX
 
 If you built from source:
 
@@ -105,7 +105,7 @@ If you are using the pre-built binaries on Linux:
 ./avalanchego-<VERSION>-linux/avalanchego
 ```
 
-When the node starts, it has to bootstrap \(catch up with the rest of the network\). You will see logs about bootstrapping. When a given chain is done bootstrapping, it will print a log like this:
+When the node starts, it has to bootstrap (catch up with the rest of the network). You will see logs about bootstrapping. When a given chain is done bootstrapping, it will print a log like this:
 
 `INFO [06-07|19:54:06] <X Chain> /snow/engine/avalanche/transitive.go#80: bootstrapping finished with 1 vertices in the accepted frontier`
 
@@ -122,7 +122,7 @@ curl -X POST --data '{
 }' -H 'content-type:application/json;' 127.0.0.1:9650/ext/info
 ```
 
-If this returns `true`, the chain is bootstrapped. If you make an API call to a chain that is not done bootstrapping, it will return `API call rejected because chain is not done bootstrapping`. If your node never finishes bootstrapping, follow [this FAQ](http://support.avalabs.org/en/articles/4593908-is-my-node-done-bootstrapping), if you are still experiencing issues please contact us on [Discord.](https://chat.avalabs.org/)
+If this returns `true`, the chain is bootstrapped. If you make an API call to a chain that is not done bootstrapping, it will return `API call rejected because chain is not done bootstrapping`. If your node never finishes bootstrapping, follow [this FAQ](http://support.avalabs.org/en/articles/4593908-is-my-node-done-bootstrapping), if you are still experiencing issues please contact us on [Discord.](https://chat.avalabs.org)
 
 Your node is running and connected now. If you want to use your node as a validator on the main net, check out [this tutorial](add-a-validator.md#add-a-validator-with-avalanche-wallet) to find out how to add your node as a validator using the web wallet.
 
@@ -130,11 +130,11 @@ You can use `Ctrl + C` to kill the node.
 
 If you want to experiment and play with your node, read on.
 
-To be able to make API calls to your node from other machines, when starting up the node include argument `--http-host=` \(e.g. `./build/avalanchego --http-host=`\)
+To be able to make API calls to your node from other machines, when starting up the node include argument `--http-host=` (e.g. `./build/avalanchego --http-host=`)
 
-To connect to the Fuji Testnet instead of the main net, use argument `--network-id=fuji`. You can get funds on the Testnet from the [faucet.](https://faucet.avax-test.network/)
+To connect to the Fuji Testnet instead of the main net, use argument `--network-id=fuji`. You can get funds on the Testnet from the [faucet.](https://faucet.avax-test.network)
 
-### Create a Keystore User
+### Create a Keystore User创建Keystore用户
 
 Avalanche nodes provide a built-in **Keystore.** The Keystore manages users and is a lot like a [wallet](http://support.avalabs.org/en/articles/4587108-what-is-a-blockchain-wallet). A user is a password-protected identity that a client can use when interacting with blockchains. **You should only create a keystore user on a node that you operate, as the node operator has access to your plaintext password.** To create a user, call [`keystore.createUser`](../../avalanchego-apis/keystore-api.md#keystore-createuser):
 
@@ -166,7 +166,7 @@ Now, you have a user on this node. Keystore data exists at the node level. Users
 **You should only keep a small amount of your funds on your node.** Most of your funds should be secured by a mnemonic that is not saved to any computer.
 {% endhint %}
 
-### Create an Address
+### Create an Address创建一个地址
 
 Avalanche is a platform of heterogeneous blockchains, one of which is the [X-Chain](../../../learn/platform-overview/#exchange-chain-x-chain), which acts as a decentralized platform for creating and trading digital assets. We are now going to create an address to hold AVAX on our node.
 
@@ -186,7 +186,7 @@ curl -X POST --data '{
 
 If your node isn’t finished bootstrapping, this call will return status `503` with message `API call rejected because chain is not done bootstrapping`.
 
-Note that we make this request to `127.0.0.1:9650/ext/bc/X`. The `bc/X` portion signifies that the request is being sent to the blockchain whose ID \(or alias\) is `X` \(i.e., the X-Chain\).
+Note that we make this request to `127.0.0.1:9650/ext/bc/X`. The `bc/X` portion signifies that the request is being sent to the blockchain whose ID (or alias) is `X` (i.e., the X-Chain).
 
 The response should look like this:
 
@@ -202,7 +202,7 @@ The response should look like this:
 
 Your user now controls the address `X-avax1xeaj0h9uy7c5jn6fxjp0rg4g39jeh0hl27vf75` on the X-Chain. To tell apart addresses on different chains, the Avalanche convention is for an address to include the ID or alias of the chain it exists on. Hence, this address begins `X-`, denoting that it exists on the X-Chain.
 
-### Send Funds From Avalanche Wallet to Your Node
+### Send Funds From Avalanche Wallet to Your Node从节点发放资产
 
 {% hint style="warning" %}
 _**Note: the instructions below move real funds.**_
@@ -214,7 +214,7 @@ Go to [Avalanche Wallet](https://wallet.avax.network). Click `Access Wallet`, th
 
 Click the `Send` tab on the left. For amount, select, `.002` AVAX. Enter the address of your node, then click `Confirm`.
 
-![web wallet send tab](../../../.gitbook/assets/web-wallet-send-tab%20%284%29%20%284%29%20%285%29%20%285%29%20%286%29%20%287%29%20%284%29%20%281%29%20%2819%29.png)
+![web wallet send tab](<../../../.gitbook/assets/web-wallet-send-tab (4) (4) (5) (5) (6) (7) (4) (1) (19).png>)
 
 We can check an address’s balance of a given asset by calling `avm.getBalance`, another method of the X-Chain’s API. Let’s check that the transfer went through:
 
@@ -250,7 +250,7 @@ The response should indicate that we have `2,000,000 nAVAX` or `0.002 AVAX`.
 }
 ```
 
-### Send AVAX
+### Send AVAX发放AVAX
 
 Now, let’s send some AVAX by making an API call to our node:
 
@@ -276,7 +276,9 @@ If you want to specify a particular address where change should go, you can spec
 
 In order to prevent spam, Avalanche requires the payment of a transaction fee. The transaction fee will be automatically deducted from an address controlled by your user when you issue a transaction. Keep that in mind when you’re checking balances below.
 
-{% page-ref page="../../../learn/platform-overview/transaction-fees.md" %}
+{% content-ref url="../../../learn/platform-overview/transaction-fees.md" %}
+[transaction-fees.md](../../../learn/platform-overview/transaction-fees.md)
+{% endcontent-ref %}
 
 When you send this request, the node will authenticate you using your username and password. Then, it will look through all the [private keys](http://support.avalabs.org/en/articles/4587058-what-are-public-and-private-keys) controlled by your user until it finds enough AVAX to satisfy the request.
 
@@ -350,17 +352,30 @@ The response should be:
 
 In the same fashion, we could check `X-avax1xeaj0h9uy7c5jn6fxjp0rg4g39jeh0hl27vf75` to see that AVAX we sent was deducted from its balance, as well as the transaction fee.
 
-{% page-ref page="add-a-validator.md" %}
+{% content-ref url="add-a-validator.md" %}
+[add-a-validator.md](add-a-validator.md)
+{% endcontent-ref %}
 
-{% page-ref page="../../tools/avalanchejs/create-an-asset-on-the-x-chain.md" %}
+{% content-ref url="../../tools/avalanchejs/create-an-asset-on-the-x-chain.md" %}
+[create-an-asset-on-the-x-chain.md](../../tools/avalanchejs/create-an-asset-on-the-x-chain.md)
+{% endcontent-ref %}
 
-{% page-ref page="../platform/create-avm-blockchain.md" %}
+{% content-ref url="../platform/create-avm-blockchain.md" %}
+[create-avm-blockchain.md](../platform/create-avm-blockchain.md)
+{% endcontent-ref %}
 
-{% page-ref page="../platform/create-custom-blockchain.md" %}
+{% content-ref url="../platform/create-custom-blockchain.md" %}
+[create-custom-blockchain.md](../platform/create-custom-blockchain.md)
+{% endcontent-ref %}
 
-{% page-ref page="../platform/create-a-subnet.md" %}
+{% content-ref url="../platform/create-a-subnet.md" %}
+[create-a-subnet.md](../platform/create-a-subnet.md)
+{% endcontent-ref %}
 
-{% page-ref page="../../avalanchego-apis/" %}
+{% content-ref url="../../avalanchego-apis/" %}
+[avalanchego-apis](../../avalanchego-apis/)
+{% endcontent-ref %}
 
-{% page-ref page="../../references/" %}
-
+{% content-ref url="../../references/" %}
+[references](../../references/)
+{% endcontent-ref %}

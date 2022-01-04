@@ -1,22 +1,22 @@
-# Add a node to the Validator Set
+# Add a node to the Validator Set在验证器中添加节点
 
-## Introduction
+## Introduction简介
 
 The [Primary Network](https://avalanche.gitbook.io/avalanche/build/tutorials/platform/add-a-validator#introduction) is inherent to the Avalanche platform and validates Avalanche’s [built-in blockchains](https://avalanche.gitbook.io/avalanche/learn/platform-overview). In this tutorial, we’ll add a node to the Primary Network and a [subnet](https://avalanche.gitbook.io/avalanche/learn/platform-overview#subnets) on Avalanche.
 
 The P-Chain manages metadata on Avalanche. This includes tracking which nodes are in which subnets, which blockchains exist, and which subnets are validating which blockchains. To add a validator, we’ll issue [transactions](http://support.avalabs.org/en/articles/4587384-what-is-a-transaction) to the P-Chain.
 
 {% hint style="danger" %}
-Note that once you issue the transaction to add a node as a validator, there is no way to change the parameters. **You can’t remove your stake early or change the stake amount, node ID, or reward address.** Please make sure you’re using the correct values in the API calls below. If you’re not sure, browse the [Developer FAQ's](http://support.avalabs.org/en/collections/2618154-developer-faq) or ask for help on [Discord.](https://chat.avalabs.org/)
+Note that once you issue the transaction to add a node as a validator, there is no way to change the parameters. **You can’t remove your stake early or change the stake amount, node ID, or reward address.** Please make sure you’re using the correct values in the API calls below. If you’re not sure, browse the [Developer FAQ's](http://support.avalabs.org/en/collections/2618154-developer-faq) or ask for help on [Discord.](https://chat.avalabs.org)
 {% endhint %}
 
-## Requirements
+## Requirements需求
 
 You've completed [Run an Avalanche Node](run-avalanche-node.md) and are familiar with [Avalanche's architecture](../../../learn/platform-overview/). In this tutorial, we use [Avalanche’s Postman collection](https://github.com/ava-labs/avalanche-postman-collection) to help us make API calls.
 
-In order to ensure your node is well-connected, make sure that your node can receive and send TCP traffic on the staking port \(`9651` by default\) and that you started your node with command line argument `--public-ip=[YOUR NODE'S PUBLIC IP HERE]`. Failing to do either of these may jeopardize your staking reward.
+In order to ensure your node is well-connected, make sure that your node can receive and send TCP traffic on the staking port (`9651` by default) and that you started your node with command line argument `--public-ip=[YOUR NODE'S PUBLIC IP HERE]`. Failing to do either of these may jeopardize your staking reward.
 
-## Add a validator with Avalanche Wallet
+## Add a validator with Avalanche Wallet为AVA钱包添加验证节点
 
 First, we show you how to add your node as a validator by using [Avalanche Wallet](https://wallet.avax.network).
 
@@ -44,13 +44,15 @@ The response has your node’s ID:
 }
 ```
 
-Open [the wallet](https://wallet.avax.network/), and go the `Earn` tab. Choose `Add Validator`.
+Open [the wallet](https://wallet.avax.network), and go the `Earn` tab. Choose `Add Validator`.
 
 ![Web wallet earn tab](../../../.gitbook/assets/web-wallet-earn-tab.png)
 
 Fill out the staking parameters. They are explained in more detail below. When you’ve filled in all the staking parameters and double-checked them, click `Confirm`. Make sure the staking period is at least 2 weeks, the delegation fee rate is at least 2%, and you’re staking at least 2,000 AVAX.
 
-{% page-ref page="../../../learn/platform-overview/staking.md" %}
+{% content-ref url="../../../learn/platform-overview/staking.md" %}
+[staking.md](../../../learn/platform-overview/staking.md)
+{% endcontent-ref %}
 
 ![Earn validate](../../../.gitbook/assets/earn-validate.png)
 
@@ -72,7 +74,7 @@ Once your validator’s start time has passed, you will see the rewards it may e
 
 That’s it!
 
-## Add a validator with API calls
+## Add a validator with API calls为API calls添加验证节点
 
 We can also add a node to the validator set by making API calls to our node. To add a node the Primary Network, we’ll call [`platform.addValidator`](https://avalanche.gitbook.io/avalanche/build/apis/platform-chain-p-chain-api#platform-addvalidator).
 
@@ -123,7 +125,7 @@ The response has your node’s ID:
 
 `startTime` and `endTime`
 
-When one issues a transaction to join the Primary Network they specify the time they will enter \(start validating\) and leave \(stop validating.\) The minimum duration that one can validate the Primary Network is 24 hours, and the maximum duration is one year. One can re-enter the Primary Network after leaving, it’s just that the maximum _continuous_ duration is one year. `startTime` and `endTime` are the Unix times when your validator will start and stop validating the Primary Network, respectively. `startTime` must be in the future relative to the time the transaction is issued.
+When one issues a transaction to join the Primary Network they specify the time they will enter (start validating) and leave (stop validating.) The minimum duration that one can validate the Primary Network is 24 hours, and the maximum duration is one year. One can re-enter the Primary Network after leaving, it’s just that the maximum _continuous_ duration is one year. `startTime` and `endTime` are the Unix times when your validator will start and stop validating the Primary Network, respectively. `startTime` must be in the future relative to the time the transaction is issued.
 
 `stakeAmount`
 
@@ -147,7 +149,7 @@ Avalanche allows for delegation of stake. This parameter is the percent fee this
 
 These parameters are the username and password of the user that pays the transaction fee, provides the staked AVAX, and to whom the staked AVAX will be returned.
 
-Now let’s issue the transaction. We use the shell command `date` to compute the Unix time 10 minutes and 30 days in the future to use as the values of `startTime` and `endTime`, respectively. \(Note: If you’re on a Mac, replace `$(date` with `$(gdate`. If you don’t have `gdate` installed, do `brew install coreutils`.\) In this example we stake 2,000 AVAX \(2 x 1012 nAVAX\).
+Now let’s issue the transaction. We use the shell command `date` to compute the Unix time 10 minutes and 30 days in the future to use as the values of `startTime` and `endTime`, respectively. (Note: If you’re on a Mac, replace `$(date` with `$(gdate`. If you don’t have `gdate` installed, do `brew install coreutils`.) In this example we stake 2,000 AVAX (2 x 1012 nAVAX).
 
 ```cpp
 curl -X POST --data '{
@@ -226,7 +228,7 @@ The response should include the node we just added:
 
 When the time reaches `1584021450`, this node will start validating the Primary Network. When it reaches `1584121156`, this node will stop validating the Primary Network. The staked AVAX will be returned to an address controlled by `username`, and the rewards, if any, will be given to `rewardAddress`.
 
-## Adding a Subnet Validator
+## Adding a Subnet Validator添加子网验证者
 
 ### Issuing a Subnet Validator Transaction
 
@@ -267,7 +269,7 @@ Similar to above, these are the Unix times that the validator will start and sto
 
 `weight`
 
-This is the validator’s sampling weight for consensus. If the validator’s weight is 1 and the cumulative weight of all validators in the subnet is 100, then this validator will be included in about 1 in every 100 samples during consensus. The cumulative weight of all validators in the subnet must be at least `snow-sample-size`. For example, if there is only one validator in the subnet, its weight must be at least `snow-sample-size` \(default 20\). Recall that a validator's weight can't be changed while it is validating, so take care to use an appropriate value.
+This is the validator’s sampling weight for consensus. If the validator’s weight is 1 and the cumulative weight of all validators in the subnet is 100, then this validator will be included in about 1 in every 100 samples during consensus. The cumulative weight of all validators in the subnet must be at least `snow-sample-size`. For example, if there is only one validator in the subnet, its weight must be at least `snow-sample-size` (default 20). Recall that a validator's weight can't be changed while it is validating, so take care to use an appropriate value.
 
 `changeAddr`
 
@@ -277,7 +279,7 @@ Any change resulting from this transaction will be sent to this address. You can
 
 These parameters are the username and password of the user that pays the transaction fee. This user must hold a sufficient number of this Subnet’s control keys in order to add a validator to this Subnet.
 
-We use the shell command `date` to compute the Unix time 10 minutes and 30 days in the future to use as the values of `startTime` and `endTime`, respectively. \(Note: If you’re on a Mac, replace `$(date` with `$(gdate`. If you don’t have `gdate` installed, do `brew install coreutils`.\)
+We use the shell command `date` to compute the Unix time 10 minutes and 30 days in the future to use as the values of `startTime` and `endTime`, respectively. (Note: If you’re on a Mac, replace `$(date` with `$(gdate`. If you don’t have `gdate` installed, do `brew install coreutils`.)
 
 ```cpp
 curl -X POST --data '{
@@ -355,7 +357,7 @@ The response should include the node we just added:
 
 When the time reaches `1584042912`, this node will start validating this Subnet. When it reaches `1584121156`, this node will stop validating this Subnet.
 
-### Whitelisting the Subnet
+### Whitelisting the Subnet将子网络加入白名单
 
 Now that the node has been added as a validator of the subnet, let’s add it to the whitelist of subnets. The whitelist prevents the node from validating a subnet unintentionally.
 
@@ -364,4 +366,3 @@ To whitelist the subnet, restart the node and add the parameter `--whitelisted-s
 The full command is:
 
 `./build/avalanchego --whitelisted-subnets=nTd2Q2nTLp8M9qv2VKHMdvYhtNWX7aTPa4SMEK7x7yJHbcWvr`
-

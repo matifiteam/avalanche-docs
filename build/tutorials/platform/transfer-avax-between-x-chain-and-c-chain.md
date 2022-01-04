@@ -1,18 +1,18 @@
-# Transfer AVAX Between the X-Chain and C-Chain
+# Transfer AVAX Between the X-Chain and C-Chain在X链和C链之间转账AVAX
 
-## Introduction
+## Introduction简介
 
 AVAX tokens exist on the X-Chain, where they can be traded, on the P-Chain, where they can be provided as a stake when validating the Primary Network, and on the C-Chain, where they can be used in smart contracts or to pay for gas. In this tutorial, we’ll send AVAX tokens between the X-Chain and C-Chain.
 
-## Requirements
+## Requirements需求
 
 You've completed [Run an Avalanche Node](../nodes-and-staking/run-avalanche-node.md) and are familiar with [Avalanche's architecture](../../../learn/platform-overview/).
 
 In order to send AVAX, you need to have some AVAX! You can get real AVAX by buying it on an exchange, or you can get testnet AVAX from the [AVAX Test Faucet](https://faucet.avax-test.network), which is a free and easy way to get to play around with Avalanche.
 
-## Transferring AVAX using the web wallet
+## Transferring AVAX using the web wallet通过网页钱包转账AVAX
 
-The easiest way to transfer AVAX between chains is to use [the Avalanche Wallet](https://wallet.avax.network/) which is a non-custodial and secure way to access and move AVAX.
+The easiest way to transfer AVAX between chains is to use [the Avalanche Wallet](https://wallet.avax.network) which is a non-custodial and secure way to access and move AVAX.
 
 The Avalanche Wallet source code can be found [here](https://github.com/ava-labs/avalanche-wallet).
 
@@ -64,11 +64,11 @@ To return the AVAX back to the X-Chain, you need to do the transfer in the oppos
 
 Swap source and destination chain, by selecting them from the **Source** and **Destination** dropdown menu. The rest of the process is the same: enter the amount, confirm and transfer.
 
-## Transferring from the X-Chain to C-Chain with API Calls
+## Transferring from the X-Chain to C-Chain with API Calls用API从X链转账到C链
 
 If you're building an application on the Avalanche network, you may want to do the transfer programmatically as part of some broader functionality. You can do that by calling the appropriate APIs on an AvalancheGo node. The rest of the tutorial assumes you have access to an AvalancheGo node, AVAX tokens on the X-Chain, and user credentials [created](../../avalanchego-apis/keystore-api.md#keystorecreateuser) and stored in the node's keystore.
 
-All the example API calls below assume the node is running locally \(that is, listening on `127.0.0.1`\). The node can be connected to the main network, a test network or a local network. In each case, the API calls and responses should be the same, except for the address formats. The node need not be local; you can make calls to a node hosted elsewhere.
+All the example API calls below assume the node is running locally (that is, listening on `127.0.0.1`). The node can be connected to the main network, a test network or a local network. In each case, the API calls and responses should be the same, except for the address formats. The node need not be local; you can make calls to a node hosted elsewhere.
 
 As you may have noticed while transferring AVAX using the Avalanche Wallet, a cross-chain transfer is a two transaction operation:
 
@@ -79,7 +79,7 @@ Before we can do the transfer, we need to set up the address on the C-Chain, alo
 
 ### Set Up Address and Key on the C-Chain
 
-The X-Chain uses [Bech32](http://support.avalabs.org/en/articles/4587392-what-is-bech32) addresses and the C-Chain uses hex Ethereum Virtual Machine \(EVM\) addresses. There is no way to convert the address from one format to the other since they are both derived from a private key using a one-way cryptographic function.
+The X-Chain uses [Bech32](http://support.avalabs.org/en/articles/4587392-what-is-bech32) addresses and the C-Chain uses hex Ethereum Virtual Machine (EVM) addresses. There is no way to convert the address from one format to the other since they are both derived from a private key using a one-way cryptographic function.
 
 In order to get around this, you can export a private key from the X-Chain and then import it to the C-Chain. This way, you can use the X-Chain address and change the X- prefix to a C- prefix in order to get the correct Bech32 address to use for the C-Chain.
 
@@ -192,7 +192,7 @@ Note: there is no transaction fee for import transactions to the C Chain.
 
 Once your AVAX has been transferred to the C-Chain, you can use it to deploy and interact with smart contracts.
 
-## Transfer from the C-Chain to X-Chain
+## Transfer from the C-Chain to X-ChainC链和E链的转账方式
 
 Now, you can move AVAX back from the C-Chain to the X-Chain. First we need to export:
 
@@ -254,7 +254,6 @@ The response should look like this:
 }
 ```
 
-## Wrapping Up
+## Wrapping Up打包
 
 That’s it! Now, you can swap AVAX back and forth between the X-Chain and C-Chain, both by using the Avalanche Wallet, and by calling the appropriate API calls on an Avalanche node.
-

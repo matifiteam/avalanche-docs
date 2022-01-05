@@ -1,4 +1,4 @@
-# Create an Asset on the X-Chain
+# Create an Asset on the X-Chain在x链上创建一个资产
 
 This example creates an asset on the X-Chain and publishes it to the Avalanche platform. The first step in this process is to create an instance of AvalancheJS connected to our Avalanche platform endpoint of choice. In this example we're using the local network `12345` via [Avash](https://github.com/ava-labs/avalanche-docs/tree/bba457018ce99b2a1bdf51e488b136049254e330/build/tools/avash/README.md). The code examples are written in typescript. The script is in full, in both typescript and javascript, after the individual steps.
 
@@ -31,7 +31,7 @@ const avalanche: Avalanche = new Avalanche(ip, port, protocol, networkID)
 const xchain: AVMAPI = avalanche.XChain() // Returns a reference to the X-Chain used by AvalancheJS
 ```
 
-## Import the local network's pre-funded address
+## Import the local network's pre-funded address导入本地网络的预拨款地址
 
 Next we get an instance of bintools, for dealing with binary data, an the X-Chain local keychain. The local network `12345` has a pre-funded address which you can access with the private key `PrivateKey-ewoqjP7PxY4yr3iLTpLisriqt94hdyDFNgchSxGGztUrTXtNN`. Lastly get the pre-funded address as a `Buffer` and as a `string`.
 
@@ -44,7 +44,7 @@ const xAddresses: Buffer[] = xchain.keyChain().getAddresses()
 const xAddressStrings: string[] = xchain.keyChain().getAddressStrings()
 ```
 
-## Prepare for the Mint Output
+## Prepare for the Mint Output准备铸币输出
 
 Now we need to create an empty array for the `SECPMintOutput` which we're going to create. We also need a `threshold` and `locktime` for the outputs which we're going to create. Each X-Chain transaction can can contain a `memo` field of up to 256 bytes. of arbitrary data.
 
@@ -55,7 +55,7 @@ const locktime: BN = new BN(0)
 const memo: Buffer = bintools.stringToBuffer("AVM utility method buildCreateAssetTx to create an ANT")
 ```
 
-## Describe the new asset
+## Describe the new asset新资产描述
 
 The first step in creating a new asset using AvalancheJS is to determine the qualities of the asset. We will give the asset a name, a ticker symbol, as well as a denomination.
 
@@ -67,7 +67,7 @@ const symbol: string = "TEST"
 const denomination: number = 3
 ```
 
-## Set up async/await
+## Set up async/await设置async/await
 
 The remaining code will be encapsulated by this `main` function so that we can use the `async` / `await` pattern.
 
@@ -77,7 +77,7 @@ const main = async (): Promise<any> => {
 main()
 ```
 
-## Fetch the UTXO
+## Fetch the UTXO获取UTXO
 
 Pass the `xAddressStrings` to `xchain.getUTXOs` to fetch the UTXO.
 
@@ -86,7 +86,7 @@ Pass the `xAddressStrings` to `xchain.getUTXOs` to fetch the UTXO.
   const utxoSet: UTXOSet = avmUTXOResponse.utxos
 ```
 
-## Creating the initial state
+## Creating the initial state创建初始状态
 
 We want to mint an asset with 507 units of the asset held by the managed key. This sets up the state that will result from the Create Asset transaction.
 
@@ -100,7 +100,7 @@ const initialStates: InitialStates = new InitialStates()
 initialStates.addOutput(secpTransferOutput)
 ```
 
-## Create the Mint Output
+## Create the Mint Output 创建Mint输出
 
 We also want to create a `SECPMintOutput` so that we can mint more of this asset later.
 
@@ -109,7 +109,7 @@ const secpMintOutput: SECPMintOutput = new SECPMintOutput(xAddresses, locktime, 
 outputs.push(secpMintOutput
 ```
 
-## Creating the signed transaction
+## Creating the signed transaction创建签名的事务
 
 Now that we know what we want an asset to look like, we create a transaction to send to the network. There is an AVM helper function `buildCreateAssetTx()` which does just that.
 
@@ -127,7 +127,7 @@ const unsignedTx: UnsignedTx = await xchain.buildCreateAssetTx(
 )
 ```
 
-## Sign and issue the transaction
+## Sign and issue the transaction签署和签发交易
 
 Now let's sign the transaction and issue it to the Avalanche network. If successful it will return a [CB58](http://support.avalabs.org/en/articles/4587395-what-is-cb58) serialized string for the TxID.
 
@@ -139,7 +139,7 @@ const id: string = await xchain.issueTx(tx)
 console.log(id)
 ```
 
-## Get the status of the transaction <a id="get-the-status-of-the-transaction"></a>
+## Get the status of the transaction获取交易状态 <a href="#get-the-status-of-the-transaction" id="get-the-status-of-the-transaction"></a>
 
 Now that we sent the transaction to the network, it takes a few seconds to determine if the transaction has gone through. We can get an updated status on the transaction using the TxID through the AVM API.
 
@@ -155,7 +155,6 @@ The statuses can be one of "Accepted", "Processing", "Unknown", and "Rejected":
 * "Unknown" indicates that node knows nothing about the transaction, indicating the node doesn’t have it
 * "Rejected" indicates the node knows about the transaction, but it conflicted with an accepted transaction
 
-## Identifying the newly created asset <a id="identifying-the-newly-created-asset"></a>
+## Identifying the newly created asset识别新创建的资产 <a href="#identifying-the-newly-created-asset" id="identifying-the-newly-created-asset"></a>
 
 The X-Chain uses the TxID of the transaction which created the asset as the unique identifier for the asset. This unique identifier is henceforth known as the "AssetID" of the asset. When assets are traded around the X-Chain, they always reference the AssetID that they represent.
-

@@ -6,8 +6,8 @@ The APIs currently supported by default are:
 
 * Admin API
 * Auth API
-* AVM API \(X-Chain\)
-* EVM API \(C-Chain\)
+* AVM API (X-Chain)
+* EVM API (C-Chain)
 * Health API
 * Info API
 * Keystore API
@@ -30,11 +30,11 @@ Using AvalancheJS, developers can:
 * Administer a local node
 * Retrieve Avalanche network information from a node
 
-## Requirements
+## Requirements需求
 
 AvalancheJS requires Node.js version 12.14.1 or higher to compile.
 
-## Installation
+## Installation安装
 
 Avalanche is available for install via `npm`:
 
@@ -48,19 +48,19 @@ This will generate a pure Javascript library and place it in a folder named "web
 
 The AvalancheJS library can be imported into your existing Node.js project as follows:
 
-```text
+```
 const avalanche = require("avalanche");
 ```
 
 Or into your TypeScript project like this:
 
-```text
+```
 import { Avalanche } from "avalanche"
 ```
 
-## Importing essentials
+## Importing essentials进口必需品
 
-```text
+```
 import {
     Avalanche,
     BinTools,
@@ -77,4 +77,3 @@ The above lines import the libraries used in the tutorials. The libraries includ
 * bn.js: A bignumber module use by AvalancheJS.
 * buffer: A Buffer library.
 * BinTools: A singleton built into AvalancheJS that is used for dealing with binary data.
-

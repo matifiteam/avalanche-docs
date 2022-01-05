@@ -1,12 +1,12 @@
-# Command Line Interface
+# Command Line Interface命令行接口
 
 You can specify the configuration of a node with the arguments below.
 
-## Arguments
+## Arguments参数
 
 ### Config File
 
-`--config-file` \(string\):
+`--config-file` (string):
 
 Path to a JSON file that specifies this node's configuration. Command line arguments will override arguments set in the config file.
 
@@ -20,77 +20,77 @@ Example JSON config file:
 
 ### APIs
 
-`--api-admin-enabled` \(boolean\):
+`--api-admin-enabled` (boolean):
 
 If set to `false`, this node will not expose the Admin API. Defaults to `false`. See [here](../avalanchego-apis/admin-api.md) for more information.
 
-`--api-auth-required` \(boolean\):
+`--api-auth-required` (boolean):
 
 If set to `true`, API calls require an authorization token. Defaults to `false`. See [here](../avalanchego-apis/auth-api.md) for more information.
 
-`--api-auth-password` \(string\):
+`--api-auth-password` (string):
 
 The password needed to create/revoke authorization tokens. If `--api-auth-required=true`, must be specified; otherwise ignored. See [here](../avalanchego-apis/auth-api.md) for more information.
 
-`--api-health-enabled` \(boolean\):
+`--api-health-enabled` (boolean):
 
 If set to `true`, this node will expose the Health API. Defaults to `true`. See [here](../avalanchego-apis/health-api.md) for more information.
 
-`--index-enabled` \(boolean\):
+`--index-enabled` (boolean):
 
 If `false`, this node will not enable the indexer and the Index API will not be available. Defaults to `false`. See [here](../avalanchego-apis/index-api.md) for more information.
 
-`--api-info-enabled` \(boolean\):
+`--api-info-enabled` (boolean):
 
 If set to `true`, this node will expose the Info API. Defaults to `true`. See [here](../avalanchego-apis/info-api.md) for more information.
 
-`--api-ipcs-enabled` \(boolean\):
+`--api-ipcs-enabled` (boolean):
 
 If set to `true`, this node will expose the IPCs API. Defaults to `false`. See [here](../avalanchego-apis/ipc-api.md) for more information.
 
-`--api-keystore-enabled` \(boolean\):
+`--api-keystore-enabled` (boolean):
 
 If set to `false`, this node will not expose the Keystore API. Defaults to `true`. See [here](../avalanchego-apis/keystore-api.md) for more information.
 
-`--api-metrics-enabled` \(boolean\):
+`--api-metrics-enabled` (boolean):
 
 If set to `false`, this node will not expose the Metrics API. Defaults to `true`. See [here](../avalanchego-apis/metrics-api.md) for more information.
 
-### Assertions
+### Assertions认定
 
-`--assertions-enabled` \(boolean\):
+`--assertions-enabled` (boolean):
 
 When set to `true`, assertions will execute at runtime throughout the codebase. This is intended for use in debugging, as we may get a more specific error message. Defaults to `true`.
 
-### Bootstrapping
+### Bootstrapping引导
 
-`--bootstrap-beacon-connection-timeout` \(duration\):
+`--bootstrap-beacon-connection-timeout` (duration):
 
 Timeout when attempting to connect to bootstrapping beacons. Defaults to `1m`.
 
-`--bootstrap-ids` \(string\):
+`--bootstrap-ids` (string):
 
 Bootstrap IDs is an array of validator IDs. These IDs will be used to authenticate bootstrapping peers. An example setting of this field would be `--bootstrap-ids="NodeID-7Xhw2mDxuDS44j42TCB6U5579esbSt3Lg,NodeID-MFrZFVCXPv5iCn6M9K6XduxGTYp891xXZ"`. The default value depends on the network ID.
 
-`--bootstrap-ips` \(string\):
+`--bootstrap-ips` (string):
 
 Bootstrap IPs is an array of IPv4:port pairs. These IP Addresses will be used to bootstrap the current Avalanche state. An example setting of this field would be `--bootstrap-ips="127.0.0.1:12345,1.2.3.4:5678"`. The default value depends on the network ID.
 
-`--bootstrap-retry-enabled` \(boolean\):
+`--bootstrap-retry-enabled` (boolean):
 
 If true, will retry bootstrapping if it fails.
 
-`--bootstrap-retry-max-attempts` \(uint\):
+`--bootstrap-retry-max-attempts` (uint):
 
 Max number of times to retry bootstrapping after a failure.
 
-### Database
+### Database数据库
 
-`--db-dir` \(string, file path\):
+`--db-dir` (string, file path):
 
 Specifies the directory to which the database is persisted. Defaults to `"$HOME/.avalanchego/db"`.
 
-`--db-type` \(string\):
+`--db-type` (string):
 
 Specifies the type of database to use. Must be one of `leveldb`, `rocksdb`, `memdb`. `memdb` is an in-memory, non-persisted database.
 
@@ -98,53 +98,53 @@ Note that when running with `leveldb`, the node can't read data that was persist
 
 **Two important notes about RocksDB**: First, RocksDB does not work on all computers. Second, RocksDB is not built by default and is not included in publicly released binaries. To build AvalancheGo with RocksDB, run `export ROCKSDBALLOWED=1` in your terminal and then `scripts/build.sh`. You must do this before you can use `--db-type=rocksdb`.
 
-### Genesis
+### Genesis创世
 
-`--genesis` \(string\):
+`--genesis` (string):
 
-Path to a JSON file containing the genesis data to use. Ignored when running standard networks \(Mainnet, Testnet.\) If not given, uses default genesis data. For an example of a JSON representation of genesis data, see [here](https://github.com/ava-labs/avalanchego/blob/master/genesis/genesis_local.go#L16).
+Path to a JSON file containing the genesis data to use. Ignored when running standard networks (Mainnet, Testnet.) If not given, uses default genesis data. For an example of a JSON representation of genesis data, see [here](https://github.com/ava-labs/avalanchego/blob/master/genesis/genesis\_local.go#L16).
 
-### HTTP Server
+### HTTP Server HTTP服务
 
-`--http-host` \(string\):
+`--http-host` (string):
 
 The address that HTTP APIs listen on. Defaults to `127.0.0.1`. This means that by default, your node can only handle API calls made from the same machine. To allow API calls from other machines, use `--http-host=`.
 
-`--http-port` \(int\):
+`--http-port` (int):
 
 Each node runs an HTTP server that provides the APIs for interacting with the node and the Avalanche network. This argument specifies the port that the HTTP server will listen on. The default value is `9650`.
 
-`--http-tls-cert-file` \(string, file path\):
+`--http-tls-cert-file` (string, file path):
 
 This argument specifies the location of the TLS certificate used by the node for the HTTPS server. This must be specified when `--http-tls-enabled=true`. There is no default value.
 
-`--http-tls-enabled` \(boolean\):
+`--http-tls-enabled` (boolean):
 
 If set to `true`, this flag will attempt to upgrade the server to use HTTPS. Defaults to `false`.
 
-`--http-tls-key-file` \(string, file path\):
+`--http-tls-key-file` (string, file path):
 
 This argument specifies the location of the TLS private key used by the node for the HTTPS server. This must be specified when `--http-tls-enabled=true`. There is no default value.
 
 ### IPCS
 
-`--ipcs-chain-ids` \(string\)
+`--ipcs-chain-ids` (string)
 
 Comma separated list of chain ids to connect to. There is no default value.
 
-`--ipcs-path` \(string\)
+`--ipcs-path` (string)
 
-The directory \(Unix\) or named pipe prefix \(Windows\) for IPC sockets. Defaults to /tmp.
+The directory (Unix) or named pipe prefix (Windows) for IPC sockets. Defaults to /tmp.
 
-### File Descriptor Limit
+### File Descriptor Limit文件描述符的限制
 
-`--fd-limit` \(int\)
+`--fd-limit` (int)
 
 Attempts to raise the process file descriptor limit to at least this value. Defaults to `32768`
 
-### Logging
+### Logging登录
 
-`--log-level` \(string, `{Off, Fatal, Error, Warn, Info, Debug, Verbo}`\):
+`--log-level` (string, `{Off, Fatal, Error, Warn, Info, Debug, Verbo}`):
 
 The log level determines which events to log. There are 7 different levels, in order from highest priority to lowest.
 
@@ -158,107 +158,107 @@ The log level determines which events to log. There are 7 different levels, in o
 
 When specifying a log level note that all logs with the specified priority or higher will be tracked. Defaults to `Info`.
 
-`--log-display-level` \(string, `{Off, Fatal, Error, Warn, Info, Debug, Verbo}`\):
+`--log-display-level` (string, `{Off, Fatal, Error, Warn, Info, Debug, Verbo}`):
 
 The log level determines which events to display to the screen. If left blank, will default to the value provided to `--log-level`.
 
-`--log-display-highlight` \(string, `{auto, plain, colors}`\):
+`--log-display-highlight` (string, `{auto, plain, colors}`):
 
 Whether to color/highlight display logs. Default highlights when the output is a terminal. Otherwise, should be one of `{auto, plain, colors}`
 
-`--log-dir` \(string, file path\):
+`--log-dir` (string, file path):
 
 Specifies the directory in which system logs are kept. Defaults to `"$HOME/.avalanchego/logs"`.
 
-### Network ID
+### Network ID网络ID
 
-`--network-id` \(string\):
+`--network-id` (string):
 
 The identity of the network the node should connect to. Can be one of:
 
-* `--network-id=mainnet` -&gt; Connect to Main net \(default\).
-* `--network-id=fuji` -&gt; Connect to the Fuji test-network.
-* `--network-id=testnet` -&gt; Connect to the current test-network. \(Right now, this is Fuji.\)
-* `--network-id=local` -&gt; Connect to a local test-network.
-* `--network-id=network-{id}` -&gt; Connect to the network with the given ID. `id` must be in the range `[0, 2^32)`.
+* `--network-id=mainnet` -> Connect to Main net (default).
+* `--network-id=fuji` -> Connect to the Fuji test-network.
+* `--network-id=testnet` -> Connect to the current test-network. (Right now, this is Fuji.)
+* `--network-id=local` -> Connect to a local test-network.
+* `--network-id=network-{id}` -> Connect to the network with the given ID. `id` must be in the range `[0, 2^32)`.
 
-### Public IP
+### Public IP公共IP
 
-`--public-ip` \(string\):
+`--public-ip` (string):
 
 Validators must know their public facing IP addresses so they can let other nodes know how to connect to them. If this argument is not provided, the node will attempt to perform NAT traversal to get the node’s public IP. Should be set to `127.0.0.1` to create a local network. If not set, attempts to learn IP using NAT traversal.
 
-`--dynamic-public-ip` \(string\):
+`--dynamic-public-ip` (string):
 
 Valid values if param is present: `opendns`, `ifconfigco` or `ifconfigme`. This overrides `--public-ip`. If set, will poll the remote service every `--dynamic-update-duration` and update the node’s public IP address.
 
-`--dynamic-update-duration` \(duration\):
+`--dynamic-update-duration` (duration):
 
 The time between poll events for `--dynamic-public-ip` or NAT traversal. The recommended minimum is 1 minute. Defaults to `5m`.
 
-### Signature Verification
+### Signature Verification签名验证
 
-`--signature-verification-enabled` \(boolean\):
+`--signature-verification-enabled` (boolean):
 
 Enables signature verification. When set to `false`, signatures won’t be checked in VMs that allow signatures to be disabled. Defaults to `true`.
 
-### Staking
+### Staking质押
 
-`--staking-port` \(string\):
+`--staking-port` (string):
 
 The port through which the staking server will connect to the Avalanche network externally. Defaults to `9651`.
 
-`--staking-enabled` \(boolean\):
+`--staking-enabled` (boolean):
 
-Avalanche uses Proof of Stake \(PoS\) as Sybil resistance to make it prohibitively expensive to attack the network. If false, sybil resistance is disabled and all peers will be sampled during consensus. Defaults to `true`.
+Avalanche uses Proof of Stake (PoS) as Sybil resistance to make it prohibitively expensive to attack the network. If false, sybil resistance is disabled and all peers will be sampled during consensus. Defaults to `true`.
 
-`--staking-tls-cert-file` \(string, file path\):
+`--staking-tls-cert-file` (string, file path):
 
 Avalanche uses two-way authenticated TLS connections to securely connect nodes. This argument specifies the location of the TLS certificate used by the node. By default, the node expects the TLS certificate to be at `$HOME/.avalanchego/staking/staker.crt`.
 
-`--staking-tls-key-file` \(string, file path\):
+`--staking-tls-key-file` (string, file path):
 
 Avalanche uses two-way authenticated TLS connections to securely connect nodes. This argument specifies the location of the TLS private key used by the node. By default, the node expects the TLS private key to be at `$HOME/.avalanchego/staking/staker.key`.
 
-`--staking-disabled-weight` \(int\):
+`--staking-disabled-weight` (int):
 
 Weight to provide to each peer when staking is disabled. Defaults to `1`.
 
 ### Version
 
-`--version` \(boolean\)
+`--version` (boolean)
 
 If this is `true`, print the version and quit. Defaults to `false`.
 
-## Advanced Options
+## Advanced Options高级选项
 
 The following options may affect the correctness of a node. Only power users should change these.
 
 ### Benchlist
 
-`--benchlist-duration` \(duration\):
+`--benchlist-duration` (duration):
 
 Amount of time a peer is benchlisted after surpassing `--benchlist-fail-threshold`. Defaults to `1h`.
 
-`--benchlist-fail-threshold` \(int\):
+`--benchlist-fail-threshold` (int):
 
-Number of consecutive failed queries to a node before benching it \(assuming all queries to it will fail\). Defaults to `10`.
+Number of consecutive failed queries to a node before benching it (assuming all queries to it will fail). Defaults to `10`.
 
-`--benchlist-peer-summary-enabled` \(boolean\):
+`--benchlist-peer-summary-enabled` (boolean):
 
 Enables peer specific query latency metrics. Defaults to `false`.
 
-`--benchlist-min-failing-duration` \(duration\):
+`--benchlist-min-failing-duration` (duration):
 
 Minimum amount of time messages to a peer must be failing before the peer is benched. Defaults to `5m`.
 
 ### Build Directory
 
-`--build-dir` \(string\):
+`--build-dir` (string):
 
 Specifies where to find AvalancheGo sub-binaries & plugin binaries. Defaults to the path of executed AvalancheGo binary. The structure of this directory must be as follows:
 
-```text
+```
 build-dir  
 |_avalanchego-latest  
     |_avalanchego-process (the binary from compiling the app directory)  
@@ -274,23 +274,23 @@ build-dir
 
 ### Chain Configs
 
-Some chains \(right now, just the C-Chain\) allow the node operator to provide a custom configuration. AvalancheGo can read chain configurations from files and pass them to the corresponding chains on initialization.
+Some chains (right now, just the C-Chain) allow the node operator to provide a custom configuration. AvalancheGo can read chain configurations from files and pass them to the corresponding chains on initialization.
 
 AvalancheGo looks for these files in the directory specified by `--chain-config-dir`. This directory can have sub-directories whose names are chain IDs or chain aliases. Each sub-directory contains the configuration for the chain specified in the directory name. Each sub-directory should contain a file named `config`, whose value is passed in when the corresponding chain is initialized. For example, the config for the C-Chain should be at: `[chain-config-dir-goes-here]/C/config.json`.
 
-The extension that these files should have, and the contents of these files, is VM-dependent. For example, some chains may expect `config.txt` while others expect `config.json`. If multiple files are provided with the same name but different extensions \(e.g. `config.json` and `config.txt`\) in the same sub-directory, AvalancheGo will exit with an error.
+The extension that these files should have, and the contents of these files, is VM-dependent. For example, some chains may expect `config.txt` while others expect `config.json`. If multiple files are provided with the same name but different extensions (e.g. `config.json` and `config.txt`) in the same sub-directory, AvalancheGo will exit with an error.
 
 For a given chain, AvalancheGo will look first for a config sub-directory whose name is the chain ID. If it isn't found, it looks for a config sub-directory whose name is the chain's primary alias. If it's not found, it looks for a config sub-directory whose name is another alias for the chain. All folder and file names are case sensitive.
 
 It is not required to provide these custom configurations. If they are not provided, a VM-specific default config will be used.
 
-`--chain-config-dir` \(string\):
+`--chain-config-dir` (string):
 
 Specifies the directory that contains chain configs, as described above. Defaults to `$HOME/.avalanchego/configs/chains`. If this flag is not provided and the default directory does not exist, AvalancheGo will not exit since custom configs are optional. However, if the flag is set, the specified folder must exist, or AvalancheGo will exit with an error.
 
 #### C-Chain Configs
 
-Currently, the C-Chain is the only chain that supports custom configurations. In order to specify a config for the C-Chain, a JSON config file should be placed at `{chain-config-dir}/C/config.json` \(or another valid location, as specified above.\)
+Currently, the C-Chain is the only chain that supports custom configurations. In order to specify a config for the C-Chain, a JSON config file should be placed at `{chain-config-dir}/C/config.json` (or another valid location, as specified above.)
 
 For example if `chain-config-dir` has the default value, then `config.json` can be placed at `$HOME/.avalanchego/configs/chains/C/config.json`, with these contents:
 
@@ -306,11 +306,11 @@ For example if `chain-config-dir` has the default value, then `config.json` can 
 
 For more information about C-Chain configs, see [here](command-line-interface.md#coreth-config).
 
-### C-Chain / Coreth <a id="coreth-config"></a>
+### C-Chain / Coreth <a href="#coreth-config" id="coreth-config"></a>
 
-`--coreth-config` \(json\):
+`--coreth-config` (json):
 
-\(This argument is deprecated in favor of using [Chain Configs](command-line-interface.md#chain-configs).\)
+(This argument is deprecated in favor of using [Chain Configs](command-line-interface.md#chain-configs).)
 
 This allows you to specify a config to be passed into the C-Chain. The default values for this config are:
 
@@ -338,310 +338,309 @@ Default values are overridden only if explicitly specified in the config.
 
 The parameters are as follows:
 
-
 #### Coreth APIs
 
-`snowman-api-enabled` \(boolean\):
+`snowman-api-enabled` (boolean):
 
 Enables the Snowman API. Defaults to false.
 
-`coreth-admin-api-enabled` \(boolean\):
+`coreth-admin-api-enabled` (boolean):
 
 Enables the Admin API. Defaults to false.
 
-`net-api-enabled` \(boolean\):
+`net-api-enabled` (boolean):
 
 Enables the `net_*` API. Defaults to true.
 
 #### Coreth API Gas/Price Caps
 
-`rpc-gas-cap` \(int\):
+`rpc-gas-cap` (int):
 
-The maximum gas to be consumed by an RPC Call \(used in `eth_estimateGas`\), measured in nAVAX \(GWei\). Defaults to 2,500,000,000.
+The maximum gas to be consumed by an RPC Call (used in `eth_estimateGas`), measured in nAVAX (GWei). Defaults to 2,500,000,000.
 
-`rpc-tx-fee-cap` \(int\):
+`rpc-tx-fee-cap` (int):
 
-Global transaction fee \(price \* gaslimit\) cap \(measured in AVAX\) for send-transction variants. Defaults to 100.
+Global transaction fee (price \* gaslimit) cap (measured in AVAX) for send-transction variants. Defaults to 100.
 
 #### Database Pruning
 
-`pruning-enabled`\(bool\):
+`pruning-enabled`(bool):
 
 If true, database pruning of obsolete historical data will be enabled. Should be disabled for nodes that need access to all data at historical roots. Pruning will be done only for new data. Defaults to `false` in v1.4.9, and `true` in subsequent versions.
 
 #### Eth APIs
 
-`eth-api-enabled` \(boolean\):
+`eth-api-enabled` (boolean):
 
 Enables the `eth_*` API. Defaults to true.
 
-`personal-api-enabled` \(boolean\):
+`personal-api-enabled` (boolean):
 
 Enables the `personal_*` API. Defaults to false.
 
-`tx-pool-api-enabled` \(boolean\):
+`tx-pool-api-enabled` (boolean):
 
 Enables the `txpool_*` API. Defaults to false.
 
-`debug-api-enabled` \(boolean\):
+`debug-api-enabled` (boolean):
 
 Enables the `debug_*` API. Defaults to false.
 
-`web3-api-enabled` \(boolean\):
+`web3-api-enabled` (boolean):
 
 Enables the `web3_*` API. Defaults to true.
 
 #### Eth Settings
 
-`local-txs-enabled` \(boolean\):
+`local-txs-enabled` (boolean):
 
 Enables local transaction handling. Defaults to false.
 
-`api-max-duration` \(duration\):
+`api-max-duration` (duration):
 
-Maximum API call duration. If API calls exceed this duration, they will time out. Defaults to 0 \(no maximum\).
+Maximum API call duration. If API calls exceed this duration, they will time out. Defaults to 0 (no maximum).
 
-`api-max-blocks-per-request` \(int\):
+`api-max-blocks-per-request` (int):
 
-Maximum number of blocks to serve per `getLogs` request. Defaults to 0 \(no maximum\).
+Maximum number of blocks to serve per `getLogs` request. Defaults to 0 (no maximum).
 
-`allow-unfinalized-queries` \(boolean\):
+`allow-unfinalized-queries` (boolean):
 
-Allows queries for unfinalized \(not yet accepted\) blocks/transactions. Defaults to false.
+Allows queries for unfinalized (not yet accepted) blocks/transactions. Defaults to false.
 
 #### Continuous Profiling
 
 You can configure your node to continuously run memory/CPU profiles and save the most recent ones. Continuous memory/CPU profiling is enabled if `continuous-profiler-dir` is set.
 
-`continuous-profiler-dir` \(string\):
+`continuous-profiler-dir` (string):
 
-If non-empty, node continuously runs memory/CPU profiles and puts them at this directory. Defaults to the empty string \(not enabled\).
+If non-empty, node continuously runs memory/CPU profiles and puts them at this directory. Defaults to the empty string (not enabled).
 
-`continuous-profiler-frequency` \(duration\):
+`continuous-profiler-frequency` (duration):
 
 How often a new CPU/memory profile is created. Defaults to `15m`.
 
-`continuous-profiler-max-files` \(int\):
+`continuous-profiler-max-files` (int):
 
 Maximum number of CPU/memory profiles files to keep. Defaults to 5.
 
 #### Keystore Settings
 
-`keystore-directory` \(string\):
+`keystore-directory` (string):
 
 The directory that contains private keys. Can be given as a relative path. If empty, uses a temporary directory at `coreth-keystore`. Defaults to empty string.
 
-`keystore-external-signer` \(string\):
+`keystore-external-signer` (string):
 
-Specifies an external URI for a clef-type signer. Defaults to the empty string \(not enabled\).
+Specifies an external URI for a clef-type signer. Defaults to the empty string (not enabled).
 
-`keystore-insecure-unlock-allowed` \(bool\):
+`keystore-insecure-unlock-allowed` (bool):
 
 If true, allow users to unlock accounts in unsafe HTTP environment. Defaults to false.
 
 ### Consensus Parameters
 
-`--consensus-gossip-frequency` \(duration\):
+`--consensus-gossip-frequency` (duration):
 
 Time between gossiping accepted frontiers. Defaults to `10s`.
 
-`--consensus-shutdown-timeout` \(duration\):
+`--consensus-shutdown-timeout` (duration):
 
 Timeout before killing an unresponsive chain. Defaults to `5s`.
 
-`--creation-tx-fee` \(int\):
+`--creation-tx-fee` (int):
 
-Transaction fee, in nAVAX, for transactions that create new state. Defaults to `1000000` nAVAX \(.001 AVAX\) per transaction.
+Transaction fee, in nAVAX, for transactions that create new state. Defaults to `1000000` nAVAX (.001 AVAX) per transaction.
 
-`--min-delegator-stake` \(int\):
+`--min-delegator-stake` (int):
 
 The minimum stake, in nAVAX, that can be delegated to a validator of the Primary Network.
 
-Defaults to `25000000000` \(25 AVAX\) on Main Net. Defaults to `5000000` \(.005 AVAX\) on Test Net.
+Defaults to `25000000000` (25 AVAX) on Main Net. Defaults to `5000000` (.005 AVAX) on Test Net.
 
-`--min-delegation-fee` \(int\):
+`--min-delegation-fee` (int):
 
-The minimum delegation fee that can be charged for delegation on the Primary Network, multiplied by `10,000` . Must be in the range `[0, 1000000]`. Defaults to `20000` \(2%\) on Main Net.
+The minimum delegation fee that can be charged for delegation on the Primary Network, multiplied by `10,000` . Must be in the range `[0, 1000000]`. Defaults to `20000` (2%) on Main Net.
 
-`--min-stake-duration` \(duration\):
+`--min-stake-duration` (duration):
 
-Minimum staking duration. The Default on Main Net is `336h` \(two weeks.\)
+Minimum staking duration. The Default on Main Net is `336h` (two weeks.)
 
-`--min-validator-stake` \(int\):
+`--min-validator-stake` (int):
 
 The minimum stake, in nAVAX, required to validate the Primary Network.
 
-Defaults to `2000000000000` \(2,000 AVAX\) on Main Net. Defaults to `5000000` \(.005 AVAX\) on Test Net.
+Defaults to `2000000000000` (2,000 AVAX) on Main Net. Defaults to `5000000` (.005 AVAX) on Test Net.
 
-`--max-stake-duration` \(duration\):
+`--max-stake-duration` (duration):
 
-The maximum staking duration, in hours. Defaults to `8760h` \(365 days\) on Main Net.
+The maximum staking duration, in hours. Defaults to `8760h` (365 days) on Main Net.
 
-`--max-validator-stake` \(int\):s
+`--max-validator-stake` (int):s
 
-The maximum stake, in nAVAX, that can be placed on a validator on the primary network. Defaults to `3000000000000000` \(3,000,000 AVAX\) on Main Net. This includes stake provided by both the validator and by delegators to the validator.
+The maximum stake, in nAVAX, that can be placed on a validator on the primary network. Defaults to `3000000000000000` (3,000,000 AVAX) on Main Net. This includes stake provided by both the validator and by delegators to the validator.
 
-`--snow-avalanche-batch-size` \(int\):
+`--snow-avalanche-batch-size` (int):
 
 DAG implementations of Snow consensus define `b` as the number of transactions a vertex should include. Increasing `b` will, theoretically, increase throughput while increasing latency. The node will wait for at most 1 second to collect a batch, and will then issue the entire batch at once. The value must be at least `1`. Defaults to `30`.
 
-`--snow-avalanche-num-parents` \(int\):
+`--snow-avalanche-num-parents` (int):
 
 DAG implementations of Snow consensus define `p` as the number of parents a vertex should include. Increasing `p` will improve the amortization of network queries. However, by increasing the connectivity of the graph, the complexity of the graph traversals is increased. The value must be at least `2`. Defaults to `5`.
 
-`--snow-concurrent-repolls` \(int\):
+`--snow-concurrent-repolls` (int):
 
 Snow consensus requires repolling transactions that are issued during low time of network usage. This parameter lets one define how aggressive the client will be in finalizing these pending transactions. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1` and at most `--snow-rogue-commit-threshold`. Defaults to `4`.
 
-`--snow-sample-size` \(int\):
+`--snow-sample-size` (int):
 
 Snow consensus defines `k` as the number of validators that are sampled during each network poll. This parameter lets one define the `k` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1`. Defaults to `20`.
 
-`--snow-quorum-size` \(int\):
+`--snow-quorum-size` (int):
 
 Snow consensus defines `alpha` as the number of validators that must prefer a transaction during each network poll to increase the confidence in the transaction. This parameter lets us define the `alpha` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at greater than `k/2`. Defaults to `14`.
 
-`--snow-virtuous-commit-threshold` \(int\):
+`--snow-virtuous-commit-threshold` (int):
 
 Snow consensus defines `beta1` as the number of consecutive polls that a virtuous transaction must increase its confidence for it to be accepted. This parameter lets us define the `beta1` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `1`. Defaults to `15`.
 
-`--snow-rogue-commit-threshold` \(int\):
+`--snow-rogue-commit-threshold` (int):
 
 Snow consensus defines `beta2` as the number of consecutive polls that a rogue transaction must increase its confidence for it to be accepted. This parameter lets us define the `beta2` value used for consensus. This should only be changed after careful consideration of the tradeoffs of Snow consensus. The value must be at least `beta1`. Defaults to `30`.
 
-`--stake-minting-period` \(duration\):
+`--stake-minting-period` (duration):
 
-Consumption period of the staking function, in hours. The Default on Main Net is `8760h` \(365 days\).
+Consumption period of the staking function, in hours. The Default on Main Net is `8760h` (365 days).
 
-`--tx-fee` \(int\):
+`--tx-fee` (int):
 
 The required amount of nAVAX to be burned for a transaction to be valid. This parameter requires network agreement in its current form. Changing this value from the default should only be done on private networks. Defaults to `1000000` nAVAX per transaction.
 
-`--uptime-requirement` \(float\):
+`--uptime-requirement` (float):
 
 Fraction of time a validator must be online to receive rewards. Defaults to `0.6`.
 
 ### Health
 
-`--health-check-frequency` \(duration\):
+`--health-check-frequency` (duration):
 
 Health check runs with this freqency. Defaults to `30s`.
 
-`--health-check-averager-halflife` \(duration\):
+`--health-check-averager-halflife` (duration):
 
-Halflife of averagers used in health checks \(to measure the rate of message failures, for example.\) Larger value --&gt; less volatile calculation of averages. Defaults to `10s`.
+Halflife of averagers used in health checks (to measure the rate of message failures, for example.) Larger value --> less volatile calculation of averages. Defaults to `10s`.
 
-### Message Rate-Limiting \(Throttling\)
+### Message Rate-Limiting (Throttling)
 
 These flags govern rate-limiting of inbound and outbound messages. For more information on rate-limiting and the flags below, see package `throttling` in AvalancheGo.
 
-`--throttler-inbound-at-large-alloc-size` \(uint\):
+`--throttler-inbound-at-large-alloc-size` (uint):
 
-Size, in bytes, of at-large allocation in the inbound message throttler. Defaults to `33554432` \(32 mebibytes\).
+Size, in bytes, of at-large allocation in the inbound message throttler. Defaults to `33554432` (32 mebibytes).
 
-`--throttler-inbound-validator-alloc-size` \(uint\):
+`--throttler-inbound-validator-alloc-size` (uint):
 
-Size, in bytes, of validator allocation in the inbound message throttler. Defaults to `33554432` \(32 mebibytes\).
+Size, in bytes, of validator allocation in the inbound message throttler. Defaults to `33554432` (32 mebibytes).
 
-`--throttler-inbound-node-max-at-large-bytes` \(uint\):
+`--throttler-inbound-node-max-at-large-bytes` (uint):
 
-Maximum number of bytes a node can take from the at-large allocation of the inbound message throttler. Defaults to `2048` \(2 mebibytes\).
+Maximum number of bytes a node can take from the at-large allocation of the inbound message throttler. Defaults to `2048` (2 mebibytes).
 
-`--throttler-outbound-at-large-alloc-size` \(uint\):
+`--throttler-outbound-at-large-alloc-size` (uint):
 
-Size, in bytes, of at-large allocation in the outbound message throttler. Defaults to `33554432` \(32 mebibytes\).
+Size, in bytes, of at-large allocation in the outbound message throttler. Defaults to `33554432` (32 mebibytes).
 
-`--throttler-outbound-validator-alloc-size` \(uint\):
+`--throttler-outbound-validator-alloc-size` (uint):
 
-Size, in bytes, of validator allocation in the outbound message throttler. Defaults to `33554432` \(32 mebibytes\).
+Size, in bytes, of validator allocation in the outbound message throttler. Defaults to `33554432` (32 mebibytes).
 
-`--throttler-outbound-node-max-at-large-bytes` \(uint\):
+`--throttler-outbound-node-max-at-large-bytes` (uint):
 
-Maximum number of bytes a node can take from the at-large allocation of the outbound message throttler. Defaults to `2048` \(2 mebibytes\).
+Maximum number of bytes a node can take from the at-large allocation of the outbound message throttler. Defaults to `2048` (2 mebibytes).
 
 ### Network
 
-`--network-compression-enabled` \(bool\) \(v1.4.11\):
+`--network-compression-enabled` (bool) (v1.4.11):
 
-If true, compress certain messages sent to peers on version &gt;= v1.4.11 to reduce bandwidth usage.
+If true, compress certain messages sent to peers on version >= v1.4.11 to reduce bandwidth usage.
 
-`--network-initial-timeout` \(duration\):
+`--network-initial-timeout` (duration):
 
 Initial timeout value of the adaptive timeout manager, in nanoseconds. Defaults to `5s`.
 
-`--network-minimum-timeout` \(duration\):
+`--network-minimum-timeout` (duration):
 
 Minimum timeout value of the adaptive timeout manager, in nanoseconds. Defaults to `2s`.
 
-`--network-maximum-timeout` \(duration\):
+`--network-maximum-timeout` (duration):
 
 Maximum timeout value of the adaptive timeout manager, in nanoseconds. Defaults to `10s`.
 
-`--network-timeout-halflife` \(duration\):
+`--network-timeout-halflife` (duration):
 
-Halflife used when calculating average network latency. Larger value --&gt; less volatile network latency calculation. Defaults to `5m`.
+Halflife used when calculating average network latency. Larger value --> less volatile network latency calculation. Defaults to `5m`.
 
-`--network-timeout-coefficient` \(duration\):
+`--network-timeout-coefficient` (duration):
 
-Requests to peers will time out after \[`network-timeout-coefficient`\] \* \[average request latency\]. Defaults to `2`.
+Requests to peers will time out after \[`network-timeout-coefficient`] \* \[average request latency]. Defaults to `2`.
 
-`--network-health-min-conn-peers` \(uint\):
+`--network-health-min-conn-peers` (uint):
 
 Node will report unhealthy if connected to less than this many peers. Defaults to `1`.
 
-`--network-health-max-time-since-msg-received` \(duration\):
+`--network-health-max-time-since-msg-received` (duration):
 
 Node will report unhealthy if it hasn't received a message for this amount of time. Defaults to `1m`.
 
-`--network-health-max-time-since-no-requests` \(duration\):
+`--network-health-max-time-since-no-requests` (duration):
 
 Node will report unhealthy if it hasn't received a message for this amount of time. Defaults to `1m`.
 
-`--network-health-max-portion-send-queue-full` \(float\):
+`--network-health-max-portion-send-queue-full` (float):
 
-Node will report unhealthy if its send queue is more than this portion full. Must be in \[0,1\]. Defaults to `0.9`.
+Node will report unhealthy if its send queue is more than this portion full. Must be in \[0,1]. Defaults to `0.9`.
 
-`--network-health-max-send-fail-rate` \(float\):
+`--network-health-max-send-fail-rate` (float):
 
-Node will report unhealthy if more than this portion of message sends fail. Must be in \[0,1\]. Defaults to `0.25`.
+Node will report unhealthy if more than this portion of message sends fail. Must be in \[0,1]. Defaults to `0.25`.
 
-`--inbound-connection-throtting-cooldown` \(duration\)
+`--inbound-connection-throtting-cooldown` (duration)
 
-`--inbound-connection-throttling-max-recent` \(uint\)
+`--inbound-connection-throttling-max-recent` (uint)
 
-Node will only accept \(attempt to upgrade\) an inbound connection from an IP if it has not done so in the last `inbound-connection-throtting-cooldown`. Node will only allow `inbound-connection-throttling-max-recent` from all IPS per `inbound-connection-throttling-max-recent`.
+Node will only accept (attempt to upgrade) an inbound connection from an IP if it has not done so in the last `inbound-connection-throtting-cooldown`. Node will only allow `inbound-connection-throttling-max-recent` from all IPS per `inbound-connection-throttling-max-recent`.
 
 ### Peer List Gossiping
 
 Nodes gossip peers to each other so that each node can have an up-to-date peer list. A node gossips `--network-peer-list-size` peers to `--network-peer-list-gossip-size` of its peers every `--network-peer-list-gossip-frequency`.
 
-`--network-peer-list-gossip-frequency` \(duration\):
+`--network-peer-list-gossip-frequency` (duration):
 
 Defaults to `1m`.
 
-`--network-peer-list-gossip-size` \(int\):
+`--network-peer-list-gossip-size` (int):
 
 Defaults to `50`.
 
-`--network-peer-list-size` \(int\):
+`--network-peer-list-size` (int):
 
 Defaults to `20`.
 
 ### Plugin Mode
 
-`--plugin-mode-enabled` \(bool\):
+`--plugin-mode-enabled` (bool):
 
 If true, runs the node as a [plugin.](https://github.com/hashicorp/go-plugin) Defaults to `false`.
 
 ### Subnet Whitelist
 
-`--whitelisted-subnets` \(string\):
+`--whitelisted-subnets` (string):
 
-Comma separated list of subnets that this node would validate if added to. Defaults to empty \(will only validate the Primary Network\).
+Comma separated list of subnets that this node would validate if added to. Defaults to empty (will only validate the Primary Network).
 
-### Virtual Machine \(VM\) Configs <a id="vm-configs"></a>
+### Virtual Machine (VM) Configs <a href="#vm-configs" id="vm-configs"></a>
 
-`--vm-aliases-file` \(string\):
+`--vm-aliases-file` (string):
 
 Path to JSON file that defines aliases for Virtual Machine IDs. Defaults to `~/.avalanchego/configs/vms/aliases.json`. Example content:
 
@@ -655,4 +654,3 @@ Path to JSON file that defines aliases for Virtual Machine IDs. Defaults to `~/.
 ```
 
 The above example aliases the VM whose ID is `"tGas3T58KzdjLHhBDMnH2TvrddhqTji5iZAMZ3RXs2NLpSnhH"` to `"timestampvm"` and `"timerpc"`.
-

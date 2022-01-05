@@ -1,16 +1,16 @@
-# Coreth Atomic Transaction Format
+# Coreth Atomic Transaction Format核心原子事务格式
 
 This page is meant to be the single source of truth for how we serialize atomic transactions in `Coreth`. This document uses the [primitive serialization](serialization-primitives.md) format for packing and [secp256k1](cryptographic-primitives.md#cryptography-in-the-avalanche-virtual-machine) for cryptographic user identification.
 
-## Codec ID
+## Codec ID编解码器ID
 
-Some data is prepended with a codec ID \(unt16\) that denotes how the data should be deserialized. Right now, the only valid codec ID is 0 \(`0x00 0x00`\).
+Some data is prepended with a codec ID (unt16) that denotes how the data should be deserialized. Right now, the only valid codec ID is 0 (`0x00 0x00`).
 
-## Inputs
+## Inputs输出
 
-Inputs to Coreth Atomic Transactions are either an `EVMInput` from this chain or a `TransferableInput` \(which contains a `SECP256K1TransferInput`\) from another chain. The `EVMInput` will be used in `ExportTx` to spend funds from this chain, while the `TransferableInput` will be used to import atomic UTXOs from another chain.
+Inputs to Coreth Atomic Transactions are either an `EVMInput` from this chain or a `TransferableInput` (which contains a `SECP256K1TransferInput`) from another chain. The `EVMInput` will be used in `ExportTx` to spend funds from this chain, while the `TransferableInput` will be used to import atomic UTXOs from another chain.
 
-### EVM Input
+### EVM Input EVM输出
 
 Input type that specifies an EVM account to deduct the funds from as part of an `ExportTx`.
 
@@ -19,13 +19,13 @@ Input type that specifies an EVM account to deduct the funds from as part of an 
 An EVM Input contains an `address`, `amount`, `assetID`, and `nonce`.
 
 * **`Address`** is the EVM address from which to transfer funds.
-* **`Amount`** is the amount of the asset to be transferred \(specified in nAVAX for AVAX and the smallest denomination for all other assets\).
+* **`Amount`** is the amount of the asset to be transferred (specified in nAVAX for AVAX and the smallest denomination for all other assets).
 * **`AssetID`** is the ID of the asset to transfer.
 * **`Nonce`** is the nonce of the EVM account exporting funds.
 
 #### Gantt EVM Input Specification
 
-```text
+```
 +----------+----------+-------------------------+
 | address  : [20]byte |                20 bytes |
 +----------+----------+-------------------------+
@@ -41,7 +41,7 @@ An EVM Input contains an `address`, `amount`, `assetID`, and `nonce`.
 
 #### Proto EVM Input Specification
 
-```text
+```
 message  {
     bytes address = 1; // 20 bytes
     uint64 amount = 2; // 08 bytes
@@ -59,7 +59,7 @@ Let's make an EVM Input:
 * `AssetID: 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f`
 * `Nonce: 0`
 
-```text
+```
 [
     Address   <- 0xc3344128e060128ede3523a24a461c8943ab0859,
     Amount    <- 0x00000000001e8480
@@ -84,7 +84,7 @@ Let's make an EVM Input:
 ]
 ```
 
-### Transferable Input
+### Transferable Input可转让的输入
 
 Transferable Input wraps a `SECP256K1TransferInput`. Transferable inputs describe a specific UTXO with a provided transfer input.
 
@@ -99,7 +99,7 @@ A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
 
 #### Gantt Transferable Input Specification
 
-```text
+```
 +------------+----------+------------------------+
 | tx_id      : [32]byte |               32 bytes |
 +------------+----------+------------------------+
@@ -115,7 +115,7 @@ A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
 
 #### Proto Transferable Input Specification
 
-```text
+```
 message TransferableInput {
     bytes tx_id = 1;       // 32 bytes
     uint32 utxo_index = 2; // 04 bytes
@@ -133,7 +133,7 @@ Let's make a transferable input:
 * `AssetID: 0xdbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db`
 * `Input: "Example SECP256K1 Transfer Input from below"`
 
-```text
+```
 [
     TxID      <- 0x6613a40dcdd8d22ea4aa99a4c84349056317cf550b6685e045e459954f258e59
     UTXOIndex <- 0x00000001
@@ -175,7 +175,7 @@ A secp256k1 transfer input contains an `Amount` and `AddressIndices`.
 
 #### Gantt SECP256K1 Transfer Input Specification
 
-```text
+```
 +-------------------------+-------------------------------------+
 | type_id         : int   |                             4 bytes |
 +-----------------+-------+-------------------------------------+
@@ -189,7 +189,7 @@ A secp256k1 transfer input contains an `Amount` and `AddressIndices`.
 
 #### Proto SECP256K1 Transfer Input Specification
 
-```text
+```
 message SECP256K1TransferInput {
     uint32 typeID = 1;                   // 04 bytes
     uint64 amount = 2;                   // 08 bytes
@@ -203,9 +203,9 @@ Let's make a payment input with:
 
 * **`TypeId`**: 5
 * **`Amount`**: 500000000000
-* **`AddressIndices`**: \[0\]
+* **`AddressIndices`**: \[0]
 
-```text
+```
 [
     TypeID         <- 0x00000005
     Amount         <- 500000000000 = 0x000000746a528800,
@@ -226,7 +226,7 @@ Let's make a payment input with:
 
 ## Outputs
 
-Outputs to Coreth Atomic Transactions are either an `EVMOutput` to be added to the balance of an address on this chain or a `TransferableOutput` \(whcih contains a `SECP256K1TransferOutput`\) to be moved to another chain.
+Outputs to Coreth Atomic Transactions are either an `EVMOutput` to be added to the balance of an address on this chain or a `TransferableOutput` (whcih contains a `SECP256K1TransferOutput`) to be moved to another chain.
 
 The EVM Output will be used in `ImportTx` to add funds to this chain, while the `TransferableOutput` will be used to export atomic UTXOs to another chain.
 
@@ -239,12 +239,12 @@ Output type specifying a state change to be applied to an EVM account as part of
 An EVM Output contains an `address`, `amount`, and `assetID`.
 
 * **`Address`** is the EVM address that will receive the funds.
-* **`Amount`** is the amount of the asset to be transferred \(specified in nAVAX for AVAX and the smallest denomination for all other assets\).
+* **`Amount`** is the amount of the asset to be transferred (specified in nAVAX for AVAX and the smallest denomination for all other assets).
 * **`AssetID`** is the ID of the asset to transfer.
 
 #### Gantt EVM Output Specification
 
-```text
+```
 +----------+----------+-------------------------+
 | address  : [20]byte |                20 bytes |
 +----------+----------+-------------------------+
@@ -258,7 +258,7 @@ An EVM Output contains an `address`, `amount`, and `assetID`.
 
 #### Proto EVM Output Specification
 
-```text
+```
 message  {
     bytes address = 1; // 20 bytes
     uint64 amount = 2; // 08 bytes
@@ -274,7 +274,7 @@ Let's make an EVM Output:
 * `Amount: 500000000000`
 * `AssetID: 0xdbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db`
 
-```text
+```
 [
     Address   <- 0x0eb5ccb85c29009b6060decb353a38ea3b52cd20,
     Amount    <- 0x000000746a528800
@@ -309,7 +309,7 @@ A transferable output contains an `AssetID` and an `Output` which is a `SECP256K
 
 #### Gantt Transferable Output Specification
 
-```text
+```
 +----------+----------+-------------------------+
 | asset_id : [32]byte |                32 bytes |
 +----------+----------+-------------------------+
@@ -321,7 +321,7 @@ A transferable output contains an `AssetID` and an `Output` which is a `SECP256K
 
 #### Proto Transferable Output Specification
 
-```text
+```
 message TransferableOutput {
     bytes asset_id = 1; // 32 bytes
     Output output = 2;  // size(output)
@@ -335,7 +335,7 @@ Let's make a transferable output:
 * `AssetID: 0xdbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db`
 * `Output: "Example SECP256K1 Transfer Output from below"`
 
-```text
+```
 [
     AssetID <- 0xdbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db
     Output  <- 0x000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab0859,
@@ -377,7 +377,7 @@ A secp256k1 transfer output contains a `TypeID`, `Amount`, `Locktime`, `Threshol
 
 #### Gantt SECP256K1 Transfer Output Specification
 
-```text
+```
 +-----------+------------+--------------------------------+
 | type_id   : int        |                        4 bytes |
 +-----------+------------+--------------------------------+
@@ -395,7 +395,7 @@ A secp256k1 transfer output contains a `TypeID`, `Amount`, `Locktime`, `Threshol
 
 #### Proto SECP256K1 Transfer Output Specification
 
-```text
+```
 message SECP256K1TransferOutput {
     uint32 typeID = 1;            // 04 bytes
     uint64 amount = 2;            // 08 bytes
@@ -416,7 +416,7 @@ Let's make a secp256k1 transfer output with:
 * **`Addresses`**:
   * 0x66f90db6137a78f76b3693f7f2bc507956dae563
 
-```text
+```
 [
     TypeID    <- 0x00000007
     Amount    <- 0x00000000000f4240
@@ -466,7 +466,7 @@ An ExportTx contains an `typeID`, `networkID`, `blockchainID`, `destinationChain
 
 #### Gantt ExportTx Specification
 
-```text
+```
 +---------------------+----------------------+-------------------------------------------------+
 | typeID              : int                  |                                        04 bytes |
 +---------------------+----------------------+-------------------------------------------------+
@@ -497,7 +497,7 @@ Let's make an EVM Output:
 * **`Exportedoutputs`**:
   * `"Example TransferableOutput as defined above"`
 
-```text
+```
 [
     TypeID           <- 0x00000001
     NetworkID        <- 0x00003039
@@ -571,7 +571,7 @@ An ImportTx contains an `typeID`, `networkID`, `blockchainID`, `destinationChain
 
 #### Gantt ImportTx Specification
 
-```text
+```
 +---------------------+----------------------+-------------------------------------------------+
 | typeID              : int                  |                                        04 bytes |
 +---------------------+----------------------+-------------------------------------------------+
@@ -602,7 +602,7 @@ Let's make an ImportTx:
 * **`Outs`**:
   * `"Exapmle EVMOutput as defined above"`
 
-```text
+```
 [
     TypeID           <- 0x00000000
     NetworkID        <- 0x00003039
@@ -674,7 +674,7 @@ A [secp256k1](https://github.com/ava-labs/avalanche-docs/tree/94d2e4aeddbf91f89b
 
 #### Gantt SECP256K1 Credential Specification
 
-```text
+```
 +------------------------------+---------------------------------+
 | type_id         : int        |                         4 bytes |
 +-----------------+------------+---------------------------------+
@@ -686,7 +686,7 @@ A [secp256k1](https://github.com/ava-labs/avalanche-docs/tree/94d2e4aeddbf91f89b
 
 #### Proto SECP256K1 Credential Specification
 
-```text
+```
 message SECP256K1Credential {
     uint32 typeID = 1;             // 4 bytes
     repeated bytes signatures = 2; // 4 bytes + 65 bytes * len(signatures)
@@ -701,7 +701,7 @@ Let's make a payment input with:
 * **`signatures`**:
   * `0x0acccf47a820549a84428440e2421975138790e41be262f7197f3d93faa26cc8741060d743ffaf025782c8c86b862d2b9febebe7d352f0b4591afbd1a737f8a30010199dbf`
 
-```text
+```
 [
     TypeID         <- 0x00000009
     Signatures     <- [
@@ -741,7 +741,7 @@ A signed transaction contains a `CodecID`, `AtomicTx`, and `Credentials`.
 
 ### Gantt Signed Transaction Specification
 
-```text
+```
 +---------------------+--------------+------------------------------------------------+
 | codec_id            : uint16       |                                        2 bytes |
 +---------------------+--------------+------------------------------------------------+
@@ -755,7 +755,7 @@ A signed transaction contains a `CodecID`, `AtomicTx`, and `Credentials`.
 
 ### Proto Signed Transaction Specification
 
-```text
+```
 message Tx {
     uint16 codec_id = 1;                 // 2 bytes
     AtomicTx atomic_tx = 2;              // size(atomic_tx)
@@ -769,11 +769,11 @@ Let's make a signed transaction that uses the unsigned transaction and credentia
 
 * **`CodecID`**: `0`
 * **`UnsignedTx`**: `0x000000000000303991060eabfb5a571720109b5896e5ff00010a1cfe6b103d585e6ebf27b97a1735d891ad56056d9c01f18f43f58b5c784ad07a4a49cf3d1f11623804b5cba2c6bf000000016613a40dcdd8d22ea4aa99a4c84349056317cf550b6685e045e459954f258e5900000001dbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db00000005000000746a5288000000000100000000000000010eb5ccb85c29009b6060decb353a38ea3b52cd20000000746a528800dbcf890f77f49b96857648b72b77f9f82937f28a68704af05da0dc12ba53f2db`
-* **`Credentials`**
+*   **`Credentials`**
 
-  `0x00000009000000010acccf47a820549a84428440e2421975138790e41be262f7197f3d93faa26cc8741060d743ffaf025782c8c86b862d2b9febebe7d352f0b4591afbd1a737f8a300`
+    `0x00000009000000010acccf47a820549a84428440e2421975138790e41be262f7197f3d93faa26cc8741060d743ffaf025782c8c86b862d2b9febebe7d352f0b4591afbd1a737f8a300`
 
-```text
+```
 [
     CodecID            <- 0x0000
     UnsignedAtomic Tx  <- 0x0000000100000004ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000007000000030000000400010203
@@ -846,7 +846,7 @@ A UTXO contains a `CodecID`, `TxID`, `UTXOIndex`, `AssetID`, and `Output`.
 
 ### Gantt UTXO Specification
 
-```text
+```
 +--------------+----------+-------------------------+
 | codec_id     : uint16   |                 2 bytes |
 +--------------+----------+-------------------------+
@@ -864,7 +864,7 @@ A UTXO contains a `CodecID`, `TxID`, `UTXOIndex`, `AssetID`, and `Output`.
 
 ### Proto UTXO Specification
 
-```text
+```
 message Utxo {
     uint16 codec_id = 1;     // 02 bytes
     bytes tx_id = 2;         // 32 bytes
@@ -884,7 +884,7 @@ Let’s make a UTXO from the signed transaction created above:
 * **`AssetID`**: `0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f`
 * **`Output`**: `"Example EVMOutput as defined above"`
 
-```text
+```
 [
     CodecID   <- 0x0000
     TxID      <- 0xf966750f438867c3c9828ddcdbe660e21ccdbb36a9276958f011ba472f75d4e7
@@ -920,4 +920,3 @@ Let’s make a UTXO from the signed transaction created above:
     0x24, 0x25, 0x26, 0x27,
 ]
 ```
-

@@ -1,8 +1,8 @@
-# Wallet Classes
+# Wallet Classes钱包类别
 
 The core of the SDK are the wallet classes that let users easily create and manage different types of wallets.
 
-## Mnemonic Wallet
+## Mnemonic Wallet助记词钱包
 
 Mnemonic wallets are designed according to BIP44, BIP32 and BIP39 specifications. For each transaction received, the mnemonic wallet generates a new address. This increases privacy but decreases performance for this wallet type.
 
@@ -50,7 +50,7 @@ myWallet.resetHdIndices().then(()=>{
 })
 ```
 
-## Public Mnemonic Wallet
+## Public Mnemonic Wallet公有助记词钱包
 
 Similar to the MnemonicWallet class but in read-only mode without access to the seed phrase.
 
@@ -63,7 +63,7 @@ const XPUB_EVM = `xpub6CQ5fy7iAochmG1tL2ww2P4BviDRRrcEjG3u1uM6GcyGwzihscWoX9RwiC
 let wallet = new PublicMnemonicWallet(XPUB_AVM, XPUB_EVM);
 ```
 
-## Ledger Wallet
+## Ledger Wallet Ledger钱包
 
 Similar to the MnemonicWallet class. Instead of having access to a seed phrase, it communicates with an external ledger device to sign transactions.
 
@@ -76,7 +76,7 @@ let transport = await TransportU2F.create();
 let wallet = await LedgerWallet.fromTransport(transport);
 ```
 
-## Singleton Wallet
+## Singleton Wallet 单例钱包
 
 Singleton wallets are the most performant wallet type because they consist of a single private key, with a single address.
 
@@ -86,4 +86,3 @@ import { SingletonWallet } from '@avalabs/avalanche-wallet-sdk'
 let privateKey = "PrivateKey-23Zqf7uScHNEoj5kuQfGkk8LSoUjM95LawSxFmgNCK6kFnWC7p"
 let wallet = new SingletonWallet(privateKey);
 ```
-

@@ -4,14 +4,14 @@ Avash is a temporary shell execution environment used to deploy and test on Aval
 
 Avash provides the ability to run Lua scripts, which can execute a sequence of shell commands in Avash. This allows for automation of tasks. For instance, one could create a Lua script to deploy a network of Avalanche nodes where each node has some given configuration. This makes testing easier.
 
-## Installation <a id="installation"></a>
+## Installation安装 <a href="#installation" id="installation"></a>
 
-### Requirements <a id="requirements"></a>
+### Requirements <a href="#requirements" id="requirements"></a>
 
 * Golang 1.15.5 or later
 * AvalancheGo
 
-### Quick Setup <a id="quick-setup"></a>
+### Quick Setup <a href="#quick-setup" id="quick-setup"></a>
 
 To download and build Avash:
 
@@ -30,13 +30,13 @@ RunScript: Running scripts/five_node_staking.lua
 RunScript: Successfully ran scripts/five_node_staking.lua:
 ```
 
-## Configuration <a id="configuration"></a>
+## Configuration配置 <a href="#configuration" id="configuration"></a>
 
 While Avash can be started without a premade configuration file, it’s available as an option for tweaking some of the shell’s global settings. Avash will search for `.avash.yaml` in the `$HOME` directory by default, but the `--config` flag can be used to set a custom configuration filepath to look for.
 
 Below is the format of an Avash configuration file:
 
-```text
+```
 avalancheLocation: <filepath>
 datadir: <directory>
 log:
@@ -51,11 +51,11 @@ The field arguments are described as follows:
 * `<directory>` - A full path to a directory. Example: `/home/username/folder`
 * `<log-level>` - A valid log level to filter logged messages. Must be one of: `{verbo, debug, info, warn, error, fatal, off}`
 
-### Fields <a id="fields"></a>
+### Fields <a href="#fields" id="fields"></a>
 
 **avalancheLocation**
 
-```text
+```
 Path to AvalancheGo binary.
 
 Type:
@@ -67,7 +67,7 @@ Default:
 
 **datadir**
 
-```text
+```
 Path to store Avash data at.
 
 Type:
@@ -79,7 +79,7 @@ Default:
 
 **log.terminal**
 
-```text
+```
 Log level for messages logged to terminal.
 
 Type:
@@ -91,7 +91,7 @@ Default:
 
 **log.logfile**
 
-```text
+```
 Log level for messages logged to log files.
 
 Type:
@@ -103,7 +103,7 @@ Default:
 
 **log.dir**
 
-```text
+```
 Path to put log directory at.
 
 Type:
@@ -113,9 +113,9 @@ Default:
   <datadir>/logs
 ```
 
-## Using Avash <a id="using-avash"></a>
+## Using Avash <a href="#using-avash" id="using-avash"></a>
 
-### Opening a shell <a id="opening-a-shell"></a>
+### Opening a shell <a href="#opening-a-shell" id="opening-a-shell"></a>
 
 Start a new instance of Avash with `./avash`.
 
@@ -125,12 +125,12 @@ Run `help [command]` to see the list of options available for that command.
 
 Ex:
 
-```text
+```
 help procmanager
 help procmanager start
 ```
 
-### Commands <a id="commands"></a>
+### Commands <a href="#commands" id="commands"></a>
 
 Avash comes with the following root commands:
 
@@ -151,7 +151,7 @@ These can be enumerated or auto-completed using the tab key and are explained in
 
 **Warning**: This wallet is held in memory and all data is wiped upon exit. This should only be used for testing.
 
-```text
+```
 Tools for interacting with Avalanche Payments over the network. Using this 
     command we can create, send, and get the status of a transaction.
 
@@ -175,7 +175,7 @@ Available Commands:
 
 **callrpc**
 
-```text
+```
 Issues an RPC call to a node endpoint for the specified method and params.
     Response is saved to the local varstore.
 
@@ -185,7 +185,7 @@ Usage:
 
 **exit**
 
-```text
+```
 Exit the shell, attempting to gracefully stop all processes first.
 
 Usage:
@@ -194,7 +194,7 @@ Usage:
 
 **help**
 
-```text
+```
 Help provides help for any command in the application.
 Simply type avash help [path to command] for full details.
 
@@ -204,7 +204,7 @@ Usage:
 
 **network**
 
-```text
+```
 Tools for interfacing with remote hosts. Using this command we can
   deploy and remove node networks via SSH and a configuration file.
 
@@ -220,7 +220,7 @@ Available Commands:
 
 To deploy and remove networks, a `.yaml` network configuration file is required. An example is provided in the Avash codebase at [`example.network.yaml`](https://github.com/ava-labs/avash/blob/master/example.network.yaml) and should have the following format:
 
-```text
+```
 # List of hosts
 hosts:
   - user: <SSH-username>
@@ -238,7 +238,7 @@ This can be used to simultaneously deploy many nodes on many hosts. A full list 
 
 **procmanager**
 
-```text
+```
 Used to list, stop, and start nodes.
 
 Usage:
@@ -258,7 +258,7 @@ Available Commands:
 
 **runscript**
 
-```text
+```
 Runs the script provided in the argument, relative to the present working directory.
 
 Usage:
@@ -267,7 +267,7 @@ Usage:
 
 **setoutput**
 
-```text
+```
 Sets the log level of a specific log output type.
 
 Usage:
@@ -276,7 +276,7 @@ Usage:
 
 **startnode**
 
-```text
+```
 Starts an Avalanche client node using procmanager and gives it a name. Example:
 
 startnode MyNode1 --public-ip=127.0.0.1 --staking-port=9651 --http-port=9650 ... 
@@ -287,7 +287,7 @@ Usage:
 
 **varstore**
 
-```text
+```
 Tools for creating variable stores and printing variables within them.
 Using this command we can create variable stores, list all variables they store, and print data placed into these stores.
 
@@ -303,7 +303,7 @@ Available Commands:
   vardump     Writes the variable to a file.
 ```
 
-## Writing Scripts <a id="writing-scripts"></a>
+## Writing Scripts <a href="#writing-scripts" id="writing-scripts"></a>
 
 Avash uses [gopher-lua](https://github.com/yuin/gopher-lua) to run Lua scripts. Scripts can use hooks to allow the user to write code that invokes the current Avash environment.
 
@@ -311,7 +311,7 @@ The functions available to Lua are:
 
 * `avash_call` - Takes a string and runs it as an Avash command, returning output
 * `avash_sleepmicro` - Takes an unsigned integer representing microseconds and sleeps for that long
-* `avash_setvar` - Takes a variable scope \(string\), a variable name \(string\), and a variable \(string\) and places it in the variable store. The scope must already have been created.
+* `avash_setvar` - Takes a variable scope (string), a variable name (string), and a variable (string) and places it in the variable store. The scope must already have been created.
 
 When writing Lua scripts, the standard Lua functionality is available to automate the execution of series of Avash commands. This allows a developer to automate:
 
@@ -323,4 +323,3 @@ When writing Lua scripts, the standard Lua functionality is available to automat
 * Track expected results and compare them with real nodes
 
 Example Lua scripts are in the [`scripts` folder](https://github.com/ava-labs/avash/tree/master/scripts).
-

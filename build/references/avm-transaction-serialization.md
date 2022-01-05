@@ -1,10 +1,10 @@
-# AVM Transaction Format
+# AVM Transaction Format AVM交易格式
 
-This file is meant to be the single source of truth for how we serialize transactions in the Avalanche Virtual Machine \(AVM\). This document uses the [primitive serialization](serialization-primitives.md) format for packing and [secp256k1](cryptographic-primitives.md#secp256k1-addresses) for cryptographic user identification.
+This file is meant to be the single source of truth for how we serialize transactions in the Avalanche Virtual Machine (AVM). This document uses the [primitive serialization](serialization-primitives.md) format for packing and [secp256k1](cryptographic-primitives.md#secp256k1-addresses) for cryptographic user identification.
 
-## Codec ID
+## Codec ID编解码器ID
 
-Some data is prepended with a codec ID \(unt16\) that denotes how the data should be deserialized. Right now, the only valid codec ID is 0 \(`0x00 0x00`\).
+Some data is prepended with a codec ID (unt16) that denotes how the data should be deserialized. Right now, the only valid codec ID is 0 (`0x00 0x00`).
 
 ## Transferable Output
 
@@ -19,7 +19,7 @@ A transferable output contains an `AssetID` and an [`Output`](avm-transaction-se
 
 ### Gantt Transferable Output Specification
 
-```text
+```
 +----------+----------+-------------------------+
 | asset_id : [32]byte |                32 bytes |
 +----------+----------+-------------------------+
@@ -31,7 +31,7 @@ A transferable output contains an `AssetID` and an [`Output`](avm-transaction-se
 
 ### Proto Transferable Output Specification
 
-```text
+```
 message TransferableOutput {
     bytes asset_id = 1; // 32 bytes
     Output output = 2;  // size(output)
@@ -45,7 +45,7 @@ Let’s make a transferable output:
 * `AssetID`: `0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f`
 * `Output`: `"Example SECP256K1 Transfer Output from below"`
 
-```text
+```
 [
     AssetID <- 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
     Output  <- 0x000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab0859,
@@ -85,7 +85,7 @@ A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
 
 ### Gantt Transferable Input Specification
 
-```text
+```
 +------------+----------+------------------------+
 | tx_id      : [32]byte |               32 bytes |
 +------------+----------+------------------------+
@@ -101,7 +101,7 @@ A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
 
 ### Proto Transferable Input Specification
 
-```text
+```
 message TransferableInput {
     bytes tx_id = 1;       // 32 bytes
     uint32 utxo_index = 2; // 04 bytes
@@ -119,7 +119,7 @@ Let’s make a transferable input:
 * `AssetID`: `0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f`
 * `Input`: `"Example SECP256K1 Transfer Input from below"`
 
-```text
+```
 [
     TxID      <- 0xf1e1d1c1b1a191817161514131211101f0e0d0c0b0a090807060504030201000
     UTXOIndex <- 0x00000005
@@ -161,7 +161,7 @@ A transferable operation contains an `AssetID`, `UTXOIDs`, and a `TransferOp`.
 
 ### Gantt Transferable Op Specification
 
-```text
+```
 +-------------+------------+------------------------------+
 | asset_id    : [32]byte   |                     32 bytes |
 +-------------+------------+------------------------------+
@@ -176,7 +176,7 @@ A transferable operation contains an `AssetID`, `UTXOIDs`, and a `TransferOp`.
 
 ### Proto Transferable Op Specification
 
-```text
+```
 message UTXOID {
     bytes tx_id = 1;       // 32 bytes
     uint32 utxo_index = 2; // 04 bytes
@@ -199,7 +199,7 @@ Let’s make a transferable operation:
     * `UTXOIndex`: `5`
 * `Op`: `"Example Transfer Op from below"`
 
-```text
+```
 [
     AssetID   <- 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
     UTXOIDs   <- [
@@ -260,7 +260,7 @@ A secp256k1 transfer output contains a `TypeID`, `Amount`, `Locktime`, `Threshol
 
 ### **Gantt SECP256K1 Transfer Output Specification**
 
-```text
+```
 +-----------+------------+--------------------------------+
 | type_id   : int        |                        4 bytes |
 +-----------+------------+--------------------------------+
@@ -278,7 +278,7 @@ A secp256k1 transfer output contains a `TypeID`, `Amount`, `Locktime`, `Threshol
 
 ### **Proto SECP256K1 Transfer Output Specification**
 
-```text
+```
 message SECP256K1TransferOutput {
     uint32 typeID = 1;            // 04 bytes
     uint64 amount = 2;            // 08 bytes
@@ -300,7 +300,7 @@ Let’s make a secp256k1 transfer output with:
 * `0x51025c61fbcfc078f69334f834be6dd26d55a955`
 * `0xc3344128e060128ede3523a24a461c8943ab0859`
 
-```text
+```
 [
     TypeID    <- 0x00000007
     Amount    <- 0x0000000000003039
@@ -349,7 +349,7 @@ A secp256k1 Mint output contains a `TypeID`, `Locktime`, `Threshold`, and `Addre
 
 ### **Gantt SECP256K1 Mint Output Specification**
 
-```text
+```
 +-----------+------------+--------------------------------+
 | type_id   : int        |                       4 bytes  |
 +-----------+------------+--------------------------------+
@@ -365,7 +365,7 @@ A secp256k1 Mint output contains a `TypeID`, `Locktime`, `Threshold`, and `Addre
 
 ### **Proto SECP256K1 Mint Output Specification**
 
-```text
+```
 message SECP256K1MintOutput {
     uint32 typeID = 1;            // 04 bytes
     uint64 locktime = 2;          // 08 bytes
@@ -385,7 +385,7 @@ Let’s make a SECP256K1 mint output with:
 * `0x51025c61fbcfc078f69334f834be6dd26d55a955`
 * `0xc3344128e060128ede3523a24a461c8943ab0859`
 
-```text
+```
 [
     TypeID    <- 0x00000006
     Locktime  <- 0x000000000000d431
@@ -433,7 +433,7 @@ An NFT transfer output contains a `TypeID`, `GroupID`, `Payload`, `Locktime`, `T
 
 ### **Gantt NFT Transfer Output Specification**
 
-```text
+```
 +-----------+------------+-------------------------------+
 | type_id   : int        |                       4 bytes |
 +-----------+------------+-------------------------------+
@@ -454,7 +454,7 @@ An NFT transfer output contains a `TypeID`, `GroupID`, `Payload`, `Locktime`, `T
 
 ### **Proto NFT Transfer Output Specification**
 
-```text
+```
 message NFTTransferOutput {
     uint32 typeID = 1;            // 04 bytes
     uint32 group_id = 2;          // 04 bytes
@@ -478,7 +478,7 @@ Let’s make an NFT transfer output with:
 * `0x51025c61fbcfc078f69334f834be6dd26d55a955`
 * `0xc3344128e060128ede3523a24a461c8943ab0859`
 
-```text
+```
 [
     TypeID    <- 0x0000000b
     GroupID   <- 0x00003039
@@ -533,7 +533,7 @@ An NFT Mint output contains a `TypeID`, `GroupID`, `Locktime`, `Threshold`, and 
 
 ### **Gantt NFT Mint Output Specification**
 
-```text
+```
 +-----------+------------+--------------------------------+
 | type_id   : int        |                        4 bytes |
 +-----------+------------+--------------------------------+
@@ -551,7 +551,7 @@ An NFT Mint output contains a `TypeID`, `GroupID`, `Locktime`, `Threshold`, and 
 
 ### **Proto NFT Mint Output Specification**
 
-```text
+```
 message NFTMintOutput {
     uint32 typeID = 1;            // 04 bytes
     uint32 group_id = 2;          // 04 bytes
@@ -573,7 +573,7 @@ Let’s make an NFT mint output with:
 * `0x51025c61fbcfc078f69334f834be6dd26d55a955`
 * `0xc3344128e060128ede3523a24a461c8943ab0859`
 
-```text
+```
 [
     TypeID    <- 0x0000000a
     GroupID   <- 0x00003039
@@ -625,7 +625,7 @@ A secp256k1 transfer input contains an `Amount` and `AddressIndices`.
 
 ### **Gantt SECP256K1 Transfer Input Specification**
 
-```text
+```
 +-------------------------+-------------------------------------+
 | type_id         : int   |                             4 bytes |
 +-----------------+-------+-------------------------------------+
@@ -639,7 +639,7 @@ A secp256k1 transfer input contains an `Amount` and `AddressIndices`.
 
 ### **Proto SECP256K1 Transfer Input Specification**
 
-```text
+```
 message SECP256K1TransferInput {
     uint32 typeID = 1;                   // 04 bytes
     uint64 amount = 2;                   // 08 bytes
@@ -653,9 +653,9 @@ Let’s make a payment input with:
 
 * **`TypeId`**: `5`
 * **`Amount`**: `123456789`
-* **`AddressIndices`**: \[`3`,`7`\]
+* **`AddressIndices`**: \[`3`,`7`]
 
-```text
+```
 [
     TypeID         <- 0x00000005
     Amount         <- 123456789 = 0x00000000075bcd15,
@@ -695,7 +695,7 @@ A secp256k1 Mint operation contains a `TypeID`, `AddressIndices`, `MintOutput`, 
 
 ### **Gantt SECP256K1 Mint Operation Specification**
 
-```text
+```
 +----------------------------------+------------------------------------+
 | type_id         : int            |                            4 bytes |
 +----------------------------------+------------------------------------+
@@ -713,7 +713,7 @@ A secp256k1 Mint operation contains a `TypeID`, `AddressIndices`, `MintOutput`, 
 
 ### **Proto SECP256K1 Mint Operation Specification**
 
-```text
+```
 message SECP256K1MintOperation {
     uint32 typeID = 1;                   // 4 bytes
     repeated uint32 address_indices = 2; // 04 bytes + 04 bytes * len(address_indices)
@@ -733,7 +733,7 @@ Let’s make a [secp256k1](cryptographic-primitives.md#secp-256-k1-addresses) mi
 * **`MintOutput`**: `"Example SECP256K1 Mint Output from above"`
 * **`TransferOutput`**: `"Example SECP256K1 Transfer Output from above"`
 
-```text
+```
 [
     TypeID <- 0x00000008
     AddressIndices <- [0x00000003, 0x00000007]
@@ -788,7 +788,7 @@ An NFT mint operation contains a `TypeID`, `AddressIndices`, `GroupID`, `Payload
 
 ### **Gantt NFT Mint Op Specification**
 
-```text
+```
 +------------------------------+------------------------------------+
 | type_id         : int        |                            4 bytes |
 +-----------------+------------+------------------------------------+
@@ -809,7 +809,7 @@ An NFT mint operation contains a `TypeID`, `AddressIndices`, `GroupID`, `Payload
 
 ### **Proto NFT Mint Op Specification**
 
-```text
+```
 message NFTMintOp {
     uint32 typeID = 1;                   // 04 bytes
     repeated uint32 address_indices = 2; // 04 bytes + 04 bytes * len(address_indices)
@@ -834,7 +834,7 @@ Let’s make an NFT mint operation with:
 * **`Addresses`**:
 * `0xc3344128e060128ede3523a24a461c8943ab0859`
 
-```text
+```
 [
     TypeID         <- 0x0000000c
     AddressIndices <- [
@@ -895,7 +895,7 @@ An NFT transfer operation contains a `TypeID`, `AddressIndices` and an untyped `
 
 ### **Gantt NFT Transfer Op Specification**
 
-```text
+```
 +------------------------------+------------------------------------+
 | type_id         : int        |                            4 bytes |
 +-----------------+------------+------------------------------------+
@@ -919,7 +919,7 @@ An NFT transfer operation contains a `TypeID`, `AddressIndices` and an untyped `
 
 ### **Proto NFT Transfer Op Specification**
 
-```text
+```
 message NFTTransferOp {
     uint32 typeID = 1;                   // 04 bytes
     repeated uint32 address_indices = 2; // 04 bytes + 04 bytes * len(address_indices)
@@ -947,7 +947,7 @@ Let’s make an NFT transfer operation with:
 * `0xc3344128e060128ede3523a24a461c8943ab0859`
 * `0x51025c61fbcfc078f69334f834be6dd26d55a955`
 
-```text
+```
 [
     TypeID         <- 0x0000000d
     AddressIndices <- [
@@ -1009,7 +1009,7 @@ Initial state contains a `FxID` and an array of `Output`.
 
 ### Gantt Initial State Specification
 
-```text
+```
 +---------------+----------+-------------------------------+
 | fx_id         : int      |                       4 bytes |
 +---------------+----------+-------------------------------+
@@ -1021,7 +1021,7 @@ Initial state contains a `FxID` and an array of `Output`.
 
 ### Proto Initial State Specification
 
-```text
+```
 message InitialState {
     uint32 fx_id = 1;                  // 04 bytes
     repeated Output outputs = 2;       // 04 + size(outputs) bytes
@@ -1035,7 +1035,7 @@ Let’s make an initial state:
 * `FxID`: `0x00000000`
 * `InitialState`: `["Example SECP256K1 Transfer Output from above"]`
 
-```text
+```
 [
     FxID <- 0x00000000
     InitialState  <- [
@@ -1076,7 +1076,7 @@ A [secp256k1](cryptographic-primitives.md#secp-256-k1-addresses) credential cont
 
 ### **Gantt SECP256K1 Credential Specification**
 
-```text
+```
 +------------------------------+---------------------------------+
 | type_id         : int        |                         4 bytes |
 +-----------------+------------+---------------------------------+
@@ -1088,7 +1088,7 @@ A [secp256k1](cryptographic-primitives.md#secp-256-k1-addresses) credential cont
 
 ### **Proto SECP256K1 Credential Specification**
 
-```text
+```
 message SECP256K1Credential {
     uint32 typeID = 1;             // 4 bytes
     repeated bytes signatures = 2; // 4 bytes + 65 bytes * len(signatures)
@@ -1104,7 +1104,7 @@ Let’s make a payment input with:
 * `0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1e1d1f202122232425262728292a2b2c2e2d2f303132333435363738393a3b3c3d3e3f00`
 * `0x404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5e5d5f606162636465666768696a6b6c6e6d6f707172737475767778797a7b7c7d7e7f00`
 
-```text
+```
 [
     TypeID         <- 0x00000009
     Signatures <- [
@@ -1162,7 +1162,7 @@ A base tx contains a `TypeID`, `NetworkID`, `BlockchainID`, `Outputs`, `Inputs`,
 
 ### Gantt Base Tx Specification
 
-```text
+```
 +--------------------------------------+-----------------------------------------+
 | type_id       : int                  |                                 4 bytes |
 +---------------+----------------------+-----------------------------------------+
@@ -1182,7 +1182,7 @@ A base tx contains a `TypeID`, `NetworkID`, `BlockchainID`, `Outputs`, `Inputs`,
 
 ### Proto Base Tx Specification
 
-```text
+```
 message BaseTx {
     uint32 typeID = 1;           // 04 bytes
     uint32 network_id = 2;       // 04 bytes
@@ -1206,7 +1206,7 @@ Let’s make an base tx that uses the inputs and outputs from the previous examp
   * `"Example Transferable Input as defined above"`
 * **`Memo`**: `0x00010203`
 
-```text
+```
 [
     TypeID       <- 0x00000000
     NetworkID    <- 0x00000004
@@ -1280,7 +1280,7 @@ An unsigned create asset tx contains a `BaseTx`, `Name`, `Symbol`, `Denomination
 
 ### Gantt Unsigned Create Asset Tx Specification
 
-```text
+```
 +----------------+----------------+--------------------------------------+
 | base_tx        : BaseTx         |                  size(base_tx) bytes |
 +----------------+----------------+--------------------------------------+
@@ -1299,7 +1299,7 @@ An unsigned create asset tx contains a `BaseTx`, `Name`, `Symbol`, `Denomination
 
 ### Proto Unsigned Create Asset Tx Specification
 
-```text
+```
 message CreateAssetTx {
     BaseTx base_tx = 1;                       // size(base_tx)
     string name = 2;                          // 2 bytes + len(name)
@@ -1320,7 +1320,7 @@ Let’s make an unsigned base tx that uses the inputs and outputs from the previ
 * **`InitialStates`**:
 * `"Example Initial State as defined above"`
 
-```text
+```
 [
     BaseTx        <- 0x0000000100000004ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000007000000030000000400010203
     Name          <- 0x0010566f6c6174696c69747920496e646578
@@ -1400,7 +1400,7 @@ An unsigned operation tx contains a `BaseTx`, and `Ops`. The `TypeID` for this t
 
 ### Gantt Unsigned Operation Tx Specification
 
-```text
+```
 +---------+------------------+-------------------------------------+
 | base_tx : BaseTx           |                 size(base_tx) bytes |
 +---------+------------------+-------------------------------------+
@@ -1412,7 +1412,7 @@ An unsigned operation tx contains a `BaseTx`, and `Ops`. The `TypeID` for this t
 
 ### Proto Unsigned Operation Tx Specification
 
-```text
+```
 message OperationTx {
     BaseTx base_tx = 1;          // size(base_tx)
     repeated TransferOp ops = 2; // 4 bytes + size(ops)
@@ -1424,9 +1424,9 @@ message OperationTx {
 Let’s make an unsigned operation tx that uses the inputs and outputs from the previous examples:
 
 * `BaseTx`: `"Example BaseTx above" with TypeID set to 2`
-* **`Ops`**: \[`"Example Transferable Op as defined above"`\]
+* **`Ops`**: \[`"Example Transferable Op as defined above"`]
 
-```text
+```
 [
     BaseTx <- 0x0000000200000004ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000007000000030000000400010203
     Ops <- [
@@ -1503,7 +1503,7 @@ An unsigned import tx contains a `BaseTx`, `SourceChain` and `Ins`. \* The `Type
 
 ### Gantt Unsigned Import Tx Specification
 
-```text
+```
 +---------+----------------------+-----------------------------+
 | base_tx : BaseTx               |         size(base_tx) bytes |
 +-----------------+--------------+-----------------------------+
@@ -1517,7 +1517,7 @@ An unsigned import tx contains a `BaseTx`, `SourceChain` and `Ins`. \* The `Type
 
 ### Proto Unsigned Import Tx Specification
 
-```text
+```
 message ImportTx {
     BaseTx base_tx = 1;          // size(base_tx)
     bytes source_chain = 2;      // 32 bytes
@@ -1533,7 +1533,7 @@ Let’s make an unsigned import tx that uses the inputs from the previous exampl
 * `SourceChain`: `0x0000000000000000000000000000000000000000000000000000000000000000`
 * `Ins`: `"Example SECP256K1 Transfer Input as defined above"`
 
-```text
+```
 [
     BaseTx        <- 0x0000000300000004ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000007000000030000000400010203
     SourceChain <- 0x0000000000000000000000000000000000000000000000000000000000000000
@@ -1611,7 +1611,7 @@ An unsigned export tx contains a `BaseTx`, `DestinationChain`, and `Outs`. The `
 
 ### Gantt Unsigned Export Tx Specification
 
-```text
+```
 +-------------------+---------------+--------------------------------------+
 | base_tx           : BaseTx        |                  size(base_tx) bytes |
 +-------------------+---------------+--------------------------------------+
@@ -1625,7 +1625,7 @@ An unsigned export tx contains a `BaseTx`, `DestinationChain`, and `Outs`. The `
 
 ### Proto Unsigned Export Tx Specification
 
-```text
+```
 message ExportTx {
     BaseTx base_tx = 1;            // size(base_tx)
     bytes destination_chain = 2;   // 32 bytes
@@ -1641,7 +1641,7 @@ Let’s make an unsigned export tx that uses the outputs from the previous examp
 * `DestinationChain`: `0x0000000000000000000000000000000000000000000000000000000000000000`
 * `Outs`: `"Example SECP256K1 Transfer Output as defined above"`
 
-```text
+```
 [
     BaseTx           <- 0x0000000400000004ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000007000000030000000400010203
     DestinationChain <- 0x0000000000000000000000000000000000000000000000000000000000000000
@@ -1723,7 +1723,7 @@ A signed transaction contains a `CodecID`, `UnsignedTx`, and `Credentials`.
 
 ### Gantt Signed Transaction Specification
 
-```text
+```
 +---------------------+--------------+------------------------------------------------+
 | codec_id            : uint16       |                                        2 bytes |
 +---------------------+--------------+------------------------------------------------+
@@ -1737,7 +1737,7 @@ A signed transaction contains a `CodecID`, `UnsignedTx`, and `Credentials`.
 
 ### Proto Signed Transaction Specification
 
-```text
+```
 message Tx {
     uint16 codec_id = 1;                 // 2 bytes
     UnsignedTx unsigned_tx = 2;          // size(unsigned_tx)
@@ -1753,7 +1753,7 @@ Let’s make a signed transaction that uses the unsigned transaction and credent
 * **`UnsignedTx`**: `0x0000000100000004ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000007000000030000000400010203`
 * **`Credentials`** `0x0000000900000002000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1e1d1f202122232425262728292a2b2c2e2d2f303132333435363738393a3b3c3d3e3f00404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5e5d5f606162636465666768696a6b6c6e6d6f707172737475767778797a7b7c7d7e7f00`
 
-```text
+```
 [
     CodecID     <- 0x0000
     UnsignedTx  <- 0x0000000100000004ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000007000000030000000400010203
@@ -1836,7 +1836,7 @@ A UTXO contains a `CodecID`, `TxID`, `UTXOIndex`, `AssetID`, and `Output`.
 
 ### Gantt UTXO Specification
 
-```text
+```
 +--------------+----------+-------------------------+
 | codec_id     : uint16   |                 2 bytes |
 +--------------+----------+-------------------------+
@@ -1854,7 +1854,7 @@ A UTXO contains a `CodecID`, `TxID`, `UTXOIndex`, `AssetID`, and `Output`.
 
 ### Proto UTXO Specification
 
-```text
+```
 message Utxo {
     uint16 codec_id = 1;     // 02 bytes
     bytes tx_id = 2;         // 32 bytes
@@ -1874,7 +1874,7 @@ Let’s make a UTXO from the signed transaction created above:
 * **`AssetID`**: `0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f`
 * **`Output`**: `"Example SECP256K1 Transferable Output as defined above"`
 
-```text
+```
 [
     CodecID   <- 0x0000
     TxID      <- 0xf966750f438867c3c9828ddcdbe660e21ccdbb36a9276958f011ba472f75d4e7
@@ -1921,7 +1921,7 @@ An instance of a GenesisAsset contains an `Alias`, `NetworkID`, `BlockchainID`, 
 
 * **`Alias`** is the alias for this asset.
 * **`NetworkID`** defines which network this transaction is meant to be issued to. This value is meant to support transaction routing and is not designed for replay attack prevention.
-* **`BlockchainID`** is the ID \(32-byte array\) that defines which blockchain this transaction was issued to. This is used for replay attack prevention for transactions that could potentially be valid across network or blockchain.
+* **`BlockchainID`** is the ID (32-byte array) that defines which blockchain this transaction was issued to. This is used for replay attack prevention for transactions that could potentially be valid across network or blockchain.
 * **`Outputs`** is an array of [transferable output objects](avm-transaction-serialization.md#transferable-output). Outputs must be sorted lexicographically by their serialized representation. The total quantity of the assets created in these outputs must be less than or equal to the total quantity of each asset consumed in the inputs minus the transaction fee.
 * **`Inputs`** is an array of [transferable input objects](avm-transaction-serialization.md#transferable-input). Inputs must be sorted and unique. Inputs are sorted first lexicographically by their **`TxID`** and then by the **`UTXOIndex`** from low to high. If there are inputs that have the same **`TxID`** and **`UTXOIndex`**, then the transaction is invalid as this would result in a double spend.
 * **`Memo`** is a memo field that contains arbitrary bytes, up to 256 bytes.
@@ -1932,7 +1932,7 @@ An instance of a GenesisAsset contains an `Alias`, `NetworkID`, `BlockchainID`, 
 
 ### Gantt GenesisAsset Specification
 
-```text
+```
 +----------------+----------------------+--------------------------------+
 | alias          : string               |           2 + len(alias) bytes |
 +----------------+----------------------+--------------------------------+
@@ -1961,7 +1961,7 @@ An instance of a GenesisAsset contains an `Alias`, `NetworkID`, `BlockchainID`, 
 
 ### Proto GenesisAsset Specification
 
-```text
+```
 message GenesisAsset {
     string alias = 1;                          // 2 bytes + len(alias)
     uint32 network_id = 2;                     // 04 bytes
@@ -1983,8 +1983,8 @@ Let’s make a GenesisAsset:
 * **`Alias`**: `asset1`
 * **`NetworkID`**: `12345`
 * **`BlockchainID`**: `0x0000000000000000000000000000000000000000000000000000000000000000`
-* **`Outputs`**: \[\]
-* **`Inputs`**: \[\]
+* **`Outputs`**: \[]
+* **`Inputs`**: \[]
 * **`Memo`**: `2Zc54v4ek37TEwu4LiV3j41PUMRd6acDDU3ZCVSxE7X`
 * **`Name`**: `asset1`
 * **`Symbol`**: `MFCA`
@@ -1992,7 +1992,7 @@ Let’s make a GenesisAsset:
 * **`InitialStates`**:
 * `"Example Initial State as defined above"`
 
-```text
+```
 [
     Alias         <- 0x617373657431
     NetworkID     <- 0x00003039
@@ -2053,4 +2053,3 @@ Let’s make a GenesisAsset:
     0x43, 0xab, 0x08, 0x59,
 ]
 ```
-

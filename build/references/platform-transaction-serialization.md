@@ -1,25 +1,25 @@
-# Platform Transaction Format
+# Platform Transaction Format平台交易格式
 
 This file is meant to be the single source of truth for how we serialize transactions in Avalanche’s Platform Virtual Machine, aka the `Platform Chain` or `P-Chain`. This document uses the [primitive serialization](serialization-primitives.md) format for packing and [secp256k1](cryptographic-primitives.md#secp-256-k1-addresses) for cryptographic user identification.
 
-## Codec ID
+## Codec ID编解码器ID
 
-Some data is prepended with a codec ID \(unt16\) that denotes how the data should be deserialized. Right now, the only valid codec ID is 0 \(`0x00 0x00`\).
+Some data is prepended with a codec ID (unt16) that denotes how the data should be deserialized. Right now, the only valid codec ID is 0 (`0x00 0x00`).
 
-## Transferable Output
+## Transferable Output可转让的输出
 
 Transferable outputs wrap an output with an asset ID.
 
-### What Transferable Output Contains
+### What Transferable Output Contains可转移输出包含什么
 
 A transferable output contains an `AssetID` and an `Output`.
 
 * **`AssetID`** is a 32-byte array that defines which asset this output references. The only valid `AssetID` is the AVAX `AssetID`.
 * **`Output`** is an output, as defined below. For example, this can be a SECP256K1 transfer output.
 
-### Gantt Transferable Output Specification
+### Gantt Transferable Output Specification甘特可转移输出格式
 
-```text
+```
 +----------+----------+-------------------------+
 | asset_id : [32]byte |                32 bytes |
 +----------+----------+-------------------------+
@@ -29,23 +29,23 @@ A transferable output contains an `AssetID` and an `Output`.
                       +-------------------------+
 ```
 
-### Proto Transferable Output Specification
+### Proto Transferable Output Specification原型可转移输出规格
 
-```text
+```
 message TransferableOutput {
     bytes asset_id = 1; // 32 bytes
     Output output = 2;  // size(output)
 }
 ```
 
-### Transferable Output Example
+### Transferable Output Example可转移输出例子
 
 Let’s make a transferable output:
 
 * `AssetID: 0x6870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a`
 * `Output: "Example SECP256K1 Transfer Output from below"`
 
-```text
+```
 [
     AssetID <- 0x6870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a,
     Output  <- 0x0000000700000000ee5be5c000000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715c,
@@ -67,11 +67,11 @@ Let’s make a transferable output:
 ]
 ```
 
-## Transferable Input
+## Transferable Input可转移输入
 
 Transferable inputs describe a specific UTXO with a provided transfer input.
 
-### What Transferable Input Contains
+### What Transferable Input Contains可转移输入包括
 
 A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
 
@@ -80,9 +80,9 @@ A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
 * **`AssetID`** is a 32-byte array that defines which asset this input references. The only valid `AssetID` is the AVAX `AssetID`.
 * **`Input`** is a transferable input object.
 
-### Gantt Transferable Input Specification
+### Gantt Transferable Input Specification甘特可转移输入格式
 
-```text
+```
 +------------+----------+------------------------+
 | tx_id      : [32]byte |               32 bytes |
 +------------+----------+------------------------+
@@ -98,7 +98,7 @@ A transferable input contains a `TxID`, `UTXOIndex` `AssetID` and an `Input`.
 
 ### Proto Transferable Input Specification
 
-```text
+```
 message TransferableInput {
     bytes tx_id = 1;       // 32 bytes
     uint32 utxo_index = 2; // 04 bytes
@@ -107,7 +107,7 @@ message TransferableInput {
 }
 ```
 
-### Transferable Input Example
+### Transferable Input Example可转移输入格式
 
 Let’s make a transferable input:
 
@@ -116,7 +116,7 @@ Let’s make a transferable input:
 * **`AssetID`**: `0x6870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a`
 * **`Input`**: `"Example SECP256K1 Transfer Input from below"`
 
-```text
+```
 [
     TxID      <- 0x0dfafbdf5c81f635c9257824ff21c8e3e6f7b632ac306e11446ee540d34711a15
     UTXOIndex <- 0x00000001
@@ -144,11 +144,11 @@ Let’s make a transferable input:
 ]
 ```
 
-## Outputs
+## Outputs输出
 
 Outputs have two possible type: `SECP256K1TransferOutput`, `SECP256K1OutputOwners`.
 
-## SECP256K1 Transfer Output
+## SECP256K1 Transfer OutputSECP256K1转账输出
 
 A [secp256k1](cryptographic-primitives.md#secp-256-k1-addresses) transfer output allows for sending a quantity of an asset to a collection of addresses after a specified unix time. The only valid asset is AVAX.
 
@@ -164,7 +164,7 @@ A secp256k1 transfer output contains a `TypeID`, `Amount`, `Locktime`, `Threshol
 
 ### **Gantt SECP256K1 Transfer Output Specification**
 
-```text
+```
 +-----------+------------+--------------------------------+
 | type_id   : int        |                        4 bytes |
 +-----------+------------+--------------------------------+
@@ -182,7 +182,7 @@ A secp256k1 transfer output contains a `TypeID`, `Amount`, `Locktime`, `Threshol
 
 ### **Proto SECP256K1 Transfer Output Specification**
 
-```text
+```
 message SECP256K1TransferOutput {
     uint32 type_id = 1;           // 04 bytes
     uint64 amount = 2;            // 08 bytes
@@ -203,7 +203,7 @@ Let’s make a secp256k1 transfer output with:
 * **`Addresses`**:
   * 0xda2bee01be82ecc00c34f361eda8eb30fb5a715c
 
-```text
+```
 [
     TypeID    <- 0x00000007
     Amount    <- 0x00000000ee5be5c0
@@ -247,7 +247,7 @@ A secp256k1 output owners output contains a `TypeID`, `Locktime`, `Threshold`, a
 
 ### **Gantt SECP256K1 Output Owners Output Specification**
 
-```text
+```
 +-----------+------------+--------------------------------+
 | type_id   : int        |                        4 bytes |
 +-----------+------------+--------------------------------+
@@ -263,7 +263,7 @@ A secp256k1 output owners output contains a `TypeID`, `Locktime`, `Threshold`, a
 
 ### **Proto SECP256K1 Output Owners Output Specification**
 
-```text
+```
 message SECP256K1OutputOwnersOutput {
     uint32 type_id = 1;           // 04 bytes
     uint64 locktime = 2;          // 08 bytes
@@ -282,7 +282,7 @@ Let’s make a secp256k1 output owners output with:
 * **`Addresses`**:
   * 0xda2bee01be82ecc00c34f361eda8eb30fb5a715c
 
-```text
+```
 [
     TypeID    <- 0x0000000b
     Locktime  <- 0x0000000000000000
@@ -326,7 +326,7 @@ A secp256k1 transfer input contains an `Amount` and `AddressIndices`.
 
 ### **Gantt SECP256K1 Transfer Input Specification**
 
-```text
+```
 +-------------------------+-------------------------------------+
 | type_id         : int   |                             4 bytes |
 +-----------------+-------+-------------------------------------+
@@ -340,7 +340,7 @@ A secp256k1 transfer input contains an `Amount` and `AddressIndices`.
 
 **Proto SECP256K1 Transfer Input Specification**
 
-```text
+```
 message SECP256K1TransferInput {
     uint32 type_id = 1;                  // 04 bytes
     uint64 amount = 2;                   // 08 bytes
@@ -354,9 +354,9 @@ Let’s make a payment input with:
 
 * **`TypeID`**: 5
 * **`Amount`**: 4000000000
-* **`AddressIndices`**: \[0\]
+* **`AddressIndices`**: \[0]
 
-```text
+```
 [
     TypeID         <- 0x00000005
     Amount         <- 0x00000000ee6b2800,
@@ -394,7 +394,7 @@ A base tx contains a `TypeID`, `NetworkID`, `BlockchainID`, `Outputs`, `Inputs`,
 
 ### **Gantt Base Tx Specification**
 
-```text
+```
 +---------------+----------------------+-----------------------------------------+
 | type_id       : int                  |                                 4 bytes |
 +---------------+----------------------+-----------------------------------------+
@@ -414,7 +414,7 @@ A base tx contains a `TypeID`, `NetworkID`, `BlockchainID`, `Outputs`, `Inputs`,
 
 ### **Proto Base Tx Specification**
 
-```text
+```
 message BaseTx {
     uint32 type_id = 1;          // 04 bytes
     uint32 network_id = 2;       // 04 bytes
@@ -437,7 +437,7 @@ Let’s make a base tx that uses the inputs and outputs from the previous exampl
 * **`Inputs`**:
   * `"Example Transferable Input as defined above"`
 
-```text
+```
 [
     TypeID       <- 0x00000000
     NetworkID    <- 0x00003039
@@ -512,7 +512,7 @@ An unsigned add validator tx contains a `BaseTx`, `Validator`, `Stake`, `Rewards
 
 ### **Gantt Unsigned Add Validator Tx Specification**
 
-```text
+```
 +---------------+-----------------------+-----------------------------------------+
 | base_tx       : BaseTx                |                     size(base_tx) bytes |
 +---------------+-----------------------+-----------------------------------------+
@@ -530,7 +530,7 @@ An unsigned add validator tx contains a `BaseTx`, `Validator`, `Stake`, `Rewards
 
 ### **Proto Unsigned Add Validator Tx Specification**
 
-```text
+```
 message AddValidatorTx {
     BaseTx base_tx = 1;                      // size(base_tx)
     Validator validator = 2;                 // 44 bytes
@@ -552,11 +552,11 @@ Let’s make an unsigned add validator tx that uses the inputs and outputs from 
   * **`Weight`** is a long which is the amount the validator stakes
 * **`Stake`**: `0x0000000139c33a499ce4c33a3b09cdd2cfa01ae70dbf2d18b2d7d168524440e55d55008800000007000001d1a94a2000000000000000000000000001000000013cb7d3842e8cee6a0ebd09f1fe884f6861e1b29c`
 * **`RewardsOwner`**: `0x0000000b00000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715c`
-* **`Shares`**: `0x00000064`
+*   **`Shares`**: `0x00000064`
 
-  0x0000000b00000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715c
+    0x0000000b00000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715c
 
-```text
+```
 [
     BaseTx       <- 0x0000000c000030390000000000000000000000000000000000000000000000000000000000000006870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000700000000ee5be5c000000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715cdfafbdf5c81f635c9257824ff21c8e3e6f7b632ac306e11446ee540d34711a15000000016870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000500000000ee6b28000000000100000000
     NodeID       <- 0xe9094f73698002fd52c90819b457b9fbc866ab80
@@ -650,7 +650,7 @@ An unsigned add subnet validator tx contains a `BaseTx`, `Validator`, `SubnetID`
 
 ### **Gantt Unsigned Add Subnet Validator Tx Specification**
 
-```text
+```
 +---------------+----------------------+-----------------------------------------+
 | base_tx       : BaseTx               |                     size(base_tx) bytes |
 +---------------+----------------------+-----------------------------------------+
@@ -666,7 +666,7 @@ An unsigned add subnet validator tx contains a `BaseTx`, `Validator`, `SubnetID`
 
 ### **Proto Unsigned Add Subnet Validator Tx Specification**
 
-```text
+```
 message AddSubnetValidatorTx {
     BaseTx base_tx = 1;         // size(base_tx)
     Validator validator = 2;    // size(validator)
@@ -689,7 +689,7 @@ Let’s make an unsigned add subnet validator tx that uses the inputs and output
   * **`TypeID`**: `0x0000000a`
   * **`SigIndices`**: `0x00000000`
 
-```text
+```
 [
     BaseTx       <- 0x0000000d000030390000000000000000000000000000000000000000000000000000000000000006870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000700000000ee5be5c000000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715cdfafbdf5c81f635c9257824ff21c8e3e6f7b632ac306e11446ee540d34711a15000000016870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000500000000ee6b28000000000100000000
     NodeID       <- 0xe9094f73698002fd52c90819b457b9fbc866ab80
@@ -769,7 +769,7 @@ An unsigned add delegator tx contains a `BaseTx`, `Validator`, `Stake`, and `Rew
 * **`Validator`** Validator has a `NodeID`, `StartTime`, `EndTime`, and `Weight`
   * **`NodeID`** is 20 bytes which is the node ID of the delegatee.
   * **`StartTime`** is a long which is the Unix time when the delegator starts delegating.
-  * **`EndTime`** is a long which is the Unix time when the delegator stops delegating \(and staked AVAX is returned\).
+  * **`EndTime`** is a long which is the Unix time when the delegator stops delegating (and staked AVAX is returned).
   * **`Weight`** is a long which is the amount the delegator stakes
 * **`Stake`** Stake has `LockedOuts`
   * **`LockedOuts`** An array of Transferable Outputs that are locked for the duration of the staking period. At the end of the staking period, these outputs are refunded to their respective addresses.
@@ -777,7 +777,7 @@ An unsigned add delegator tx contains a `BaseTx`, `Validator`, `Stake`, and `Rew
 
 ### **Gantt Unsigned Add Delegator Tx Specification**
 
-```text
+```
 +---------------+-----------------------+-----------------------------------------+
 | base_tx       : BaseTx                |                     size(base_tx) bytes |
 +---------------+-----------------------+-----------------------------------------+
@@ -793,7 +793,7 @@ An unsigned add delegator tx contains a `BaseTx`, `Validator`, `Stake`, and `Rew
 
 ### **Proto Unsigned Add Delegator Tx Specification**
 
-```text
+```
 message AddDelegatorTx {
     BaseTx base_tx = 1;                      // size(base_tx)
     Validator validator = 2;                 // 44 bytes
@@ -814,7 +814,7 @@ Let’s make an unsigned add delegator tx that uses the inputs and outputs from 
 * **`Stake`**: `0x0000000139c33a499ce4c33a3b09cdd2cfa01ae70dbf2d18b2d7d168524440e55d55008800000007000001d1a94a2000000000000000000000000001000000013cb7d3842e8cee6a0ebd09f1fe884f6861e1b29c`
 * **`RewardsOwner`**: `0x0000000b00000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715c`
 
-```text
+```
 [
     BaseTx       <- 0x0000000e000030390000000000000000000000000000000000000000000000000000000000000006870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000700000000ee5be5c000000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715cdfafbdf5c81f635c9257824ff21c8e3e6f7b632ac306e11446ee540d34711a15000000016870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000500000000ee6b28000000000100000000
     NodeID       <- 0xe9094f73698002fd52c90819b457b9fbc866ab80
@@ -899,7 +899,7 @@ An unsigned create subnet tx contains a `BaseTx`, and `RewardsOwner`. The `TypeI
 
 ### **Gantt Unsigned Create Subnet Tx Specification**
 
-```text
+```
 +-----------------+-----------------------|---------------------------------+
 | base_tx         : BaseTx                |             size(base_tx) bytes |
 +-----------------+-----------------------+--------------------------------+
@@ -911,7 +911,7 @@ An unsigned create subnet tx contains a `BaseTx`, and `RewardsOwner`. The `TypeI
 
 ### **Proto Unsigned Create Subnet Tx Specification**
 
-```text
+```
 message CreateSubnetTx {
     BaseTx base_tx = 1;                      // size(base_tx)
     SECP256K1OutputOwners rewards_owner = 2; // size(rewards_owner)
@@ -927,9 +927,9 @@ Let’s make an unsigned create subnet tx that uses the inputs from the previous
   * **`TypeId`**: 11
   * **`Locktime`**: 0
   * **`Threshold`**: 1
-  * **`Addresses`**: \[ 0xda2bee01be82ecc00c34f361eda8eb30fb5a715c \]
+  * **`Addresses`**: \[ 0xda2bee01be82ecc00c34f361eda8eb30fb5a715c ]
 
-```text
+```
 [
     BaseTx        <- 0x00000010000030390000000000000000000000000000000000000000000000000000000000000006870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000700000000ee5be5c000000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715cdfafbdf5c81f635c9257824ff21c8e3e6f7b632ac306e11446ee540d34711a15000000016870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000500000000ee6b28000000000100000000
     RewardsOwner <-
@@ -987,7 +987,7 @@ An unsigned import tx contains a `BaseTx`, `SourceChain`, and `Ins`. The `TypeID
 
 ### **Gantt Unsigned Import Tx Specification**
 
-```text
+```
 +-----------------+--------------|---------------------------------+
 | base_tx         : BaseTx       |             size(base_tx) bytes |
 +-----------------+--------------+---------------------------------+
@@ -1001,7 +1001,7 @@ An unsigned import tx contains a `BaseTx`, `SourceChain`, and `Ins`. The `TypeID
 
 ### **Proto Unsigned Import Tx Specification**
 
-```text
+```
 message ImportTx {
     BaseTx base_tx = 1;          // size(base_tx)
     bytes source_chain = 2;      // 32 bytes
@@ -1017,7 +1017,7 @@ Let’s make an unsigned import tx that uses the inputs from the previous exampl
 * **`SourceChain`**:
 * **`Ins`**: "Example SECP256K1 Transfer Input as defined above"
 
-```text
+```
 [
     BaseTx        <- 0x00000011000030390000000000000000000000000000000000000000000000000000000000000006870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000700000000ee5be5c000000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715cdfafbdf5c81f635c9257824ff21c8e3e6f7b632ac306e11446ee540d34711a15000000016870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000500000000ee6b28000000000100000000
     SourceChain   <- 0x787cd3243c002e9bf5bbbaea8a42a16c1a19cc105047c66996807cbf16acee10
@@ -1082,7 +1082,7 @@ An unsigned export tx contains a `BaseTx`, `DestinationChain`, and `Outs`. The `
 
 ### **Gantt Unsigned Export Tx Specification**
 
-```text
+```
 +-------------------+---------------+--------------------------------------+
 | base_tx           : BaseTx        |                  size(base_tx) bytes |
 +-------------------+---------------+--------------------------------------+
@@ -1096,7 +1096,7 @@ An unsigned export tx contains a `BaseTx`, `DestinationChain`, and `Outs`. The `
 
 ### **Proto Unsigned Export Tx Specification**
 
-```text
+```
 message ExportTx {
     BaseTx base_tx = 1;            // size(base_tx)
     bytes destination_chain = 2;   // 32 bytes
@@ -1112,7 +1112,7 @@ Let’s make an unsigned export tx that uses the outputs from the previous examp
 * `DestinationChain`: `0x0000000000000000000000000000000000000000000000000000000000000000`
 * `Outs`: "Example SECP256K1 Transfer Output as defined above"
 
-```text
+```
 [
     BaseTx           <- 0x00000012000030390000000000000000000000000000000000000000000000000000000000000006870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000700000000ee5be5c000000000000000000000000100000001da2bee01be82ecc00c34f361eda8eb30fb5a715cdfafbdf5c81f635c9257824ff21c8e3e6f7b632ac306e11446ee540d34711a15000000016870b7d66ac32540311379e5b5dbad28ec7eb8ddbfc8f4d67299ebb48475907a0000000500000000ee6b28000000000100000000
     DestinationChain <- 0x0000000000000000000000000000000000000000000000000000000000000000
@@ -1195,7 +1195,7 @@ A [secp256k1](cryptographic-primitives.md#secp-256-k1-addresses) credential cont
 
 ### **Gantt SECP256K1 Credential Specification**
 
-```text
+```
 +------------------------------+---------------------------------+
 | type_id         : int        |                         4 bytes |
 +-----------------+------------+---------------------------------+
@@ -1207,7 +1207,7 @@ A [secp256k1](cryptographic-primitives.md#secp-256-k1-addresses) credential cont
 
 ### **Proto SECP256K1 Credential Specification**
 
-```text
+```
 message SECP256K1Credential {
     uint32 TypeID = 1;             // 4 bytes
     repeated bytes signatures = 2; // 4 bytes + 65 bytes * len(signatures)
@@ -1222,7 +1222,7 @@ Let’s make a payment input with:
 * `0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1e1d1f202122232425262728292a2b2c2e2d2f303132333435363738393a3b3c3d3e3f00`
 * `0x404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5e5d5f606162636465666768696a6b6c6e6d6f707172737475767778797a7b7c7d7e7f00`
 
-```text
+```
 [
     Signatures <- [
         0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1e1d1f202122232425262728292a2b2c2e2d2f303132333435363738393a3b3c3d3e3f00,
@@ -1258,11 +1258,11 @@ Let’s make a payment input with:
 ]
 ```
 
-## Signed Transaction
+## Signed Transaction交易签署
 
 A signed transaction is an unsigned transaction with the addition of an array of credentials.
 
-### What Signed Transaction Contains
+### What Signed Transaction Contains交易签署包括
 
 A signed transaction contains a `CodecID`, `UnsignedTx`, and `Credentials`.
 
@@ -1270,9 +1270,9 @@ A signed transaction contains a `CodecID`, `UnsignedTx`, and `Credentials`.
 * **`UnsignedTx`** is an unsigned transaction, as described above.
 * **`Credentials`** is an array of credentials. Each credential will be paired with the input in the same index at this credential.
 
-### Gantt Signed Transaction Specification
+### Gantt Signed Transaction Specification甘特交易签署规范
 
-```text
+```
 +---------------------+--------------+------------------------------------------------+
 | codec_id            : uint16       |                                        2 bytes |
 +---------------------+--------------+------------------------------------------------+
@@ -1284,9 +1284,9 @@ A signed transaction contains a `CodecID`, `UnsignedTx`, and `Credentials`.
                                      +------------------------------------------------+
 ```
 
-### Proto Signed Transaction Specification
+### Proto Signed Transaction Specification交易签署规范
 
-```text
+```
 message Tx {
     uint32 codec_id = 1;                 // 2 bytes
     UnsignedTx unsigned_tx = 2;          // size(unsigned_tx)
@@ -1294,7 +1294,7 @@ message Tx {
 }
 ```
 
-### Signed Transaction Example
+### Signed Transaction Example 交易签署举例
 
 Let’s make a signed transaction that uses the unsigned transaction and credential from the previous examples.
 
@@ -1302,7 +1302,7 @@ Let’s make a signed transaction that uses the unsigned transaction and credent
 * **`UnsignedTx`**: `0x0000000100000003ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000003000000070000000400010203`
 * **`Credentials`** `0x0000000900000002000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1e1d1f202122232425262728292a2b2c2e2d2f303132333435363738393a3b3c3d3e3f00404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5e5d5f606162636465666768696a6b6c6e6d6f707172737475767778797a7b7c7d7e7f00`
 
-```text
+```
 [
     CodecID     <- 0x0000
     UnsignedTx  <- 0x0000000100000003ffffffffeeeeeeeeddddddddccccccccbbbbbbbbaaaaaaaa999999998888888800000001000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000000070000000000003039000000000000d431000000010000000251025c61fbcfc078f69334f834be6dd26d55a955c3344128e060128ede3523a24a461c8943ab085900000001f1e1d1c1b1a191817161514131211101f0e0d0c0b0a09080706050403020100000000005000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0000000500000000075bcd150000000200000003000000070000000400010203
@@ -1373,7 +1373,7 @@ Let’s make a signed transaction that uses the unsigned transaction and credent
 
 A UTXO is a standalone representation of a transaction output.
 
-### What UTXO Contains
+### What UTXO Contains UTXO包含什么
 
 A UTXO contains a `CodecID`, `TxID`, `UTXOIndex`, and `Output`.
 
@@ -1383,9 +1383,9 @@ A UTXO contains a `CodecID`, `TxID`, `UTXOIndex`, and `Output`.
 * **`AssetID`** is a 32-byte array that defines which asset this utxo references.
 * **`Output`** is the output object that created this utxo. The serialization of Outputs was defined above.
 
-#### Gantt UTXO Specification <a id="gantt-utxo-specification"></a>
+#### Gantt UTXO Specification <a href="#gantt-utxo-specification" id="gantt-utxo-specification"></a>
 
-```text
+```
 +--------------+----------+-------------------------+
 | codec_id     : uint16   |                 2 bytes |
 +--------------+----------+-------------------------+
@@ -1401,9 +1401,9 @@ A UTXO contains a `CodecID`, `TxID`, `UTXOIndex`, and `Output`.
                           +-------------------------+
 ```
 
-### Proto UTXO Specification
+### Proto UTXO Specification原型UTXO规范
 
-```text
+```
 message Utxo {
     uint32 codec_id = 1;     // 02 bytes
     bytes tx_id = 2;         // 32 bytes
@@ -1413,7 +1413,7 @@ message Utxo {
 }
 ```
 
-### UTXO Example
+### UTXO Example UTXO例子
 
 Let’s make a UTXO from the signed transaction created above:
 
@@ -1423,7 +1423,7 @@ Let’s make a UTXO from the signed transaction created above:
 * **`AssetID`**: `0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f`
 * **`Output`**: `"Example SECP256K1 Transferable Output as defined above"`
 
-```text
+```
 [
     CodecID   <- 0x0000
     TxID      <- 0xf966750f438867c3c9828ddcdbe660e21ccdbb36a9276958f011ba472f75d4e7
@@ -1464,7 +1464,7 @@ Let’s make a UTXO from the signed transaction created above:
 
 A StakeableLockIn is a staked and locked input. The StakeableLockIn can only fund StakeableLockOuts with the same address until its locktime has passed.
 
-### **What StakeableLockIn Contains**
+### **What StakeableLockIn Contains** StakeableLockIn包含什么 &#x20;
 
 A StakeableLockIn contains a `TypeID`, `Locktime` and `TransferableIn`.
 
@@ -1472,9 +1472,9 @@ A StakeableLockIn contains a `TypeID`, `Locktime` and `TransferableIn`.
 * **`Locktime`** is a long that contains the unix timestamp before which the input can be consumed only to stake. The unix timestamp is specific to the second.
 * **`TransferableIn`** is a transferable input object.
 
-### **Gantt StakeableLockIn Specification**
+### **Gantt StakeableLockIn Specification**甘特StakeableLockIn规范
 
-```text
+```
 +-----------------+-------------------+--------------------------------+
 | type_id         : int               |                        4 bytes |
 +-----------------+-------------------+--------------------------------+
@@ -1486,9 +1486,9 @@ A StakeableLockIn contains a `TypeID`, `Locktime` and `TransferableIn`.
                                     +----------------------------------+
 ```
 
-### **Proto StakeableLockIn Specification**
+### **Proto StakeableLockIn Specification**原型StakeableLockIn规范
 
-```text
+```
 message StakeableLockIn {
     uint32 type_id = 1;                    // 04 bytes
     uint64 locktime = 2;                   // 08 bytes
@@ -1496,7 +1496,7 @@ message StakeableLockIn {
 }
 ```
 
-### **StakeableLockIn Example**
+### **StakeableLockIn Example StakeableLockIn例子**
 
 Let’s make a StakeableLockIn with:
 
@@ -1504,7 +1504,7 @@ Let’s make a StakeableLockIn with:
 * **`Locktime`**: 54321
 * **`TransferableIn`**: "Example SECP256K1 Transfer Input as defined above"
 
-```text
+```
 [
     TypeID    <- 0x00000015
     Locktime  <- 0x000000000000d431
@@ -1538,7 +1538,7 @@ Let’s make a StakeableLockIn with:
 
 A StakeableLockOut is an output that is locked until its locktime, but can be staked in the meantime.
 
-### **What StakeableLockOut Contains**
+### **What StakeableLockOut Contains** StakeableLockOut包含什么
 
 A StakeableLockOut contains a `TypeID`, `Locktime` and `TransferableOut`.
 
@@ -1546,9 +1546,9 @@ A StakeableLockOut contains a `TypeID`, `Locktime` and `TransferableOut`.
 * **`Locktime`** is a long that contains the unix timestamp before which the output can be consumed only to stake. The unix timestamp is specific to the second.
 * **`transferableout`**: "Example SECP256K1 Transfer Output as defined above"
 
-### **Gantt StakeableLockOut Specification**
+### **Gantt StakeableLockOut Specification**甘特StakeableLockOut规范
 
-```text
+```
 +------------------+--------------------+--------------------------------+
 | type_id          : int                |                        4 bytes |
 +------------------+--------------------+--------------------------------+
@@ -1560,9 +1560,9 @@ A StakeableLockOut contains a `TypeID`, `Locktime` and `TransferableOut`.
                                      +-----------------------------------+
 ```
 
-### **Proto StakeableLockOut Specification**
+### **Proto StakeableLockOut Specification**原型StakeableLockOut规范
 
-```text
+```
 message StakeableLockOut {
     uint32 type_id = 1;                      // 04 bytes
     uint64 locktime = 2;                     // 08 bytes
@@ -1570,7 +1570,7 @@ message StakeableLockOut {
 }
 ```
 
-### **StakeableLockOut Example**
+### **StakeableLockOut Example** StakeableLockOut例子
 
 Let’s make a stakeablelockout with:
 
@@ -1578,7 +1578,7 @@ Let’s make a stakeablelockout with:
 * **`Locktime`**: 54321
 * **`TransferableOutput`**: `"Example SECP256K1 Transfer Output from above"`
 
-```text
+```
 [
     TypeID              <- 0x00000016
     Locktime            <- 0x000000000000d431
@@ -1602,4 +1602,3 @@ Let’s make a stakeablelockout with:
     0x43, 0xab, 0x08, 0x59,
 ]
 ```
-

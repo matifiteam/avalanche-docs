@@ -1,6 +1,6 @@
-# Postman collection
+# Postman collection邮差集合
 
-## What is Postman?
+## What is Postman?什么是邮差
 
 Postman is a free tool used by developers to quickly and easily send REST, SOAP, and GraphQL requests and test APIs. It is available as both an online tool and an application for Linux, MacOS and Windows. Postman allows you to quickly issue API calls and see the responses in a nicely formatted, searchable form.
 
@@ -10,55 +10,55 @@ Along with the API collection, there is also the example Avalanche environment f
 
 Combined, they will allow you to easily keep tabs on your node, check on its state and do quick queries to find out details about its operation.
 
-## Setup
+## Setup设置
 
 ### Postman installation
 
 Postman can be installed locally or used as a web app. We recommend installing the application, as it simplifies operation. You can download Postman from its [website](https://www.postman.com/downloads/). It is recommended that you sign up using your email address as then your workspace can be easily backed up and shared between web app and the app installed on your computer.
 
-![Download Postman](../../.gitbook/assets/postman_01_download.png)
+![Download Postman](../../.gitbook/assets/postman\_01\_download.png)
 
 After you installed the application, run it. It will prompt you to create an account or log in. Do so. Again, it is not necessary, but recommended.
 
-### Collection import
+### Collection import进口收集
 
 Select `New workspace` from Workspaces tab and follow the prompts to crate a new workspace. This will where the rest of the work will be done.
 
-![New workspace](../../.gitbook/assets/postman_02_workspace.png)
+![New workspace](../../.gitbook/assets/postman\_02\_workspace.png)
 
 We're ready to import the collection. On the header of the Worskspaces tab select `New` and switch to `Link` tab.
 
-![Import collection](../../.gitbook/assets/postman_03_import.png)
+![Import collection](../../.gitbook/assets/postman\_03\_import.png)
 
 There, in the URL input field paste the link to the collection:
 
-```text
+```
 https://raw.githubusercontent.com/ava-labs/avalanche-postman-collection/master/Avalanche.postman_collection.json
 ```
 
 Postman will recognize the format of the file content and offer to import the file as a collection. Complete the import. Now you will have Avalanche collection in your Workspace.
 
-![Collection content](../../.gitbook/assets/postman_04_collection.png)
+![Collection content](../../.gitbook/assets/postman\_04\_collection.png)
 
 ### Environment import
 
 Next, we have to import the environment variables. Again, the header of the Worskspaces tab select `New` and switch to `Link` tab. this time, paste the link to the environment JSON:
 
-```text
+```
 https://raw.githubusercontent.com/ava-labs/avalanche-postman-collection/master/Example-Avalanche-Environment.postman_environment.json
 ```
 
 Postman will recognize the format of the file:
 
-![Environment import](../../.gitbook/assets/postman_05_environment.png)
+![Environment import](../../.gitbook/assets/postman\_05\_environment.png)
 
 Import it to your workspace. Now, we will need to edit that environment to suit the actual parameters of your particular installation. These are the parameters that differ from the defaults in the imported file.
 
 Click the eye icon next to the environment dropdown:
 
-![Environment content](../../.gitbook/assets/postman_06_variables.png)
+![Environment content](../../.gitbook/assets/postman\_06\_variables.png)
 
-Select the `Edit` button to change the defaults. As a minimum, you will need to change the IP address of your node, which is the value of the `host` variable. Change it to the IP of your node \(change both the `initial` and `current` values\). Also, if your node is not running on the same machine where you installed Postman, make sure your node is accepting the connections on the API port from the outside by checking the appropriate [command line option](../references/command-line-interface.md#http-server).
+Select the `Edit` button to change the defaults. As a minimum, you will need to change the IP address of your node, which is the value of the `host` variable. Change it to the IP of your node (change both the `initial` and `current` values). Also, if your node is not running on the same machine where you installed Postman, make sure your node is accepting the connections on the API port from the outside by checking the appropriate [command line option](../references/command-line-interface.md#http-server).
 
 Now we sorted everything out, and we're ready to query the node.
 
@@ -66,11 +66,11 @@ Now we sorted everything out, and we're ready to query the node.
 
 Open one of the API call groups, for example `Health`. Double-click `getLiveness` call:
 
-![API call](../../.gitbook/assets/postman_07_making_calls.png)
+![API call](../../.gitbook/assets/postman\_07\_making\_calls.png)
 
 You will see that format of the call uses the `http`, `host` and `port` environment variables. Click `Send`. Request will be sent, and soon you will see the response, in the `Body` tab in the `Response`:
 
-![Response](../../.gitbook/assets/postman_08_response.png)
+![Response](../../.gitbook/assets/postman\_08\_response.png)
 
 To see the actual call and the variables that are sent to the node, switch to `Body` tab in the API call tabs. There you can quickly change the variables to see the response to different queries.
 
@@ -82,5 +82,4 @@ If you completed the tutorial, you are now able to quickly issue API calls to yo
 
 We're hoping to continuously keep this collection up-to-date with the [Avalanche APIs](https://docs.avax.network/build/avalanchego-apis), and also add [data visualizations](https://learning.postman.com/docs/sending-requests/visualizer/#visualizing-response-data). If you're able to help improve the Avalanche Postman Collection in any way, first create a feature branch by branching off of `master`, next make the improvements on your feature branch and lastly create a [pull request](https://github.com/ava-labs/avalanche-docs/pulls) to merge your work back in to `master`.
 
-If you have any other questions or suggestions, come [talk to us](https://chat.avalabs.org/).
-
+If you have any other questions or suggestions, come [talk to us](https://chat.avalabs.org).

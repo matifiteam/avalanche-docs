@@ -1,45 +1,45 @@
 ---
-description: 'This API allows clients to interact with Ortelius, the Avalanche indexer.'
+description: This API allows clients to interact with Ortelius, the Avalanche indexer.
 ---
 
 # Ortelius API
 
 ## Ortelius API
 
-### Format
+### Format格式
 
 This API uses GET HTTP requests using URL query parameters and returns JSON data.
 
-### Versioning
+### Versioning版本
 
 Starting with version 2, the API paths will be prefixed by a version tag, e.g. `http://localhost:8080/v2`.
 
 The current version of the API is version 2. The [Legacy API](ortelius.md#legacy-api) documentation has information about using the v1 API.
 
-### Data Types
+### Data Types数据类型
 
 In addition to integers, strings, and booleans, the following data types are used throughout the API:
 
-| Name | Description | Examples |
-| :--- | :--- | :--- |
-| `id` | A CB58 encoded object identifier, such as a chain, transaction, or asset ID | `2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM` |
-| `address` | A bech-32 encoded address \(used on the X-Chain and P-Chain\) | `fuji1wycv8n7d2fg9aq6unp23pnj4q0arv03ysya8jw` |
-| `datetime` | A Unix timestamp as an integer or an RFC3339 formatted string | `1599696000`, `2020-09-10T00:00:00Z` |
-| `caddress` | A hex encoded address \(used on the C-Chain\) | `0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7` |
-| `chash` | A hex encoded hash | `0xe5b935988317e8552e769ad92b6a2fd01ac8f0f90d8ffa4377e50fcb8d970077` |
+| Name       | Description                                                                 | Examples                                                             |
+| ---------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `id`       | A CB58 encoded object identifier, such as a chain, transaction, or asset ID | `2oYMBNV4eNHyqk2fjjV5nVQLDbtmNJzq5s3qs3Lo6ftnC6FByM`                 |
+| `address`  | A bech-32 encoded address (used on the X-Chain and P-Chain)                 | `fuji1wycv8n7d2fg9aq6unp23pnj4q0arv03ysya8jw`                        |
+| `datetime` | A Unix timestamp as an integer or an RFC3339 formatted string               | `1599696000`, `2020-09-10T00:00:00Z`                                 |
+| `caddress` | A hex encoded address (used on the C-Chain)                                 | `0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7`                         |
+| `chash`    | A hex encoded hash                                                          | `0xe5b935988317e8552e769ad92b6a2fd01ac8f0f90d8ffa4377e50fcb8d970077` |
 
-### List Parameters
+### List Parameters list参数
 
 All endpoints for listing resources accept the following parameters:
 
-| Name | Type | Description | Default | Max |
-| :--- | :--- | :--- | :--- | :--- |
-| `limit` | `int` | The maximum number of items to return | `5000` | `5000` |
-| `query` | `string` | An ID prefix to filter items by | None | None |
-| `startTime` | `datetime` | Limits to items created on or after a given time | `0` | Now |
-| `endTime` | `datetime` | Limits to items created on or before a given time | Now | Now |
+| Name        | Type       | Description                                       | Default | Max    |
+| ----------- | ---------- | ------------------------------------------------- | ------- | ------ |
+| `limit`     | `int`      | The maximum number of items to return             | `5000`  | `5000` |
+| `query`     | `string`   | An ID prefix to filter items by                   | None    | None   |
+| `startTime` | `datetime` | Limits to items created on or after a given time  | `0`     | Now    |
+| `endTime`   | `datetime` | Limits to items created on or before a given time | Now     | Now    |
 
-## Available Endpoints
+## Available Endpoints可用端点
 
 ### Overview
 
@@ -51,7 +51,7 @@ None
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2"
 ```
 
@@ -85,13 +85,13 @@ Find an address or a transaction by its ID.
 
 **Params**
 
-| Name | Type | Description | Default | Max |
-| :--- | :--- | :--- | :--- | :--- |
-| `query` | `string` | An ID prefix to filter items by | None | None |
+| Name    | Type     | Description                     | Default | Max  |
+| ------- | -------- | ------------------------------- | ------- | ---- |
+| `query` | `string` | An ID prefix to filter items by | None    | None |
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/search?query=2jEugPDFN89KXLEXtf5"
 ```
 
@@ -168,21 +168,21 @@ curl "http://localhost:8080/v2/search?query=2jEugPDFN89KXLEXtf5"
 }
 ```
 
-### Aggregate
+### Aggregate汇总
 
 Calculate aggregate transaction data over a time frame.
 
 **Params**
 
-| Name | Type | Description | Default | Max |
-| :--- | :--- | :--- | :--- | :--- |
-| `chainID` | `id` | A chain ID to filter results by. May be supplied multiple times. | None | None |
-| `assetID` | `id` | An asset ID to filter results by. | None | None |
-| `intervalSize` | `string` | Values 'minute', 'hour', 'day', 'week', 'month', 'year' | None | None |
+| Name           | Type     | Description                                                      | Default | Max  |
+| -------------- | -------- | ---------------------------------------------------------------- | ------- | ---- |
+| `chainID`      | `id`     | A chain ID to filter results by. May be supplied multiple times. | None    | None |
+| `assetID`      | `id`     | An asset ID to filter results by.                                | None    | None |
+| `intervalSize` | `string` | Values 'minute', 'hour', 'day', 'week', 'month', 'year'          | None    | None |
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/aggregates?startTime=2020-09-21T00:00:00Z&endTime=2020-10-21T00:00:00Z"
 ```
 
@@ -204,13 +204,13 @@ curl "http://localhost:8080/v2/aggregates?startTime=2020-09-21T00:00:00Z&endTime
 }
 ```
 
-### TxFee Aggregate
+### TxFee Aggregate TxFee汇总
 
 AVAX Aggregate txfee
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/txfeeAggregates?startTime=2020-09-21T00:00:00Z&endTime=2020-10-21T00:00:00Z"
 ```
 
@@ -234,13 +234,13 @@ Responds with the chains an address appears on.
 
 **Params**
 
-| Name | Type | Description | Default | Max |
-| :--- | :--- | :--- | :--- | :--- |
-| `address` | `address` | A address to filter results by. May be supplied multiple times. | None | None |
+| Name      | Type      | Description                                                     | Default | Max  |
+| --------- | --------- | --------------------------------------------------------------- | ------- | ---- |
+| `address` | `address` | A address to filter results by. May be supplied multiple times. | None    | None |
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/addressChains?address=X-fujiABC"
 ```
 
@@ -266,12 +266,12 @@ Find transactions that have been accepted.
 
 **Params**
 
-| Name | Type | Description | Default | Max |
-| :--- | :--- | :--- | :--- | :--- |
-| `chainID` | `id` | A chain ID to filter results by. May be supplied multiple times. | None | None |
-| `assetID` | `id` | An asset ID to filter results by. | None | None |
-| `address` | `address` | An address to filter results by. May be supplied multiple times. | None | None |
-| `sort` | `string` | A method to sort results by. May be `timestamp-asc` or `timestamp-desc`. | `timestamp-asc` | N/A |
+| Name      | Type      | Description                                                              | Default         | Max  |
+| --------- | --------- | ------------------------------------------------------------------------ | --------------- | ---- |
+| `chainID` | `id`      | A chain ID to filter results by. May be supplied multiple times.         | None            | None |
+| `assetID` | `id`      | An asset ID to filter results by.                                        | None            | None |
+| `address` | `address` | An address to filter results by. May be supplied multiple times.         | None            | None |
+| `sort`    | `string`  | A method to sort results by. May be `timestamp-asc` or `timestamp-desc`. | `timestamp-asc` | N/A  |
 
 **Example Call**
 
@@ -355,7 +355,7 @@ Find a single transaction by its ID.
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/transactions/2jEugPDFN89KXLEXtf5oKp5spsJawTht2zP4kKJjkQwwRsDdLX"
 ```
 
@@ -429,14 +429,14 @@ Find addresses that have been referenced in accepted transactions.
 
 **Params**
 
-| Name | Type | Description | Default | Max |
-| :--- | :--- | :--- | :--- | :--- |
-| `chainID` | `id` | A chain ID to filter results by. May be supplied multiple times. | None | None |
-| `address` | `address` | An address to filter results by. May be supplied multiple times. | None | None |
+| Name      | Type      | Description                                                      | Default | Max  |
+| --------- | --------- | ---------------------------------------------------------------- | ------- | ---- |
+| `chainID` | `id`      | A chain ID to filter results by. May be supplied multiple times. | None    | None |
+| `address` | `address` | An address to filter results by. May be supplied multiple times. | None    | None |
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/addresses?address=X-avax1y8cyrzn2kg4udccs5d625gkac7a99pe452cy5u"
 ```
 
@@ -469,7 +469,7 @@ Find a single address by its ID.
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/addresses/avax1y8cyrzn2kg4udccs5d625gkac7a99pe452cy5u"
 ```
 
@@ -498,7 +498,7 @@ Find assets that have been created on the X-chain.
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/assets"
 ```
 
@@ -529,7 +529,7 @@ Find a single asset by its ID.
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/assets/FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z"
 ```
 
@@ -556,15 +556,15 @@ Find outputs that have been created by an accepted transaction.
 
 **Params**
 
-| Name | Type | Description | Default | Max |
-| :--- | :--- | :--- | :--- | :--- |
-| `chainID` | `id` | A chain ID to filter results by. May be supplied multiple times. | None | None |
-| `address` | `address` | An address to filter results by. May be supplied multiple times. | None | None |
-| `spent` | `bool` | If set, results will be filtered by whether they're spent \(true\) or unspent \(false\) | None | N/A |
+| Name      | Type      | Description                                                                         | Default | Max  |
+| --------- | --------- | ----------------------------------------------------------------------------------- | ------- | ---- |
+| `chainID` | `id`      | A chain ID to filter results by. May be supplied multiple times.                    | None    | None |
+| `address` | `address` | An address to filter results by. May be supplied multiple times.                    | None    | None |
+| `spent`   | `bool`    | If set, results will be filtered by whether they're spent (true) or unspent (false) | None    | N/A  |
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/outputs?address=X-avax1y8cyrzn2kg4udccs5d625gkac7a99pe452cy5u&spent=false"
 ```
 
@@ -598,7 +598,7 @@ Find a single output by its ID.
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/outputs/114RMPhYM7do7cDX7KWSqFeLkbUXFrLKcqPL4GMdjTvemPzvc"
 ```
 
@@ -628,7 +628,7 @@ Find a single block by its number.
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/ctxdata/10"
 ```
 
@@ -700,18 +700,18 @@ Find accepted C-Chain transactions.
 
 **Params**
 
-| Name | Type | Description | Default | Max |
-| :--- | :--- | :--- | :--- | :--- |
-| `toAddress` | `caddress` | address | None | None |
-| `fromAddress` | `caddress` | address | None | None |
-| `address` | `caddress` | address \(to or from\) | None | None |
-| `hash` | `chash` | transaction hash | None | None |
-| `blockStart` | `number` | Starting block number inclusive | None | N/A |
-| `blockEnd` | `number` | Ending block number exclusive | None | N/A |
+| Name          | Type       | Description                     | Default | Max  |
+| ------------- | ---------- | ------------------------------- | ------- | ---- |
+| `toAddress`   | `caddress` | address                         | None    | None |
+| `fromAddress` | `caddress` | address                         | None    | None |
+| `address`     | `caddress` | address (to or from)            | None    | None |
+| `hash`        | `chash`    | transaction hash                | None    | None |
+| `blockStart`  | `number`   | Starting block number inclusive | None    | N/A  |
+| `blockEnd`    | `number`   | Ending block number exclusive   | None    | N/A  |
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/ctransactions?toAddress=0x34ec164fd085ae43906eab6dffd1eae0a0855a2a&blockStart=797380&blockEnd=797381"
 ```
 
@@ -762,7 +762,7 @@ Get an accepted C-Chain transaction by its ID.
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/v2/rawtransaction/pxiBJkwnaKhaJdYkkfAVRZXrJj47jJF3QAvsasbYF2Rfweoog"
 ```
 
@@ -776,11 +776,11 @@ curl "http://localhost:8080/v2/rawtransaction/pxiBJkwnaKhaJdYkkfAVRZXrJj47jJF3QA
 
 ### Legacy API
 
-Version 1 of the API was built to support only the X-chain, and it did not use a version prefix \(`/v1`\). It is available at the path `/x` off of the root, which is the Overview endpoint for only the X-chain:
+Version 1 of the API was built to support only the X-chain, and it did not use a version prefix (`/v1`). It is available at the path `/x` off of the root, which is the Overview endpoint for only the X-chain:
 
 **Example Call**
 
-```text
+```
 curl "http://localhost:8080/x"
 ```
 
@@ -797,4 +797,3 @@ curl "http://localhost:8080/x"
 ```
 
 The legacy API supports the same endpoints and parameters as version 2, except the chainID parameter for all endpoints defaults to the X-chain ID.
-

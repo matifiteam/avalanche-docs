@@ -1,28 +1,28 @@
-# Cryptographic Primitives
+# Cryptographic Primitives加密原语
 
 [Avalanche](../../#avalanche) uses a variety of cryptographic primitives for its different functions. This file summarizes the type and kind of cryptography used at the network and blockchain layers.
 
-## Cryptography in the Network Layer
+## Cryptography in the Network Layer网络层的密码学
 
 Avalanche uses Transport Layer Security, TLS, to protect node-to-node communications from eavesdroppers. TLS combines the practicality of public-key cryptography with the efficiency of symmetric-key cryptography. This has resulted in TLS becoming the standard for internet communication. Whereas most classical consensus protocols employ public-key cryptography to prove receipt of messages to third parties, the novel Snow\* consensus family does not require such proofs. This enables Avalanche to employ TLS in authenticating stakers and eliminates the need for costly public-key cryptography for signing network messages.
 
-### TLS Certificates
+### TLS CertificatesTLS证书
 
 Avalanche does not rely on any centralized third-parties, and in particular, it does not use certificates issued by third-party authenticators. All certificates used within the network layer to identify endpoints are self-signed, thus creating a self-sovereign identity layer. No third parties are ever involved.
 
-### TLS Addresses
+### TLS Addresses TLS地址
 
 To avoid posting the full TLS certificate to the Platform chain, the certificate is first hashed. For consistency, Avalanche employs the same hashing mechanism for the TLS certificates as is used in Bitcoin. Namely, the DER representation of the certificate is hashed with sha256, and the result is then hashed with ripemd160 to yield a 20-byte identifier for stakers.
 
 This 20-byte identifier is represented by "NodeID-" followed by the data’s [CB58](https://support.avalabs.org/en/articles/4587395-what-is-cb58) encoded string.
 
-## Cryptography in the Avalanche Virtual Machine
+## Cryptography in the Avalanche Virtual Machine雪崩虚拟机中的密码学
 
 The Avalanche virtual machine uses elliptic curve cryptography, specifically `secp256k1`, for its signatures on the blockchain.
 
 This 32-byte identifier is represented by "PrivateKey-" followed by the data’s [CB58](https://support.avalabs.org/en/articles/4587395-what-is-cb58) encoded string.
 
-### Secp256k1 Addresses
+### Secp256k1 Addresses Secp256k1地址
 
 Avalanche is not prescriptive about addressing schemes, choosing to instead leave addressing up to each blockchain.
 
@@ -32,9 +32,9 @@ Avalanche uses the convention `chainID-address` to specify which chain an addres
 
 ### Bech32
 
-Addresses on the X-Chain and P-Chain use the [Bech32](http://support.avalabs.org/en/articles/4587392-what-is-bech32) standard outlined in [BIP 0173](https://en.bitcoin.it/wiki/BIP_0173). There are four parts to a Bech32 address scheme. In order of appearance:
+Addresses on the X-Chain and P-Chain use the [Bech32](http://support.avalabs.org/en/articles/4587392-what-is-bech32) standard outlined in [BIP 0173](https://en.bitcoin.it/wiki/BIP\_0173). There are four parts to a Bech32 address scheme. In order of appearance:
 
-* A human-readable part \(HRP\). On mainnet this is `avax`.
+* A human-readable part (HRP). On mainnet this is `avax`.
 * The number `1`, which separates the HRP from the address and error correction code.
 * A base-32 encoded string representing the 20 byte address.
 * A 6-character base-32 encoded error correction code.
@@ -43,27 +43,27 @@ Additionally, an Avalanche address is prefixed with the alias of the chain it ex
 
 The following regular expression matches addresses on the X-Chain, P-Chain and C-Chain for mainnet, fuji and localnet. Note that all valid Avalanche addresses will match this regular expression, but some strings that are not valid Avalanche addresses may match this regular expression.
 
-```text
+```
 ^([XPC]|[a-km-zA-HJ-NP-Z1-9]{36,72})-[a-zA-Z]{1,83}1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{38}$
 ```
 
 Read more about Avalanche's [addressing scheme](https://support.avalabs.org/en/articles/4596397-what-is-an-address).
 
-### Secp256k1 Recoverable Signatures
+### Secp256k1 Recoverable Signatures Secp256k1可恢复签名
 
 Recoverable signatures are stored as the 65-byte **`[R || S || V]`** where **`V`** is 0 or 1 to allow quick public key recoverability. **`S`** must be in the lower half of the possible range to prevent signature malleability. Before signing a message, the message is hashed using sha256.
 
-### Secp256k1 Example
+### Secp256k1 Example Secp256k1 例子
 
 Suppose Rick and Morty are setting up a secure communication channel. Morty creates a new public-private key pair.
 
 Private Key: `0x98cb077f972feb0481f1d894f272c6a1e3c15e272a1658ff716444f465200070`
 
-Public Key \(33-byte compressed\): `0x02b33c917f2f6103448d7feb42614037d05928433cb25e78f01a825aa829bb3c27`
+Public Key (33-byte compressed): `0x02b33c917f2f6103448d7feb42614037d05928433cb25e78f01a825aa829bb3c27`
 
 Because of Rick’s infinite wisdom, he doesn’t trust himself with carrying around Morty’s public key, so he only asks for Morty’s address. Morty follows the instructions, SHA256’s his public key, and then ripemd160’s that result to produce an address.
 
-SHA256\(Public Key\): `0x28d7670d71667e93ff586f664937f52828e6290068fa2a37782045bffa7b0d2f`
+SHA256(Public Key): `0x28d7670d71667e93ff586f664937f52828e6290068fa2a37782045bffa7b0d2f`
 
 Address: `0xe8777f38c88ca153a6fdc25942176d2bf5491b89`
 
@@ -79,19 +79,19 @@ Message Signature: `0xb52aa0535c5c48268d843bd65395623d2462016325a86f09420c81f142
 
 Morty was never seen again.
 
-## Signed Messages
+## Signed Messages 签署信息
 
 A standard for interoperable generic signed messages based on the Bitcoin Script format and Ethereum format.
 
-```text
+```
 sign(sha256(length(prefix) + prefix + length(message) + message))
 ```
 
-The prefix is simply the string `\x1AAvalanche Signed Message:\n`, where `0x1A` is the length of the prefix text and `length(message)` is an [integer](serialization-primitives.md#integer) of the message size.
+The prefix is simply the string `\x1AAvalanche Signed Message:`, where `0x1A` is the length of the prefix text and `length(message)` is an [integer](serialization-primitives.md#integer) of the message size.
 
-### Gantt Pre-image Specification
+### Gantt Pre-image Specification甘特原像规范
 
-```text
+```
 +---------------+-----------+------------------------------+
 | prefix        : [26]byte  |                     26 bytes |
 +---------------+-----------+------------------------------+
@@ -103,11 +103,11 @@ The prefix is simply the string `\x1AAvalanche Signed Message:\n`, where `0x1A` 
                             +------------------------------+
 ```
 
-### Example
+### Example举例
 
 As an example we will sign the message "Through consensus to the stars"
 
-```text
+```
 // prefix size: 26 bytes
 0x1a
 // prefix: Avalanche Signed Message:\n
@@ -122,11 +122,10 @@ After hashing with `sha256` and signing the pre-image we return the value [cb58]
 
 ![Sign message](../../.gitbook/assets/sign-message.png)
 
-## Cryptography in Ethereum Virtual Machine
+## Cryptography in Ethereum Virtual Machine以太坊虚拟机的密码学
 
-Avalanche nodes support the full Ethereum Virtual Machine \(EVM\) and precisely duplicate all of the cryptographic constructs used in Ethereum. This includes the Keccak hash function and the other mechanisms used for cryptographic security in the EVM.
+Avalanche nodes support the full Ethereum Virtual Machine (EVM) and precisely duplicate all of the cryptographic constructs used in Ethereum. This includes the Keccak hash function and the other mechanisms used for cryptographic security in the EVM.
 
-## Cryptography in Other Virtual Machines
+## Cryptography in Other Virtual Machines其他虚拟机的密码
 
 Since Avalanche is an extensible platform, we expect that people will add additional cryptographic primitives to the system over time.
-

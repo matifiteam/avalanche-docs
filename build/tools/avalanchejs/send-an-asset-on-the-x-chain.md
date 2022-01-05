@@ -1,8 +1,8 @@
-# Send an Asset on the X-Chain
+# Send an Asset on the X-Chain在X链上发送资产
 
 This example sends an asset in the X-Chain to a single recipient. The first step in this process is to create an instance of Avalanche connected to our Avalanche Platform endpoint of choice.
 
-```text
+```
 import {
     Avalanche,
     BinTools,
@@ -18,32 +18,32 @@ let xchain = avax.XChain(); //returns a reference to the X-Chain used by Avalanc
 
 We’re also assuming that the keystore contains a list of addresses used in this transaction.
 
-## Getting the UTXO Set <a id="getting-the-utxo-set"></a>
+## Getting the UTXO Set获取UTXO集 <a href="#getting-the-utxo-set" id="getting-the-utxo-set"></a>
 
-The X-Chain stores all available balances in a datastore called Unspent Transaction Outputs \(UTXOs\). A UTXO Set is the unique list of outputs produced by transactions, addresses that can spend those outputs, and other variables such as lockout times \(a timestamp after which the output can be spent\) and thresholds \(how many signers are required to spend the output\).
+The X-Chain stores all available balances in a datastore called Unspent Transaction Outputs (UTXOs). A UTXO Set is the unique list of outputs produced by transactions, addresses that can spend those outputs, and other variables such as lockout times (a timestamp after which the output can be spent) and thresholds (how many signers are required to spend the output).
 
 For the case of this example, we’re going to create a simple transaction that spends an amount of available coins and sends it to a single address without any restrictions. The management of the UTXOs will mostly be abstracted away.
 
 However, we do need to get the UTXO Set for the addresses we’re managing.
 
-```text
+```
 let myAddresses = xchain.keyChain().getAddresses(); //returns an array of addresses the KeyChain manages
 let addressStrings = xchain.keyChain().getAddressStrings(); //returns an array of addresses the KeyChain manages as strings
 let utxos = (await xchain.getUTXOs(myAddresses)).utxos;
 ```
 
-## Spending the UTXOs <a id="spending-the-utxos"></a>
+## Spending the UTXOs花UTXOs <a href="#spending-the-utxos" id="spending-the-utxos"></a>
 
 The `buildBaseTx()` helper function sends a single asset type. We have a particular assetID whose coins we want to send to a recipient address. This is an imaginary asset for this example which we believe to have 400 coins. Let’s verify that we have the funds available for the transaction.
 
-```text
+```
 let assetid = "23wKfz3viWLmjWo2UZ7xWegjvnZFenGAVkouwQCeB9ubPXodG6"; //avaSerialized string
 let mybalance = utxos.getBalance(myAddresses, assetid); //returns 400 as a BN
 ```
 
 We have 400 coins! We’re going to now send 100 of those coins to our friend’s address.
 
-```text
+```
 let sendAmount = new BN(100); //amounts are in BN format
 let friendsAddress = "X-avax1k26jvfdzyukms95puxcceyzsa3lzwf5ftt0fjk"; // address format is Bech32
 
@@ -62,11 +62,11 @@ let txid = await xchain.issueTx(signedTx);
 
 And the transaction is sent!
 
-## Get the status of the transaction <a id="get-the-status-of-the-transaction"></a>
+## Get the status of the transaction获取事务的状态 <a href="#get-the-status-of-the-transaction" id="get-the-status-of-the-transaction"></a>
 
 Now that we sent the transaction to the network, it takes a few seconds to determine if the transaction has gone through. We can get an updated status on the transaction using the TxID through the X-Chain.
 
-```text
+```
 // returns one of: "Accepted", "Processing", "Unknown", and "Rejected"
 let status = await xchain.getTxStatus(txid);
 ```
@@ -78,17 +78,16 @@ The statuses can be one of "Accepted", "Processing", "Unknown", and "Rejected":
 * "Unknown" indicates that node knows nothing about the transaction, indicating the node doesn’t have it
 * "Rejected" indicates the node knows about the transaction, but it conflicted with an accepted transaction
 
-## Check the results <a id="check-the-results"></a>
+## Check the results检查结果 <a href="#check-the-results" id="check-the-results"></a>
 
 The transaction finally came back as "Accepted", now let’s update the UTXOSet and verify that the transaction balance is as we expected.
 
 _Note: In a real network the balance isn’t guaranteed to match this scenario. Transaction fees or additional spends may vary the balance. For the purpose of this example, we assume neither of those cases._
 
-```text
+```
 let updatedUTXOs = await xchain.getUTXOs();
 let newBalance = updatedUTXOs.getBalance(myAddresses, assetid);
 if(newBalance.toNumber() != mybalance.sub(sendAmount).toNumber()){
     throw Error("heyyy these should equal!");
 }
 ```
-
